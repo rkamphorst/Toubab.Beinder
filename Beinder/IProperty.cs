@@ -8,19 +8,19 @@ namespace Beinder
 
         Type ValueType { get; }
 
-        object Object { get; }
-
-        bool TrySetObject(object newObject);
-
-        PropertyPath Path { get; }
-
-        object Value { get; }
-
-        bool TrySetValue(object newValue);
-
         bool IsReadable { get; }
 
         bool IsWritable { get; }
+
+        object Object { get; }
+
+        object Value { get; }
+
+        bool TrySetObject(object newObject);
+
+        bool TrySetValue(object newValue);
+
+        PropertyPath Path { get; }
 
         event EventHandler<ValueChangedEventArgs> ValueChanged;
 

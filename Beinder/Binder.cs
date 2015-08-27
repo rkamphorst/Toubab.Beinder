@@ -50,15 +50,7 @@ namespace Beinder
                     newValve = new Valve();
                     foreach (var prop in firstGroup)
                     {
-                        var cand = prop.Item1 as CandidateChildProperty;
-                        if (cand != null)
-                        {
-                            newValve.AddProperty(new ChildProperty((CandidateChildProperty)cand.Clone()));
-                        }
-                        else
-                        {
-                            newValve.AddProperty(prop.Item1.Clone());
-                        }
+                        newValve.AddProperty(prop.Item1.Clone());
                     }
                     resultList.Add(newValve);
                 }
@@ -76,7 +68,7 @@ namespace Beinder
                             newProps.AddRange(
                                 PropertyScanner
                                     .Scan(prop.Item1.Value)
-                                .Select(child => new CandidateChildProperty(prop.Item1.Clone(), child))
+                                .Select(child => new ChildProperty(prop.Item1.Clone(), child))
                             );
                         }
                         else if (prop.Item1.ValueType != null)
@@ -84,7 +76,7 @@ namespace Beinder
                             newProps.AddRange(
                                 PropertyScanner
                                     .Scan(prop.Item1.ValueType)
-                                .Select(child => new CandidateChildProperty(prop.Item1.Clone(), child))
+                                .Select(child => new ChildProperty(prop.Item1.Clone(), child))
                             );
                         }
 

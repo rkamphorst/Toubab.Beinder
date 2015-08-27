@@ -33,7 +33,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Valve.cs" />
     <Compile Include="TypeAdapterRegistry.cs" />
-    <Compile Include="ChildProperty.cs" />
     <Compile Include="PropertyPath.cs" />
     <Compile Include="ValueChangdEventArgs.cs" />
     <Compile Include="IObjectPropertyScanner.cs" />
@@ -50,7 +49,7 @@
     <Compile Include="AggregateProperty.cs" />
     <Compile Include="PropertyScanners\DictionaryPropertyScanner.cs" />
     <Compile Include="TypeProperty.cs" />
-    <Compile Include="CandidateChildProperty.cs" />
+    <Compile Include="ChildProperty.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
