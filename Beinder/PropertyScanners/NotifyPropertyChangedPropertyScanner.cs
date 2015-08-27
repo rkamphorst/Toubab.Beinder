@@ -71,7 +71,7 @@ namespace Beinder.PropertyScanners
 
             public override IProperty Clone()
             {
-                var result = new NotifyPropertyChangedTypeProperty(ObjectType, _pathParser, _propertyInfo);
+                var result = new NotifyPropertyChangedTypeProperty(MetaInfo.ObjectType, _pathParser, _propertyInfo);
                 result.TrySetObject(Object);
                 return result;
             }

@@ -9,6 +9,7 @@ namespace Beinder
         readonly IProperty[] _properties;
         readonly IProperty _readProperty;
         readonly IProperty _writeProperty;
+        readonly PropertyMetaInfo _metaInfo;
 
         public AggregateProperty(IProperty[] properties)
         {
@@ -20,18 +21,25 @@ namespace Beinder
                 prop.ValueChanged += HandleContainedPropertyValueChanged;
                 if (readProp == null)
                 {
-                    if (prop.IsReadable)
+                    if (prop.MetaInfo.IsReadable)
                         readProp = prop;
                 }
                 if (writeProp == null)
                 {
-                    if (prop.IsWritable)
+                    if (prop.MetaInfo.IsWritable)
                         writeProp = prop;
                 }
             }
             _readProperty = readProp;
             _writeProperty = writeProp;
             _value = _readProperty != null ? _readProperty.Value : null;
+
+            _metaInfo = new PropertyMetaInfo(
+                _properties.FirstOrDefault(p => p.MetaInfo.ObjectType != null)?.MetaInfo.ObjectType,
+                _properties.FirstOrDefault(p => p.MetaInfo.ValueType != null)?.MetaInfo.ValueType,
+                _readProperty != null,
+                _writeProperty != null
+            );
         }
 
         void HandleContainedPropertyValueChanged(object sender, ValueChangedEventArgs e)
@@ -50,25 +58,10 @@ namespace Beinder
 
         public event EventHandler<ValueChangedEventArgs> ValueChanged;
 
-        public Type ValueType
+        public PropertyMetaInfo MetaInfo
         {
-            get
-            {
-                return _properties.FirstOrDefault(p => p.ValueType != null)?.ValueType;
-            }
+            get { return _metaInfo; }
         }
-
-        public Type ObjectType
-        {
-            get
-            {
-                return _properties.FirstOrDefault(p => p.ObjectType != null)?.ObjectType;
-            }
-        }
-
-        public bool IsReadable { get { return _readProperty != null; } }
-
-        public bool IsWritable { get { return _writeProperty != null; } }
 
         object _value;
 

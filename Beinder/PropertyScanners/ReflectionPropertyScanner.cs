@@ -58,7 +58,7 @@ namespace Beinder.PropertyScanners
 
             public override IProperty Clone()
             {
-                var result = new ReflectionTypeProperty(ObjectType, _pathParser, _propertyInfo, _event);
+                var result = new ReflectionTypeProperty(MetaInfo.ObjectType, _pathParser, _propertyInfo, _event);
                 result.TrySetObject(Object);
                 return result;
             }

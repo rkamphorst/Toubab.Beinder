@@ -4,19 +4,18 @@ namespace Beinder.Mocks
 {
     class MockProperty : IProperty
     {
+        PropertyMetaInfo _metaInfo = new PropertyMetaInfo(null, null, true, true);
+
         public int Changed { get; set; }
 
         public string Name { get; set; }
 
         public event EventHandler<ValueChangedEventArgs> ValueChanged;
 
-        public Type ValueType { get { return null; } }
-
-        public Type ObjectType { get { return null; } }
-
-        public bool IsReadable { get { return true; } }
-
-        public bool IsWritable { get { return true; } }
+        public PropertyMetaInfo MetaInfo
+        {
+            get { return _metaInfo; }
+        }
 
         object _value;
 

@@ -4,9 +4,10 @@ namespace Beinder
 {
     public class ChildProperty : IProperty
     {
-        protected IProperty _parent;
-        protected IProperty _child;
         readonly PropertyPath _propertyPath;
+        readonly IProperty _parent;
+        readonly IProperty _child;
+        readonly PropertyMetaInfo _metaInfo;
         object _value;
 
         public ChildProperty(IProperty parent, IProperty child)
@@ -16,6 +17,12 @@ namespace Beinder
             _propertyPath = _parent.Path + _child.Path;
             _parent.ValueChanged += HandleValueChanged;
             _child.ValueChanged += HandleValueChanged;
+            _metaInfo = new PropertyMetaInfo(
+                _parent.MetaInfo.ObjectType,
+                _child.MetaInfo.ValueType,
+                _child.MetaInfo.IsReadable,
+                _child.MetaInfo.IsWritable
+            );
         }
 
         public void HandleValueChanged(object sender, EventArgs e)
@@ -45,19 +52,10 @@ namespace Beinder
 
         public event EventHandler<ValueChangedEventArgs> ValueChanged;
 
-        public Type ValueType
+        public PropertyMetaInfo MetaInfo
         {
-            get { return _child.ValueType; }
+            get { return _metaInfo; }
         }
-
-        public Type ObjectType
-        {
-            get { return _parent.ObjectType; }
-        }
-
-        public bool IsReadable { get { return _child.IsReadable; } }
-
-        public bool IsWritable { get { return _child.IsWritable; } }
 
         public object Value
         {

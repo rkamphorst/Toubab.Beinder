@@ -18,6 +18,8 @@ namespace Beinder
     {
         readonly LinkedList<WeakReference<IProperty>> _properties = 
             new LinkedList<WeakReference<IProperty>>();
+        readonly PropertyMetaInfo _metaInfo = 
+            new PropertyMetaInfo(null, null, true, true);
 
         object _value;
 
@@ -51,6 +53,12 @@ namespace Beinder
 
         #region IProperty implementation
 
+
+        public PropertyMetaInfo MetaInfo 
+        {
+            get { return _metaInfo; }
+        }
+
         public object Object
         { 
             get { return null; }
@@ -71,21 +79,6 @@ namespace Beinder
             }
         }
 
-        public bool IsReadable { get { return true; } }
-
-        public bool IsWritable { get { return true; } }
-
-        public event EventHandler<ValueChangedEventArgs> ValueChanged;
-
-        public Type ObjectType
-        {
-            get { return null; }
-        }
-
-        public Type ValueType
-        {
-            get { return null; } 
-        }
 
         public object Value
         {
@@ -102,6 +95,8 @@ namespace Beinder
             }
             return false;
         }
+
+        public event EventHandler<ValueChangedEventArgs> ValueChanged;
 
         public IProperty Clone()
         {

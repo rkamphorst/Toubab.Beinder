@@ -50,6 +50,7 @@
     <Compile Include="PropertyScanners\DictionaryPropertyScanner.cs" />
     <Compile Include="TypeProperty.cs" />
     <Compile Include="ChildProperty.cs" />
+    <Compile Include="PropertyMetaInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

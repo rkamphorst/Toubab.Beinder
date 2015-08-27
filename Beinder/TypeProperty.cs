@@ -7,17 +7,18 @@ namespace Beinder
     {
         protected readonly PropertyInfo _propertyInfo;
         protected readonly IPropertyPathParser _pathParser;
-        readonly bool _canRead;
-        readonly bool _canWrite;
+        readonly PropertyMetaInfo _metaInfo;
 
         protected TypeProperty(Type type, IPropertyPathParser pathParser, PropertyInfo property)
         {
             _propertyInfo = property;
-            ObjectType = type;
-            ValueType = property.PropertyType;
             _pathParser = pathParser;
-            _canRead = property.GetMethod != null && property.GetMethod.IsPublic;
-            _canWrite = property.SetMethod != null && property.SetMethod.IsPublic;
+            _metaInfo = new PropertyMetaInfo(
+                type,
+                property.PropertyType,
+                property.GetMethod != null && property.GetMethod.IsPublic,
+                property.SetMethod != null && property.SetMethod.IsPublic
+            );
         }
 
         protected abstract void DetachObjectPropertyChangeEvent(object obj);
@@ -31,9 +32,10 @@ namespace Beinder
                 evt(this, new ValueChangedEventArgs(Value));
         }
 
-        public Type ObjectType { get; private set; }
-
-        public Type ValueType { get; private set; }
+        public PropertyMetaInfo MetaInfo 
+        {
+            get { return _metaInfo; }
+        }
 
         public event EventHandler<ValueChangedEventArgs> ValueChanged;
 
@@ -74,15 +76,11 @@ namespace Beinder
             }
         }
 
-        public bool IsReadable { get { return _canRead; } }
-
-        public bool IsWritable { get { return _canWrite; } }
-
         public object Value
         {
             get
             { 
-                if (!_canRead)
+                if (!MetaInfo.IsReadable)
                     return null;
 
                 var t = Object;
@@ -92,7 +90,7 @@ namespace Beinder
 
         public bool TrySetValue(object value)
         {
-            if (!_canWrite)
+            if (!MetaInfo.IsWritable)
                 return false;
 
             var t = Object;

@@ -28,12 +28,11 @@ namespace Beinder.PropertyScanners
             foreach (var propgroup in 
                     from prop in
                         Scan(obj.GetType())
-                            .Cast<IProperty>()
                             .Concat(_objectScanners.SelectMany(s => s.Scan(obj)))
                     group prop by prop.Path)
             {
                 var proparray = propgroup.ToArray();
-                IProperty prop = proparray.Length > 0 
+                IProperty prop = proparray.Length > 1 
                     ? new AggregateProperty(proparray) 
                     : proparray[0];
                 prop.TrySetObject(obj);

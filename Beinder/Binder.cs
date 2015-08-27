@@ -43,7 +43,7 @@ namespace Beinder
                 // a valve has to contain at least two properties,
                 // and at least one of them has to be writable.
                 Valve newValve = null;
-                if (firstGroup.Count > 1 && firstGroup.Count(p => p.Item1.IsWritable) > 0)
+                if (firstGroup.Count > 1 && firstGroup.Count(p => p.Item1.MetaInfo.IsWritable) > 0)
                 {
                     // if firstGroup has at least 2 members, we can bind them
                     // with a valve.
@@ -71,11 +71,11 @@ namespace Beinder
                                 .Select(child => new ChildProperty(prop.Item1.Clone(), child))
                             );
                         }
-                        else if (prop.Item1.ValueType != null)
+                        else if (prop.Item1.MetaInfo.ValueType != null)
                         {
                             newProps.AddRange(
                                 PropertyScanner
-                                    .Scan(prop.Item1.ValueType)
+                                    .Scan(prop.Item1.MetaInfo.ValueType)
                                 .Select(child => new ChildProperty(prop.Item1.Clone(), child))
                             );
                         }

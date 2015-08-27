@@ -32,6 +32,7 @@ namespace Beinder.PropertyScanners
         {
             readonly string _key;
             readonly PropertyPath _propertyPath;
+            readonly PropertyMetaInfo _metaInfo = new PropertyMetaInfo(null, null, true, true);
             Dictionary<string,object> _object;
 
             public ObjectProperty(Dictionary<string,object> obj, string key, IPropertyPathParser pathParser)
@@ -71,13 +72,10 @@ namespace Beinder.PropertyScanners
 
             public event EventHandler<ValueChangedEventArgs> ValueChanged;
 
-            public bool IsReadable { get { return true; } }
-
-            public bool IsWritable { get { return true; } }
-
-            public Type ObjectType { get { return null; } }
-
-            public Type ValueType { get { return null; } }
+            public PropertyMetaInfo MetaInfo
+            {
+                get { return _metaInfo; }
+            }
 
             public object Value
             {
@@ -108,7 +106,8 @@ namespace Beinder.PropertyScanners
             public bool TrySetObject(object value)
             {
                 var newdict = value as Dictionary<string,object>;
-                if (newdict == null) return false;
+                if (newdict == null)
+                    return false;
 
                 {
                     var incc = _object as INotifyCollectionChanged;
