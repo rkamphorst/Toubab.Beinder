@@ -5,13 +5,13 @@ using System.Linq;
 namespace Beinder
 {
     /// <summary>
-    /// A Valve is a hub to which ducts (<see cref="IProperty"/>) can be attached. 
+    /// A Valve is a hub to which properties (<see cref="IProperty"/>) can be attached. 
     /// Whenever one <see cref="IProperty"/>'s value changes, that value is 
-    /// propagated to other targets (without propagating it back to the original
-    /// duct; hence, "Valve").
+    /// propagated to other properties (without propagating it back to the original
+    /// property; hence, "Valve").
     /// </summary>
     /// <remarks>
-    /// References to the targets are kept weak, i.e., the targets are allowed
+    /// References to the properties are kept weak, i.e., the properties are allowed
     /// to be garbage collected even if they are connected to a <see cref="Valve"/>.
     /// </remarks>
     public class Valve : IProperty, IDisposable
@@ -34,12 +34,12 @@ namespace Beinder
         }
 
         /// <summary>
-        /// Give a list of live ducts, i.e., ducts that have not been garbage
+        /// Give a list of live properties, i.e., properties that have not been garbage
         /// collected
         /// </summary>
         /// <remarks>
         /// Every time this property is accesed, a new list is returned.
-        /// Modifying the list will not modify the collection of ducts connected
+        /// Modifying the list will not modify the collection of properties connected
         /// to this valve. To do that, use <see cref="AddProperty" />.
         /// </remarks>
         public List<IProperty> LiveProperties
@@ -114,6 +114,7 @@ namespace Beinder
         {
             AssertNotDisposed();
             Push(null, payload);
+                
         }
 
         void HandleValueChanged(object sender, ValueChangedEventArgs e)

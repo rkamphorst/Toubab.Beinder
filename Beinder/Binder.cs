@@ -15,6 +15,13 @@ namespace Beinder
         public IProperty[] Bind(IEnumerable<object> objects)
         {
             var resultList = new List<IProperty>();
+
+            // propList: list of IProperty instances.
+            // The list is sorted on Path, which is important because
+            // the shortest property path will be on top, followed by the
+            // property paths that start with that path, and so on.
+            // Furthermore, all properties with the same paths will be next
+            // to each other in the list.
             var propList
                 = new LinkedList<Tuple<IProperty, Valve>>(
                       objects
@@ -43,7 +50,7 @@ namespace Beinder
                 // a valve has to contain at least two properties,
                 // and at least one of them has to be writable.
                 Valve newValve = null;
-                if (firstGroup.Count > 1 && firstGroup.Count(p => p.Item1.MetaInfo.IsWritable) > 0)
+                if (firstGroup.Count >= 2 && firstGroup.Count(p => p.Item1.MetaInfo.IsWritable) > 0)
                 {
                     // if firstGroup has at least 2 members, we can bind them
                     // with a valve.
@@ -55,7 +62,21 @@ namespace Beinder
                     resultList.Add(newValve);
                 }
 
-
+                // Now, the properties from firstGroup are removed from propList, 
+                // so they will not be processed again.
+                // However, the properties from firstGroup might have child properties
+                // (properties of properties) that we may want to bind to each other
+                // or to other properties that are in propList.
+                // That is the case if either 
+                //
+                //   (1) There are one or more properties in firstGroup. They 
+                //       have the same property path, therefore if they have 
+                //       properties (or child properties) that match, they may
+                //       be bindable to each other.
+                //   (2) There are other properties in propList of which the
+                //       path starts with the path of the properties in firstGroup.
+                //       If that is the case, these properties are at the start
+                //       of propList.
                 if (
                     firstGroup.Count >= 2 ||
                     (propList.Count >= 1 && firstPath.MatchesStartOf(propList.First.Value.Item1.Path)))

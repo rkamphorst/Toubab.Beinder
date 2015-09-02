@@ -10,7 +10,7 @@ namespace Beinder
         IProperty[] _valves;
 
         [Test]
-        public void BindNotifyPropertyChangedObjects()
+        public void BindTwoNotifyPropertyChangedObjects()
         {
             // Arrange
             var bnd = new Binder();
@@ -26,6 +26,64 @@ namespace Beinder
             Assert.AreEqual("a", ob1.Property);
         }
 
+        [Test]
+        public void BindThreeNotifyPropertyChangedObjects()
+        {
+            {
+                // Arrange
+                var bnd = new Binder();
+                bnd.PropertyScanner.AddScanner(new NotifyPropertyChangedPropertyScanner());
+                var ob1 = new NotifyPropertyChangedClass();
+                var ob2 = new NotifyPropertyChangedClass();
+                var ob3 = new NotifyPropertyChangedClass();
+                _valves = bnd.Bind(new object[] { ob1, ob2, ob3 });
+
+                // Act
+                ob1.Property = "a";
+
+                // Assert
+                Assert.AreEqual("a", ob1.Property);
+                Assert.AreEqual("a", ob2.Property);
+                Assert.AreEqual("a", ob3.Property);
+            }
+
+            {
+                // Arrange
+                var bnd = new Binder();
+                bnd.PropertyScanner.AddScanner(new NotifyPropertyChangedPropertyScanner());
+                var ob1 = new NotifyPropertyChangedClass();
+                var ob2 = new NotifyPropertyChangedClass();
+                var ob3 = new NotifyPropertyChangedClass();
+                _valves = bnd.Bind(new object[] { ob1, ob2, ob3 });
+
+                // Act
+                ob2.Property = "a";
+
+                // Assert
+                Assert.AreEqual("a", ob1.Property);
+                Assert.AreEqual("a", ob2.Property);
+                Assert.AreEqual("a", ob3.Property);
+            }
+
+            {
+                // Arrange
+                var bnd = new Binder();
+                bnd.PropertyScanner.AddScanner(new NotifyPropertyChangedPropertyScanner());
+                var ob1 = new NotifyPropertyChangedClass();
+                var ob2 = new NotifyPropertyChangedClass();
+                var ob3 = new NotifyPropertyChangedClass();
+                _valves = bnd.Bind(new object[] { ob1, ob2, ob3 });
+
+                // Act
+                ob3.Property = "a";
+
+                // Assert
+                Assert.AreEqual("a", ob1.Property);
+                Assert.AreEqual("a", ob2.Property);
+                Assert.AreEqual("a", ob3.Property);
+            }
+        }
+            
         [Test]
         public void BindReflectedObjects()
         {
@@ -78,6 +136,57 @@ namespace Beinder
 
             // Assert
             Assert.AreEqual("a", ob1.Property);
+        }
+
+        [Test]
+        public void BindDifferentlyDistributedObjectHierarchiesChangeChild()
+        {
+            // Arrange
+            var bnd = new Binder();
+            bnd.PropertyScanner.AddScanner(new ReflectionPropertyScanner());
+            bnd.PropertyScanner.AddScanner(new NotifyPropertyChangedPropertyScanner());
+            var ob1 = new Abcd1();
+            var ob2 = new Abcd2();
+            var ob3 = new Abcd3();
+            _valves = bnd.Bind(new object[] { ob1, ob2, ob3 });
+
+            // Act
+            ob1.Aaa.Bee.Cee.Dee.Eee = "x";
+
+
+            // Assert
+            Assert.AreEqual("x", ob2.AaaBee.CeeDee.Eee);
+            Assert.AreEqual("x", ob3.Aaa.BeeCee.Dee.Eee);
+        }
+
+        [Test]
+        public void BindDifferentlyDistributedObjectHierarchiesChangeParent()
+        {
+            // Arrange
+            var bnd = new Binder();
+            bnd.PropertyScanner.AddScanner(new ReflectionPropertyScanner());
+            bnd.PropertyScanner.AddScanner(new NotifyPropertyChangedPropertyScanner());
+            var ob1 = new Abcd1();
+            var ob2 = new Abcd2();
+            var ob3 = new Abcd3();
+            ob2.AaaBee.CeeDee.Eee = "x";
+            _valves = bnd.Bind(new object[] { ob1, ob2, ob3 });
+
+            // Act
+            Abcd2.AB oldAaaBee = ob2.AaaBee;
+            ob2.AaaBee = new Abcd2.AB
+            {
+                CeeDee = new Abcd2.CD
+                {
+                    Eee = "y"
+                }
+            };
+
+
+            // Assert
+            Assert.AreEqual("y", ob1.Aaa.Bee.Cee.Dee.Eee);
+            Assert.AreEqual("y", ob3.Aaa.BeeCee.Dee.Eee);
+            Assert.AreEqual("x", oldAaaBee.CeeDee.Eee);
         }
 
         [Test]
@@ -179,15 +288,15 @@ namespace Beinder
             bnd.PropertyScanner.AddScanner(new ReflectionPropertyScanner());
             bnd.PropertyScanner.AddScanner(new NotifyPropertyChangedPropertyScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
-            var vm = new MockViewModel2 { Control = new MockControlViewModel ("VmOrig") };
+            var vm = new MockViewModel2 { Control = new MockControlViewModel("VmOrig") };
             var valves = bnd.Bind(new object[] { vm, view });
 
             // Act
             view.Control = new MockControl("ViewNew")
-                {
-                    Text = "banaan",
-                    Size = 11
-                };
+            {
+                Text = "banaan",
+                Size = 11
+            };
 
             // Assert
             Assert.AreEqual("banaan", vm.Control.Text);
@@ -209,10 +318,10 @@ namespace Beinder
 
             // Act
             view.Control = new MockControl("ViewNew")
-                {
-                    Text = "banaan",
-                    Size = 11
-                };
+            {
+                Text = "banaan",
+                Size = 11
+            };
 
             // Assert
             Assert.AreSame(view.Control, vm.Control);

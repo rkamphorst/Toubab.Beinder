@@ -54,6 +54,7 @@
     <Compile Include="PropertyPathParsers\CamelCasePropertyPathParserTest.cs" />
     <Compile Include="PropertyTest.cs" />
     <Compile Include="Mocks\MockProperty.cs" />
+    <Compile Include="Mocks\Abcd.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
