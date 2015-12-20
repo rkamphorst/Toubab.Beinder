@@ -24,40 +24,39 @@ namespace Beinder.PropertyScanners
                 return Enumerable.Empty<IProperty>();
             
             return dict.Select(
-                kvp => new ObjectProperty(dict, kvp.Key, _pathParser)
+                kvp => new DictionaryEntryProperty(dict, kvp.Key, _pathParser)
             );
         }
 
-        class ObjectProperty : IProperty
+        class DictionaryEntryProperty : IProperty
         {
             readonly string _key;
             readonly PropertyPath _propertyPath;
             readonly PropertyMetaInfo _metaInfo = new PropertyMetaInfo(null, null, true, true);
             Dictionary<string,object> _object;
 
-            public ObjectProperty(Dictionary<string,object> obj, string key, IPropertyPathParser pathParser)
+            public DictionaryEntryProperty(Dictionary<string,object> obj, string key, IPropertyPathParser pathParser)
             {
                 _propertyPath = pathParser.Parse(key);
                 _key = key;
                 TrySetObject(obj);
             }
 
-            private ObjectProperty(Dictionary<string,object> obj, string key, PropertyPath path)
+            private DictionaryEntryProperty(Dictionary<string,object> obj, string key, PropertyPath path)
             {
                 _propertyPath = path;
                 _key = key;
                 TrySetObject(obj);
             }
 
-
             void HandleDictionaryChanged(object sender, NotifyCollectionChangedEventArgs e)
             {
                 if (
                     e.OldItems
-                        .Cast<KeyValuePair<string,object>>()
-                        .Concat(e.OldItems.Cast<KeyValuePair<string,object>>())
-                        .Select(kvp => kvp.Key)
-                        .Contains(_key))
+                    .Cast<KeyValuePair<string,object>>()
+                    .Concat(e.OldItems.Cast<KeyValuePair<string,object>>())
+                    .Select(kvp => kvp.Key)
+                    .Contains(_key))
                 {
                     OnValueChanged(Value);
                 }
@@ -93,7 +92,6 @@ namespace Beinder.PropertyScanners
                 _object[_key] = value;
                 return true;
             }
-
 
             public object Object
             { 
@@ -140,13 +138,14 @@ namespace Beinder.PropertyScanners
 
             public IProperty Clone()
             {
-                var result = new ObjectProperty(_object, _key, _propertyPath);
+                var result = new DictionaryEntryProperty(_object, _key, _propertyPath);
                 result.TrySetObject(Object);
                 return result;
             }
 
         }
-        
     }
+
+
     
 }

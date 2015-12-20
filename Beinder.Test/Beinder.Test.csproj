@@ -55,6 +55,9 @@
     <Compile Include="PropertyTest.cs" />
     <Compile Include="Mocks\MockProperty.cs" />
     <Compile Include="Mocks\Abcd.cs" />
+    <Compile Include="TypeExtensionsAdapteeArgumentTest.cs" />
+    <Compile Include="Mocks\DisguisedFruits.cs" />
+    <Compile Include="TypeAdapterRegistryTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

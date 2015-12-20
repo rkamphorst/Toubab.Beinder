@@ -32,12 +32,12 @@ namespace Beinder.PropertyScanners
                 type.GetRuntimeProperties()
                     .Where(info => 
                         !info.IsSpecialName &&
-                info.GetIndexParameters().Length == 0 &&
-                ((info.GetMethod != null && info.GetMethod.IsPublic) ||
-                (info.SetMethod != null && info.GetMethod.IsPublic))
-            )
+                        info.GetIndexParameters().Length == 0 &&
+                        ((info.GetMethod != null && info.GetMethod.IsPublic) ||
+                         (info.SetMethod != null && info.SetMethod.IsPublic))
+                    )
                     .Select(prop => new NotifyPropertyChangedTypeProperty(type, _pathParser, prop)
-            );
+                );
         }
 
         class NotifyPropertyChangedTypeProperty : TypeProperty
@@ -51,7 +51,7 @@ namespace Beinder.PropertyScanners
             {
                 if (Equals(args.PropertyName, _propertyInfo.Name))
                 {
-                    base.OnValueChanged(this, EventArgs.Empty);
+                    OnValueChanged(this, EventArgs.Empty);
                 }
             }
 

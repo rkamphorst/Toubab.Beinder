@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beinder.PropertyScanners;
 using System;
+using System.Collections.Generic;
 
 namespace Beinder
 {
@@ -104,6 +105,9 @@ namespace Beinder
                         // this should detach all events that the property attached to its object
                         prop.Item1.TrySetObject(null);
                     }
+                    // sort the new properties and merge them into propList, maintaining
+                    // order. because propList is a linked list, this is a relatively
+                    // fast operation.
                     newProps.Sort((a, b) => a.Path.CompareTo(b.Path));
                     foreach (var newProp in newProps)
                     {

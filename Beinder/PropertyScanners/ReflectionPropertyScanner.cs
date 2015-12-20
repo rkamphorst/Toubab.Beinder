@@ -23,9 +23,9 @@ namespace Beinder.PropertyScanners
                 type.GetRuntimeProperties()
                     .Where(info => 
                         !info.IsSpecialName &&
-                info.GetIndexParameters().Length == 0 &&
-                ((info.GetMethod != null && info.GetMethod.IsPublic) ||
-                (info.SetMethod != null && info.GetMethod.IsPublic))
+                        info.GetIndexParameters().Length == 0 &&
+                        ((info.GetMethod != null && info.GetMethod.IsPublic) ||
+                         (info.SetMethod != null && info.SetMethod.IsPublic))
             )
                     .Select(prop => new ReflectionTypeProperty(type, _pathParser, prop, type.GetRuntimeEvent(prop.Name + "Changed"))
             );

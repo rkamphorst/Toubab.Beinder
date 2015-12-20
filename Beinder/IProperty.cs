@@ -16,7 +16,6 @@ namespace Beinder
     /// </remarks>
     public interface IProperty
     {
-
         /// <summary>
         /// Property meta information
         /// </summary>
@@ -132,4 +131,8 @@ namespace Beinder
 
     }
 
+
+    public interface IProperty<T> : IProperty
+    {
+    }
 }

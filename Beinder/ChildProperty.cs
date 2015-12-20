@@ -2,6 +2,12 @@ using System;
 
 namespace Beinder
 {
+    /// <summary>
+    /// Child property.
+    /// </summary>
+    /// <remarks>
+    /// <para>"Property of a property"</para>
+    /// </remarks>
     public class ChildProperty : IProperty
     {
         readonly PropertyPath _propertyPath;
@@ -93,7 +99,7 @@ namespace Beinder
 
         public override string ToString()
         {
-            return string.Format("[CandidateChildProperty: {0}, Value={1}]", Path, Value);
+            return string.Format("[ChildProperty: {0}, Value={1}]", Path, Value);
         }
 
     }

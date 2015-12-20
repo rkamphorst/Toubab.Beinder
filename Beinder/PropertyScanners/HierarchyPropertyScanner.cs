@@ -1,54 +1,149 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Beinder.PropertyPathParsers;
 
 namespace Beinder.PropertyScanners
 {
-
+    /// <summary>
+    /// Base class for scanners of (view) hierarchies.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// A view is generally a as a hierarchy of views. 
+    /// This class is to facilitate extraction of properties from hierarchically
+    /// built views (or other structures).
+    /// </para>
+    /// </remarks>
     public abstract class HierarchyPropertyScanner<TParent, TNode> : IObjectPropertyScanner
         where TNode : class
         where TParent : class, TNode
     {
-        protected HierarchyPropertyScanner()
-        {
-            AdapterRegistry = new TypeAdapterRegistry(false, GetAdapteeType);
+
+        IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();
+
+        public IPropertyPathParser PathParser
+        { 
+            get { return _pathParser; }
+            set { _pathParser = value; }
         }
 
-        public TypeAdapterRegistry AdapterRegistry { get; private set; }
-
-        public virtual IEnumerable<IProperty> Scan(object obj)
+        public IEnumerable<IProperty> Scan(object obj)
         {
-            var root = obj as TParent;
-            if (root == null)
-                Enumerable.Empty<IProperty>();
+            if (!(obj is TParent) || obj == null)
+                return Enumerable.Empty<IProperty>();
 
-            foreach (var child in ScanHierarchy(root))
-            {
-                var objProp = AdapterRegistry.Resolve(child.GetType()) as IProperty;
-                if (objProp != null)
-                {
-                    yield return objProp;
-                }
-            }
+            var tparent = (TParent) obj;
+
+            return ScanHierarchy(tparent).Select(
+                kvp => new ObjectProperty(tparent, kvp.Key, kvp.Value, _pathParser)
+            );
         }
-
-        IEnumerable<TNode> ScanHierarchy(TParent root)
+            
+        IEnumerable<KeyValuePair<string,TNode>> ScanHierarchy(TParent root)
         {
-            foreach (TNode child in GetChildren(root))
+            foreach (var kvp in GetChildren(root))
             {
-                var parent = child as TParent;
+                var parent = kvp.Value as TParent;
                 if (parent != null)
                 {
                     foreach (var grandchild in ScanHierarchy(parent))
                         yield return grandchild;
                 }
-                yield return child;
+                if (!string.IsNullOrEmpty(kvp.Key))
+                    yield return kvp;
             }
         }
 
-        protected abstract IEnumerable<TNode> GetChildren(TParent parent);
+        /// <summary>
+        /// Get the children of a parent in the hierarchy.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This method should return a key-value pair, the key being a property
+        /// name (possibly empty or null) and the value the object that can be
+        /// potentially bound to.
+        /// 
+        /// All objects in the hierarchy should be returned, in order to reach 
+        /// the objects that have no children (the leaves). If no property name
+        /// can be derived for an object, set it to null.
+        /// </remarks>
+        /// <returns>Key-value pairs, keys te property names, values the objects that are
+        /// the children of <paramref name="parent"/></returns>
+        /// <param name="parent">Parent node.</param>
+        protected abstract IEnumerable<KeyValuePair<string,TNode>> GetChildren(TParent parent);
 
-        protected abstract Type GetAdapteeType(Type adapterType);
+
+        class ObjectProperty : IProperty
+        {
+            readonly PropertyPath _propertyPath;
+            readonly PropertyMetaInfo _metaInfo = new PropertyMetaInfo(null, null, true, false);
+            readonly TNode _value;
+            readonly TParent _object;
+
+            public ObjectProperty(TParent obj, string key, TNode value, IPropertyPathParser pathParser)
+            {
+                _propertyPath = pathParser.Parse(key);
+                _object = obj;
+                _value = value;
+            }
+
+            private ObjectProperty(TParent obj, PropertyPath path, TNode value)
+            {
+                _propertyPath = path;
+                _object = obj;
+                _value = value;
+            }
+
+
+            public event EventHandler<ValueChangedEventArgs> ValueChanged;
+
+            public PropertyMetaInfo MetaInfo
+            {
+                get { return _metaInfo; }
+            }
+
+            public object Value
+            {
+                get
+                {
+                    return _value;
+                }
+            }
+
+            public bool TrySetValue(object value)
+            { 
+                return false;
+            }
+
+            public object Object
+            { 
+                get
+                {
+                    return _object;
+                } 
+            }
+
+            public bool TrySetObject(object value)
+            {
+                return false;
+            }
+
+            public PropertyPath Path
+            {
+                get
+                {
+                    return _propertyPath;
+                }
+            }
+
+            public IProperty Clone()
+            {
+                return new ObjectProperty(_object, _propertyPath, _value);
+            }
+
+        }
+
     }
 
 }

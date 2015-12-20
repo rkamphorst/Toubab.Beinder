@@ -5,94 +5,108 @@ using System.Linq;
 
 namespace Beinder
 {
-    public class TypeAdapterRegistry
+    public class TypeAdapterRegistry<IAdapter>
+        where IAdapter : class
     {
-        readonly LinkedList<KeyValuePair<TypeInfo, object>> _registry 
-            = new LinkedList<KeyValuePair<TypeInfo, object>>();
-        readonly Dictionary<Type,object> _cache 
-            = new Dictionary<Type, object>();
-
-        readonly bool _isSingleton;
-        readonly Func<Type, Type> _adapteeGetter;
-
-        public TypeAdapterRegistry(bool singletonAdapter, Func<Type, Type> adapteeGetter)
-        {
-            _adapteeGetter = adapteeGetter;
-            _isSingleton = singletonAdapter;
-        }
-
-        Type GetAdaptee(Type adapterType)
-        {
-            var adaptee = _adapteeGetter(adapterType);
-            if (adaptee == null)
-                return null;
-
-            return 
-                adaptee != null &&
-            adapterType.GetTypeInfo().DeclaredConstructors.Any(c => c.GetParameters().Length == 0)
-                    ? adaptee
-                    : null;
-        }
+        readonly TypeInfo _baseAdapterTypeInfo = typeof(IAdapter).GetTypeInfo();
+        readonly LinkedList<KeyValuePair<TypeInfo, List<Type>>> _typeRegistry
+            = new LinkedList<KeyValuePair<TypeInfo, List<Type>>>();
 
         public void RegisterFromAssembly(Assembly assembly)
         {
             foreach (var pair in assembly.ExportedTypes
-                .Select(t => new {AdapterType = t,AdapteeType = GetAdaptee(t)})
-                .Where(x => x.AdapteeType != null))
+                .Where(t => _baseAdapterTypeInfo.IsAssignableFrom(t.GetTypeInfo()))
+                .SelectMany(t => 
+                    GetAdapteeTypes(t).Select(adapteeType => new {AdapterType = t,AdapteeType = adapteeType })
+                ))
                 RegisterInternal(pair.AdapteeType, pair.AdapterType);
+        }
+
+        public void Register<T>() 
+            where T : IAdapter
+        {
+            Register(typeof(T));
         }
 
         public void Register(Type adapterType)
         {
-            var adapteeType = GetAdaptee(adapterType);
-            if (adapteeType == null)
-                throw new ArgumentException();
+            if (!_baseAdapterTypeInfo.IsAssignableFrom(adapterType.GetTypeInfo()))
+                throw new ArgumentException(
+                    "Given type is not assignable from " + _baseAdapterTypeInfo.FullName, 
+                    "adapterType"
+                );
             
-            RegisterInternal(adapteeType, adapterType);
+            var adapteeTypes = GetAdapteeTypes(adapterType);
+
+            bool registered = false;
+            foreach (var adapteeType in adapteeTypes)
+            {
+                registered = true;
+                RegisterInternal(adapteeType, adapterType);
+            }
+
+            if (!registered)
+            {
+                throw new ArgumentException(
+                    "Adaptee could not be determined for " + adapterType.FullName, 
+                    "adapterType"
+                );
+            }
         }
 
         void RegisterInternal(Type adapteeType, Type adapterType)
         {
             var adapteeTypeInfo = adapteeType.GetTypeInfo();
-            var adapter = _isSingleton ? adapterType : Activator.CreateInstance(adapterType);
-            var newPair = new KeyValuePair<TypeInfo, object>(adapteeTypeInfo, adapter);
-
-            _cache[adapteeType] = newPair.Value;
-            LinkedListNode<KeyValuePair<TypeInfo, object>> node = _registry.First;
+            LinkedListNode<KeyValuePair<TypeInfo, List<Type>>> node = _typeRegistry.First;
             while (node != null)
             {
-                if (node.Value.Key.Equals(adapteeTypeInfo))
+                if (Equals(node.Value.Key, adapteeTypeInfo))
                 {
-                    _registry.AddBefore(node, newPair);
-                    _registry.Remove(node);
+                    node.Value.Value.Add(adapterType);
                 }
                 else if (node.Value.Key
                     .IsAssignableFrom(adapteeTypeInfo))
                 {
-                    _registry.AddBefore(node, newPair);
+                    _typeRegistry.AddBefore(node, 
+                        new KeyValuePair<TypeInfo, List<Type>>(adapteeTypeInfo, new List<Type> { adapterType })
+                    );
+                    return;
                 }
+                node = node.Next;
             }
-            _registry.AddLast(newPair);
+            _typeRegistry.AddLast(new KeyValuePair<TypeInfo, List<Type>>(adapteeTypeInfo, new List<Type> { adapterType }));
         }
 
-        public object Resolve(Type adapteeType)
+        public IEnumerable<Type> FindAdaptersTypesFor<TAdaptee>(TAdaptee adaptee = default(TAdaptee))
         {
-            object adapter;
-            if (!_cache.TryGetValue(adapteeType, out adapter))
-            {
-                adapter = _registry
-                    .Where(pair => pair.Key.IsAssignableFrom(adapteeType.GetTypeInfo()))
-                    .Select(pair => pair.Value)
-                    .FirstOrDefault();
-                if (_isSingleton)
-                {
-                    var adapterType = adapter as Type;
-                    adapter = Activator.CreateInstance(adapterType);
-                }
-            }
-            return adapter;
+            return FindAdaptersTypesFor(typeof(TAdaptee));
         }
 
+        public IEnumerable<Type> FindAdaptersTypesFor(Type adapteeType)
+        {
+            var resolvedTypes = new HashSet<Type>();
+            foreach (var pair in _typeRegistry)
+            {
+                if (pair.Key.IsAssignableFrom(adapteeType.GetTypeInfo()))
+                {
+                    for (int i = pair.Value.Count - 1; i >= 0; i--)
+                    {
+                        var typ = pair.Value[i];
+                        if (!resolvedTypes.Contains(typ))
+                        {
+                            resolvedTypes.Add(typ);
+                            yield return typ;
+                        }
+                    }
+                }
+            }
+        }
+
+        protected virtual IEnumerable<Type> GetAdapteeTypes(Type adapterType)
+        {
+            return adapterType.EnumerateGenericAdapteeArguments<IAdapter>();
+        }
+            
     }
 
 }
