@@ -38,7 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ValveTest.cs" />
-    <Compile Include="BinderTest.cs" />
     <Compile Include="Mocks\ClassWithPropertyAndEvents.cs" />
     <Compile Include="Mocks\NotifyPropertyChangedClass.cs" />
     <Compile Include="Mocks\MockControl.cs" />
@@ -58,6 +57,9 @@
     <Compile Include="TypeExtensionsAdapteeArgumentTest.cs" />
     <Compile Include="Mocks\DisguisedFruits.cs" />
     <Compile Include="TypeAdapterRegistryTest.cs" />
+    <Compile Include="Mocks\MockViewExtensions.cs" />
+    <Compile Include="BinderWithReflactionScannersTest.cs" />
+    <Compile Include="BinderWithCustomExtensionsScannerTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

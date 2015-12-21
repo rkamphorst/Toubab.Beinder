@@ -5,7 +5,7 @@ using Beinder.Mocks;
 namespace Beinder
 {
     [TestFixture]
-    public class BinderTest
+    public class BinderWithReflactionScannersTest
     {
         IProperty[] _valves;
 

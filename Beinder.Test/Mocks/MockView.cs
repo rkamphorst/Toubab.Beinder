@@ -6,11 +6,14 @@ namespace Beinder.Mocks
     {
         MockControl _control;
 
-        public MockControl Control { 
-            get { 
+        public MockControl Control
+        { 
+            get
+            { 
                 return _control; 
             }
-            set {
+            set
+            {
                 _control = value; 
                 if (ControlChanged != null)
                     ControlChanged(this, EventArgs.Empty);
@@ -18,6 +21,18 @@ namespace Beinder.Mocks
         }
 
         public event EventHandler ControlChanged;
+
+        int _specialProperty;
+
+        public void SetSpecialProperty(int value)
+        {
+            _specialProperty = value;
+        }
+
+        public int GetSpecialProperty()
+        {
+            return _specialProperty;
+        }
     }
 
 }

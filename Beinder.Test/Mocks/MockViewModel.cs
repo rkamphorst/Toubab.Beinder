@@ -21,5 +21,13 @@ namespace Beinder.Mocks
             get { return _controlSize; }
             set { SetProperty(ref _controlSize, value); }
         }
+
+        int _specialProperty;
+
+        public int SpecialProperty
+        {
+            get { return _specialProperty; }
+            set { SetProperty(ref _specialProperty, value); }
+        }
     }
 }

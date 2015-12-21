@@ -8,11 +8,22 @@ namespace Beinder.Mocks
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void SetProperty<TProp>(ref TProp field, TProp value, [CallerMemberName] string property = null)
+        protected bool SetProperty<TProp>(ref TProp field, TProp value, [CallerMemberName] string property = null)
         {
-            field = value;
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            if (!Equals(field, value))
+            {
+                field = value;
+                OnPropertyChanged(property);
+                return true;
+            }
+            return false;
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string property = null)
+        {
+            var evt = PropertyChanged;
+            if (evt != null)
+                evt(this, new PropertyChangedEventArgs(property));
         }
 
     }

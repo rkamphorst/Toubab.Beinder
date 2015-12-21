@@ -14,7 +14,7 @@ namespace Beinder
     /// other properties.
     /// </para>
     /// </remarks>
-    public interface IProperty
+    public interface IProperty 
     {
         /// <summary>
         /// Property meta information

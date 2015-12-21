@@ -5,22 +5,22 @@ namespace Beinder.PropertyScanners
 {
     public class CustomExtensionsScanner : IObjectPropertyScanner
     {
-        readonly TypeAdapterRegistry<IExtensions> _adapterRegistry;
         readonly IObjectPropertyScanner _extensionsScanner;
+        readonly TypeAdapterFactory<IExtensions> _adapterFactory;
 
-        protected CustomExtensionsScanner(IObjectPropertyScanner extensionsScanner)
+        public CustomExtensionsScanner(IObjectPropertyScanner extensionsScanner)
         {
-            _adapterRegistry = new TypeAdapterRegistry<IExtensions>();
+            _adapterFactory = new TypeAdapterFactory<IExtensions>();
             _extensionsScanner = extensionsScanner;
         }
 
-        public TypeAdapterRegistry<IExtensions> AdapterRegistry { get { return _adapterRegistry; } }
+        public TypeAdapterRegistry<IExtensions> AdapterRegistry { get { return _adapterFactory.Registry; } }
 
         public IEnumerable<IProperty> Scan(object ob)
         {
             Type objectType = ob.GetType();
 
-            foreach (IExtensions ext in AdapterRegistry.FindAdaptersTypesFor(objectType))
+            foreach (var ext in _adapterFactory.GetAdaptersFor(objectType))
             {
                 foreach (IProperty prop in _extensionsScanner.Scan(ext))
                 {
@@ -76,7 +76,11 @@ namespace Beinder.PropertyScanners
 
             public IProperty Clone()
             {
-                return new ExtensionProperty(_objectType, _property);
+                var prop = _property.Clone();
+                prop.TrySetObject(((IExtensions) _property.Object).Clone());
+                var result = new ExtensionProperty(_objectType, prop);
+                result.TrySetObject(Object);
+                return result;
             }
 
             public PropertyMetaInfo MetaInfo
