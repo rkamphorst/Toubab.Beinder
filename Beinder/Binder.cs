@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Beinder.PropertyScanners;
 using System;
-using System.Collections.Generic;
 
 namespace Beinder
 {
@@ -24,22 +23,21 @@ namespace Beinder
             // Furthermore, all properties with the same paths will be next
             // to each other in the list.
             var propList
-                = new LinkedList<Tuple<IProperty, Valve>>(
+                = new LinkedList<IProperty>(
                       objects
                         .SelectMany(PropertyScanner.Scan)
                         .OrderBy(p => p.Path)
-                        .Select(p => new Tuple<IProperty, Valve>(p, null))
                   );
 
             while (propList.Count > 0)
             {
                 // determine what the first path is.
-                var firstPath = propList.First.Value.Item1.Path;
+                var firstPath = propList.First.Value.Path;
 
                 // all properties with the same path as first path will come in
                 // firstGroup
-                var firstGroup = new List<Tuple<IProperty, Valve>>();
-                while (propList.Count > 0 && propList.First.Value.Item1.Path.CompareTo(firstPath) == 0)
+                var firstGroup = new List<IProperty>();
+                while (propList.Count > 0 && propList.First.Value.Path.CompareTo(firstPath) == 0)
                 {
                     firstGroup.Add(propList.First.Value);
                     propList.RemoveFirst();
@@ -51,14 +49,14 @@ namespace Beinder
                 // a valve has to contain at least two properties,
                 // and at least one of them has to be writable.
                 Valve newValve = null;
-                if (firstGroup.Count >= 2 && firstGroup.Count(p => p.Item1.MetaInfo.IsWritable) > 0)
+                if (firstGroup.Count >= 2 && firstGroup.Count(p => p.MetaInfo.IsWritable) > 0)
                 {
                     // if firstGroup has at least 2 members, we can bind them
                     // with a valve.
                     newValve = new Valve();
                     foreach (var prop in firstGroup)
                     {
-                        newValve.AddProperty(prop.Item1.Clone());
+                        newValve.AddProperty(prop.Clone());
                     }
                     resultList.Add(newValve);
                 }
@@ -80,30 +78,30 @@ namespace Beinder
                 //       of propList.
                 if (
                     firstGroup.Count >= 2 ||
-                    (propList.Count >= 1 && firstPath.MatchesStartOf(propList.First.Value.Item1.Path)))
+                    (propList.Count >= 1 && firstPath.MatchesStartOf(propList.First.Value.Path)))
                 {
                     var newProps = new List<IProperty>();
                     foreach (var prop in firstGroup)
                     {
-                        if (prop.Item1.Value != null)
+                        if (prop.Value != null)
                         {
                             newProps.AddRange(
                                 PropertyScanner
-                                    .Scan(prop.Item1.Value)
-                                .Select(child => new ChildProperty(prop.Item1.Clone(), child))
+                                    .Scan(prop.Value)
+                                .Select(child => new ChildProperty(prop.Clone(), child))
                             );
                         }
-                        else if (prop.Item1.MetaInfo.ValueType != null)
+                        else if (prop.MetaInfo.ValueType != null)
                         {
                             newProps.AddRange(
                                 PropertyScanner
-                                    .Scan(prop.Item1.MetaInfo.ValueType)
-                                .Select(child => new ChildProperty(prop.Item1.Clone(), child))
+                                    .Scan(prop.MetaInfo.ValueType)
+                                .Select(child => new ChildProperty(prop.Clone(), child))
                             );
                         }
 
                         // this should detach all events that the property attached to its object
-                        prop.Item1.TrySetObject(null);
+                        prop.TrySetObject(null);
                     }
                     // sort the new properties and merge them into propList, maintaining
                     // order. because propList is a linked list, this is a relatively
@@ -114,10 +112,10 @@ namespace Beinder
                         var cur = propList.First;
                         while (cur != null)
                         {
-                            if (cur.Value.Item1.Path.CompareTo(newProp.Path) > 0)
+                            if (cur.Value.Path.CompareTo(newProp.Path) > 0)
                             {
                                 // cur comes *after* newProp, so add newProp before cur
-                                propList.AddBefore(cur, new Tuple<IProperty, Valve>(newProp, newValve));
+                                propList.AddBefore(cur, newProp);
                                 break;
                             }
                             cur = cur.Next;
@@ -125,7 +123,7 @@ namespace Beinder
                         if (cur == null)
                         {
                             // traversed the whole list without adding...
-                            propList.AddLast(new Tuple<IProperty, Valve>(newProp, newValve));
+                            propList.AddLast(newProp);
                         }
                     }
                 }
