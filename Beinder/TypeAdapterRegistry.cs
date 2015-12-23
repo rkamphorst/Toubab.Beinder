@@ -77,12 +77,12 @@ namespace Beinder
             _typeRegistry.AddLast(new KeyValuePair<TypeInfo, List<Type>>(adapteeTypeInfo, new List<Type> { adapterType }));
         }
 
-        public IEnumerable<Type> FindAdaptersTypesFor<TAdaptee>(TAdaptee adaptee = default(TAdaptee))
+        public IEnumerable<Type> FindAdapterTypesFor<TAdaptee>(TAdaptee adaptee = default(TAdaptee))
         {
-            return FindAdaptersTypesFor(typeof(TAdaptee));
+            return FindAdapterTypesFor(typeof(TAdaptee));
         }
 
-        public IEnumerable<Type> FindAdaptersTypesFor(Type adapteeType)
+        public IEnumerable<Type> FindAdapterTypesFor(Type adapteeType)
         {
             var resolvedTypes = new HashSet<Type>();
             foreach (var pair in _typeRegistry)

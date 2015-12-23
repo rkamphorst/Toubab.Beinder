@@ -16,7 +16,7 @@ namespace Beinder
 
             // act
             registry.Register<DisguisePearAsApple>();
-            var adapter = registry.FindAdaptersTypesFor<Pear>().Single();
+            var adapter = registry.FindAdapterTypesFor<Pear>().Single();
 
             // assert 
             Assert.AreEqual(typeof(DisguisePearAsApple), adapter);
@@ -31,8 +31,8 @@ namespace Beinder
             // act
             registry.Register<DisguisePearAsApple>();
             registry.Register<DisguiseSpecialPearAsApple>();
-            var pearAdapter = registry.FindAdaptersTypesFor<Pear>().Single();
-            var specialPearAdapter = registry.FindAdaptersTypesFor<SpecialPear>().First();
+            var pearAdapter = registry.FindAdapterTypesFor<Pear>().Single();
+            var specialPearAdapter = registry.FindAdapterTypesFor<SpecialPear>().First();
 
             // assert 
             Assert.AreEqual(typeof(DisguisePearAsApple), pearAdapter);
@@ -47,8 +47,8 @@ namespace Beinder
 
             // act
             registry.Register<DisguisePearAsApple>();
-            var pearAdapter = registry.FindAdaptersTypesFor<Pear>().Single();
-            var specialPearAdapter = registry.FindAdaptersTypesFor<SpecialPear>().Single();
+            var pearAdapter = registry.FindAdapterTypesFor<Pear>().Single();
+            var specialPearAdapter = registry.FindAdapterTypesFor<SpecialPear>().Single();
 
             // assert 
             Assert.AreEqual(typeof(DisguisePearAsApple), pearAdapter);
@@ -63,8 +63,8 @@ namespace Beinder
 
             // act
             registry.Register<DisguisePearOrOrangeAsApple>();
-            var pearAdapter = registry.FindAdaptersTypesFor<Pear>().Single();
-            var orangeAdapter = registry.FindAdaptersTypesFor<Orange>().Single();
+            var pearAdapter = registry.FindAdapterTypesFor<Pear>().Single();
+            var orangeAdapter = registry.FindAdapterTypesFor<Orange>().Single();
 
             // assert 
             Assert.AreEqual(typeof(DisguisePearOrOrangeAsApple), pearAdapter);
@@ -79,7 +79,7 @@ namespace Beinder
 
             // act
             registry.Register<DisguiseSpecialPearAndPearAsApple>();
-            var pearAdapters = registry.FindAdaptersTypesFor<Pear>();
+            var pearAdapters = registry.FindAdapterTypesFor<Pear>();
 
             // assert 
             Assert.AreEqual(typeof(DisguiseSpecialPearAndPearAsApple), pearAdapters.Single());
@@ -93,7 +93,7 @@ namespace Beinder
 
             // act
             registry.Register<DisguiseSpecialPearAndPearAsApple>();
-            var pearAdapters = registry.FindAdaptersTypesFor<SpecialPear>();
+            var pearAdapters = registry.FindAdapterTypesFor<SpecialPear>();
 
             // assert 
             Assert.AreEqual(typeof(DisguiseSpecialPearAndPearAsApple), pearAdapters.Single());
@@ -124,8 +124,8 @@ namespace Beinder
             registry.Register<DisguiseSpecialPearAsApple>();
             registry.Register<DisguiseSpecialPearAndPearAsApple>();
 
-            var pearAdapters = registry.FindAdaptersTypesFor<Pear>().ToArray();
-            var specialPearAdapters = registry.FindAdaptersTypesFor<SpecialPear>().ToArray();
+            var pearAdapters = registry.FindAdapterTypesFor<Pear>().ToArray();
+            var specialPearAdapters = registry.FindAdapterTypesFor<SpecialPear>().ToArray();
 
             // assert 
             Assert.AreEqual(2, pearAdapters.Length);
@@ -149,8 +149,8 @@ namespace Beinder
             registry.Register<DisguiseSpecialPearAsApple>();
             registry.Register<DisguisePearAsApple>();
 
-            var pearAdapters = registry.FindAdaptersTypesFor<Pear>().ToArray();
-            var specialPearAdapters = registry.FindAdaptersTypesFor<SpecialPear>().ToArray();
+            var pearAdapters = registry.FindAdapterTypesFor<Pear>().ToArray();
+            var specialPearAdapters = registry.FindAdapterTypesFor<SpecialPear>().ToArray();
 
             // assert 
             Assert.AreEqual(2, pearAdapters.Length);

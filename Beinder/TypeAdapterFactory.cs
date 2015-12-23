@@ -29,7 +29,7 @@ namespace Beinder
 
         public IEnumerable<IAdapter> GetAdaptersFor(Type adapteeType) 
         {
-            foreach (var adapterType in _typeAdapterRegistry.FindAdaptersTypesFor(adapteeType)) 
+            foreach (var adapterType in _typeAdapterRegistry.FindAdapterTypesFor(adapteeType)) 
             {
                 IAdapter result = null;
                 if (_singletonCache == null || !_singletonCache.TryGetValue(adapterType, out result)) 
