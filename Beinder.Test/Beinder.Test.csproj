@@ -58,9 +58,9 @@
     <Compile Include="Mocks\DisguisedFruits.cs" />
     <Compile Include="TypeAdapterRegistryTest.cs" />
     <Compile Include="Mocks\MockViewExtensions.cs" />
-    <Compile Include="BinderWithReflactionScannersTest.cs" />
     <Compile Include="BinderWithCustomExtensionsScannerTest.cs" />
     <Compile Include="Mocks\MockViewExtensions2.cs" />
+    <Compile Include="BinderWithReflectionScannersTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
