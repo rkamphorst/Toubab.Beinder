@@ -160,6 +160,7 @@ namespace Beinder
             {
                 foreach (var t in EnumerateLiveRefsAndRemoveDefuncts(_properties))
                     t.ValueChanged -= HandleValueChanged;
+                ValueChanged = null;
             } 
         }
 
