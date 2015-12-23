@@ -12,6 +12,22 @@ namespace Beinder
 
         public AggregatePropertyScanner PropertyScanner { get { return _propertyScanner; } }
 
+        struct BinderEntry
+        {
+            public BinderEntry(object obj, IProperty property)
+            {
+                Object = obj;
+                Property = property;
+                Path = new PropertyPath(property.Path);
+            }
+
+            public IProperty Property { get; private set; }
+
+            public PropertyPath Path { get; private set; }
+
+            public object Object { get; private set; }
+        }
+
         public IProperty[] Bind(IEnumerable<object> objects)
         {
             var resultList = new List<IProperty>();
@@ -23,10 +39,10 @@ namespace Beinder
             // Furthermore, all properties with the same paths will be next
             // to each other in the list.
             var propList
-                = new LinkedList<IProperty>(
+                = new LinkedList<BinderEntry>(
                       objects
-                        .SelectMany(PropertyScanner.Scan)
-                        .OrderBy(p => p.Path)
+                        .SelectMany(o => PropertyScanner.Scan(o).Select(p => new BinderEntry(o, p)))
+                        .OrderBy(be => be.Path)
                   );
 
             while (propList.Count > 0)
@@ -36,7 +52,7 @@ namespace Beinder
 
                 // all properties with the same path as first path will come in
                 // firstGroup
-                var firstGroup = new List<IProperty>();
+                var firstGroup = new List<BinderEntry>();
                 while (propList.Count > 0 && propList.First.Value.Path.CompareTo(firstPath) == 0)
                 {
                     firstGroup.Add(propList.First.Value);
@@ -49,14 +65,16 @@ namespace Beinder
                 // a valve has to contain at least two properties,
                 // and at least one of them has to be writable.
                 Valve newValve = null;
-                if (firstGroup.Count >= 2 && firstGroup.Count(p => p.MetaInfo.IsWritable) > 0)
+                if (firstGroup.Count >= 2 && firstGroup.Count(p => p.Property.MetaInfo.IsWritable) > 0)
                 {
                     // if firstGroup has at least 2 members, we can bind them
                     // with a valve.
                     newValve = new Valve();
-                    foreach (var prop in firstGroup)
+                    foreach (var entry in firstGroup)
                     {
-                        newValve.AddProperty(prop.Clone());
+                        var newProp = entry.Property.Clone();
+                        newProp.TrySetObject(entry.Object);
+                        newValve.AddProperty(newProp);
                     }
                     resultList.Add(newValve);
                 }
@@ -80,34 +98,33 @@ namespace Beinder
                     firstGroup.Count >= 2 ||
                     (propList.Count >= 1 && firstPath.MatchesStartOf(propList.First.Value.Path)))
                 {
-                    var newProps = new List<IProperty>();
-                    foreach (var prop in firstGroup)
+                    var newEntries = new List<BinderEntry>();
+                    foreach (var entry in firstGroup)
                     {
-                        if (prop.Value != null)
+                        entry.Property.TrySetObject(entry.Object);
+                        if (entry.Property.Value != null)
                         {
-                            newProps.AddRange(
+                            newEntries.AddRange(
                                 PropertyScanner
-                                    .Scan(prop.Value)
-                                .Select(child => new ChildProperty(prop.Clone(), child))
+                                    .Scan(entry.Property.Value)
+                                    .Select(child => new BinderEntry(entry.Object, new ChildProperty(entry.Property.Clone(), child)))
                             );
                         }
-                        else if (prop.MetaInfo.ValueType != null)
+                        else if (entry.Property.MetaInfo.ValueType != null)
                         {
-                            newProps.AddRange(
+                            newEntries.AddRange(
                                 PropertyScanner
-                                    .Scan(prop.MetaInfo.ValueType)
-                                .Select(child => new ChildProperty(prop.Clone(), child))
+                                    .Scan(entry.Property.MetaInfo.ValueType)
+                                    .Select(child => new BinderEntry(entry.Object, new ChildProperty(entry.Property.Clone(), child)))
                             );
                         }
-
-                        // this should detach all events that the property attached to its object
-                        prop.TrySetObject(null);
+                        entry.Property.TrySetObject(null);
                     }
                     // sort the new properties and merge them into propList, maintaining
                     // order. because propList is a linked list, this is a relatively
                     // fast operation.
-                    newProps.Sort((a, b) => a.Path.CompareTo(b.Path));
-                    foreach (var newProp in newProps)
+                    newEntries.Sort((a, b) => a.Path.CompareTo(b.Path));
+                    foreach (var newProp in newEntries)
                     {
                         var cur = propList.First;
                         while (cur != null)

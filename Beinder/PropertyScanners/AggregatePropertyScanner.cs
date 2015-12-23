@@ -35,7 +35,6 @@ namespace Beinder.PropertyScanners
                 IProperty prop = proparray.Length > 1 
                     ? new AggregateProperty(proparray) 
                     : proparray[0];
-                prop.TrySetObject(obj);
                 yield return prop;
             }
         }
