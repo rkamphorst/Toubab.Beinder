@@ -113,6 +113,11 @@ namespace Beinder.PropertyScanners
                     return _property.Value;
                 }
             }
+
+            public override string ToString()
+            {
+                return string.Format("[ExtProp: Path={0}, Value={1}]", Path, Value);
+            }
         }
     }
 }

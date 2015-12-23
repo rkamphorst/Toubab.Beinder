@@ -88,7 +88,8 @@ namespace Beinder
         public bool TrySetObject(object value)
         {
             var result = _parent.TrySetObject(value);
-            _child.TrySetObject(_parent.Value);
+            if (value != null)
+                _child.TrySetObject(_parent.Value);
             return result;
         }
 

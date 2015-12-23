@@ -33,6 +33,18 @@ namespace Beinder.Mocks
         {
             return _specialProperty;
         }
+
+        string _specialProperty2;
+
+        public void SetSpecialProperty2(string value)
+        {
+            _specialProperty2 = value;
+        }
+
+        public string GetSpecialProperty2()
+        {
+            return _specialProperty2;
+        }
     }
 
 }

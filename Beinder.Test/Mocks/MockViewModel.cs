@@ -29,5 +29,13 @@ namespace Beinder.Mocks
             get { return _specialProperty; }
             set { SetProperty(ref _specialProperty, value); }
         }
+
+        string _specialProperty2;
+
+        public string SpecialProperty2
+        {
+            get { return _specialProperty2; }
+            set { SetProperty(ref _specialProperty2, value); }
+        }
     }
 }

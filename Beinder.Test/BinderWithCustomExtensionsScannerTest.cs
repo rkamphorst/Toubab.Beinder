@@ -11,7 +11,7 @@ namespace Beinder
         IProperty[] _valves;
 
         [Test]
-        public void BindSpecialPropertyOnExtensions()
+        public void BindSpecialPropertyOnExtensionsWithNotifyPropertyChanged()
         {
             // Arrange
             var bnd = new Binder();
@@ -28,6 +28,27 @@ namespace Beinder
 
             // Assert
             Assert.AreEqual(666, ob1.GetSpecialProperty());
+        }
+
+        [Test]
+        public void BindSpecialPropertyOnExtensionsWithReflection()
+        {
+            // Arrange
+            var bnd = new Binder();
+            var customExtensionsScanner = new CustomExtensionsScanner(bnd.PropertyScanner);
+            customExtensionsScanner.AdapterRegistry.Register<MockViewExtensions2>();
+            bnd.PropertyScanner.AddScanner(new NotifyPropertyChangedPropertyScanner());
+            bnd.PropertyScanner.AddScanner(new ReflectionPropertyScanner());
+            bnd.PropertyScanner.AddScanner(customExtensionsScanner);
+            var ob1 = new MockView();
+            var ob2 = new MockViewModel();
+            _valves = bnd.Bind(new object[] { ob1, ob2 });
+
+            // Act
+            ob2.SpecialProperty2 = "666";
+
+            // Assert
+            Assert.AreEqual("666", ob1.GetSpecialProperty2());
         }
     }
 }
