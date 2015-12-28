@@ -36,18 +36,10 @@ namespace Beinder
             }
         }
 
-        public bool Activate(object[] tryActivateSequence) 
-        {
-            foreach (var ob in tryActivateSequence) {
-                if (Activate(ob))
-                    return true;
-            }
-            return false;
-        }
-
         public bool Activate(object toActivate)
         {
-            if (toActivate == null) return false;
+            if (toActivate == null)
+                return false;
             var prop = LiveProperties.FirstOrDefault(p => ReferenceEquals(toActivate, p.Object));
             if (prop != null)
             {
@@ -82,22 +74,13 @@ namespace Beinder
             return LiveProperties.Select(p => p.Value).Where(v => v != null).ToArray();
         }
 
-        public object GetValueForObject(object ob) 
+        public object GetValueForObject(object ob)
         {
             var prop = LiveProperties.FirstOrDefault(p => ReferenceEquals(ob, p.Object));
             return prop != null ? prop.Value : null;
         }
 
-        #region IProperty implementation
-
-        public object Value
-        {
-            get { return _value; }
-        }
-
         public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
-
-        #endregion
 
         void HandleValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
@@ -147,6 +130,7 @@ namespace Beinder
                     evt(this, EventArgs.Empty);
 
                 ValueChanged = null;
+                Disposing = null;
                 foreach (var t in EnumerateLiveRefsAndRemoveDefuncts(_properties))
                     t.ValueChanged -= HandleValueChanged;
                 
@@ -183,9 +167,12 @@ namespace Beinder
         public override string ToString()
         {
             var firstprop = LiveProperties.FirstOrDefault();
-            if(firstprop != null) {
-                return string.Format("[Valve: Path={0}, Value={1}]", firstprop.Path, firstprop.Value);  
-            } else {
+            if (firstprop != null)
+            {
+                return string.Format("[Valve: Path={0}, Values={1}]", firstprop.Path, string.Join(",", LiveProperties.Select(p => p.Value).Distinct()));  
+            }
+            else
+            {
                 return "[Valve: Path=(none), Value=(none)]";
             }
         }

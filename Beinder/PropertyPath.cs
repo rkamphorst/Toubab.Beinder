@@ -22,7 +22,7 @@ namespace Beinder
             return CalculateMatchSize(this, other) == _fragments.Length;
         }
 
-        public PropertyPath Rebase(PropertyPath other)
+        public PropertyPath RelativeTo(PropertyPath other)
         {
             if (other.MatchesStartOf(this))
             {
