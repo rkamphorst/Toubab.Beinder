@@ -14,14 +14,17 @@ namespace Beinder
     /// References to the properties are kept weak, i.e., the properties are allowed
     /// to be garbage collected even if they are connected to a <see cref="Valve"/>.
     /// </remarks>
-    public class Valve : IProperty, IDisposable
+    public class Valve : IDisposable
     {
+        static readonly object _initialValue = new object();
+
         readonly LinkedList<WeakReference<IProperty>> _properties = 
             new LinkedList<WeakReference<IProperty>>();
         readonly PropertyMetaInfo _metaInfo = 
             new PropertyMetaInfo(null, null, true, true);
+        
 
-        object _value;
+        object _value = _initialValue;
 
         public void AddProperty(IProperty prop)
         {
@@ -31,6 +34,29 @@ namespace Beinder
                 _properties.AddLast(new WeakReference<IProperty>(prop));
                 prop.ValueChanged += HandleValueChanged;
             }
+        }
+
+        public bool Activate(object[] tryActivateSequence) 
+        {
+            foreach (var ob in tryActivateSequence) {
+                if (Activate(ob))
+                    return true;
+            }
+            return false;
+        }
+
+        public bool Activate(object toActivate)
+        {
+            if (toActivate == null) return false;
+            var prop = LiveProperties.FirstOrDefault(p => ReferenceEquals(toActivate, p.Object));
+            if (prop != null)
+            {
+                var value = prop.Value;
+                Push(prop, value);
+                OnValueChanged(prop, value);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -51,89 +77,47 @@ namespace Beinder
             }
         }
 
-        #region IProperty implementation
-
-
-        public PropertyMetaInfo MetaInfo 
-        {
-            get { return _metaInfo; }
-        }
-
-        public object Object
+        public object[] GetValues()
         { 
-            get { return null; }
+            return LiveProperties.Select(p => p.Value).Where(v => v != null).ToArray();
         }
 
-        public bool TrySetObject(object value)
+        public object GetValueForObject(object ob) 
         {
-            return false;
+            var prop = LiveProperties.FirstOrDefault(p => ReferenceEquals(ob, p.Object));
+            return prop != null ? prop.Value : null;
         }
 
-
-        public PropertyPath Path
-        {
-            get
-            { 
-                return EnumerateLiveRefsAndRemoveDefuncts(_properties)
-                    .Select(p => p.Path).FirstOrDefault();
-            }
-        }
-
+        #region IProperty implementation
 
         public object Value
         {
             get { return _value; }
         }
 
-        public bool TrySetValue(object value)
-        {
-            AssertNotDisposed();
-            if (Push(null, value))
-            {
-                OnValueChanged(value);
-                return true;
-            }
-            return false;
-        }
-
-        public event EventHandler<ValueChangedEventArgs> ValueChanged;
-
-        public IProperty Clone()
-        {
-            var result = new Valve();
-            foreach (var prop in EnumerateLiveRefsAndRemoveDefuncts(_properties))
-            {
-                result.AddProperty(prop.Clone());
-            }
-            return result;
-        }
+        public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
         #endregion
 
-        public void AcceptValue(object payload)
+        void HandleValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
-            AssertNotDisposed();
-            Push(null, payload);
-                
+            Push(sender, e.NewValue);
+            OnValueChanged(e.Property, e.NewValue);
         }
 
-        void HandleValueChanged(object sender, ValueChangedEventArgs e)
-        {
-            if (Push(sender, e.NewValue))
-                OnValueChanged(e.NewValue);
-        }
-
-        void OnValueChanged(object newValue)
+        void OnValueChanged(IProperty property, object newValue)
         {
             var evt = ValueChanged;
             if (evt != null)
             {
-                evt(this, new ValueChangedEventArgs(newValue));
+                evt(this, new PropertyValueChangedEventArgs(property, newValue));
             }
         }
 
 
         #region IDisposable implementation
+
+        public event EventHandler Disposing;
 
         bool _disposed;
 
@@ -158,9 +142,14 @@ namespace Beinder
         {
             if (disposing)
             {
+                var evt = Disposing;
+                if (evt != null)
+                    evt(this, EventArgs.Empty);
+
+                ValueChanged = null;
                 foreach (var t in EnumerateLiveRefsAndRemoveDefuncts(_properties))
                     t.ValueChanged -= HandleValueChanged;
-                ValueChanged = null;
+                
             } 
         }
 
@@ -179,12 +168,13 @@ namespace Beinder
                 if (!Equals(payload, _value))
                 {
                     _value = payload;
+                    bool valueWasSet = false;
                     foreach (var prop in EnumerateLiveRefsAndRemoveDefuncts(_properties))
                     {
                         if (!ReferenceEquals(source, prop))
-                            prop.TrySetValue(payload);
+                            valueWasSet |= prop.TrySetValue(payload);
                     }
-                    return true;
+                    return valueWasSet;
                 }
             }
             return false;
@@ -192,7 +182,12 @@ namespace Beinder
 
         public override string ToString()
         {
-            return string.Format("[Valve: Path={0}, Value={1}]", Path, Value);
+            var firstprop = LiveProperties.FirstOrDefault();
+            if(firstprop != null) {
+                return string.Format("[Valve: Path={0}, Value={1}]", firstprop.Path, firstprop.Value);  
+            } else {
+                return "[Valve: Path=(none), Value=(none)]";
+            }
         }
 
         static IEnumerable<T> EnumerateLiveRefsAndRemoveDefuncts<T>(LinkedList<WeakReference<T>> list) 

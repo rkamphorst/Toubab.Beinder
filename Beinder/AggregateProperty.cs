@@ -42,7 +42,7 @@ namespace Beinder
             );
         }
 
-        void HandleContainedPropertyValueChanged(object sender, ValueChangedEventArgs e)
+        void HandleContainedPropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
             if (!Equals(_value, e.NewValue))
             {
@@ -53,10 +53,10 @@ namespace Beinder
         void OnValueChanged(object newValue)
         {
             if (ValueChanged != null)
-                ValueChanged(this, new ValueChangedEventArgs(newValue));
+                ValueChanged(this, new PropertyValueChangedEventArgs(this, newValue));
         }
 
-        public event EventHandler<ValueChangedEventArgs> ValueChanged;
+        public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
         public PropertyMetaInfo MetaInfo
         {

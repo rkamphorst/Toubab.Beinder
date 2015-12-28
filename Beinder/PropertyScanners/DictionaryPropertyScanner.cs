@@ -66,10 +66,10 @@ namespace Beinder.PropertyScanners
             {
                 var e = ValueChanged;
                 if (e != null)
-                    e(this, new ValueChangedEventArgs(newValue));
+                    e(this, new PropertyValueChangedEventArgs(this, newValue));
             }
 
-            public event EventHandler<ValueChangedEventArgs> ValueChanged;
+            public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
             public PropertyMetaInfo MetaInfo
             {

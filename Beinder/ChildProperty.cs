@@ -53,10 +53,10 @@ namespace Beinder
         {
             var evt = ValueChanged;
             if (evt != null)
-                evt(this, new ValueChangedEventArgs(newvalue));
+                evt(this, new PropertyValueChangedEventArgs(this, newvalue));
         }
 
-        public event EventHandler<ValueChangedEventArgs> ValueChanged;
+        public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
         public PropertyMetaInfo MetaInfo
         {

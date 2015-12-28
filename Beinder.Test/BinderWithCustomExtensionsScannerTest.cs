@@ -8,7 +8,7 @@ namespace Beinder
     [TestFixture]
     public class BinderWithCustomExtensionsScannerTest
     {
-        IProperty[] _valves;
+        Valve[] _valves;
 
         [Test]
         public void BindSpecialPropertyOnExtensionsWithNotifyPropertyChanged()

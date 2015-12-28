@@ -117,7 +117,7 @@ namespace Beinder
         /// value changes that happen on the actual <see cref="Object"/>'s 
         /// property.
         /// </remarks>
-        event EventHandler<ValueChangedEventArgs> ValueChanged;
+        event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
         /// <summary>
         /// Makes an independent copy of this property

@@ -29,7 +29,7 @@ namespace Beinder
         {
             var evt = ValueChanged;
             if (evt != null)
-                evt(this, new ValueChangedEventArgs(Value));
+                evt(this, new PropertyValueChangedEventArgs(this, Value));
         }
 
         public PropertyMetaInfo MetaInfo 
@@ -37,7 +37,7 @@ namespace Beinder
             get { return _metaInfo; }
         }
 
-        public event EventHandler<ValueChangedEventArgs> ValueChanged;
+        public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
         object _object;
 
@@ -112,7 +112,7 @@ namespace Beinder
 
         public override string ToString()
         {
-            return string.Format("[NotProp: Path={0}, Value={1}]", Path, Value);
+            return string.Format("[{0}: Path={1}, Value={2}]", GetType().Name, Path, Value);
         }
     }
 

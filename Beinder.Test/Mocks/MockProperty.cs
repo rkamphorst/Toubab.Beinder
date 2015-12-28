@@ -10,7 +10,7 @@ namespace Beinder.Mocks
 
         public string Name { get; set; }
 
-        public event EventHandler<ValueChangedEventArgs> ValueChanged;
+        public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
         public PropertyMetaInfo MetaInfo
         {
@@ -29,7 +29,7 @@ namespace Beinder.Mocks
             _value = value;
             Changed++;
             if (ValueChanged != null)
-                ValueChanged(this, new ValueChangedEventArgs(value));
+                ValueChanged(this, new PropertyValueChangedEventArgs(this, value));
             return true;
         }
 

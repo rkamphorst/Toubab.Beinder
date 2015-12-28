@@ -7,7 +7,7 @@ namespace Beinder
     [TestFixture]
     public class BinderWithReflectionScannersTest
     {
-        IProperty[] _valves;
+        Valve[] _valves;
 
         [Test]
         public void BindTwoNotifyPropertyChangedObjects()
@@ -208,6 +208,8 @@ namespace Beinder
                 ob2cnt++;
             };
             _valves = bnd.Bind(new object[] { ob1, ob2 });
+            ob1cnt = 0;
+            ob2cnt = 0;
 
             // Act
             ob2.Property = "a";
@@ -226,7 +228,7 @@ namespace Beinder
             bnd.PropertyScanner.AddScanner(new NotifyPropertyChangedPropertyScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
             var vm = new MockViewModel();
-            bnd.Bind(new object[] { vm, view });
+            _valves = bnd.Bind(new object[] { vm, view });
 
             // Act
             vm.ControlText = "banaan";

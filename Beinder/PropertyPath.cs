@@ -22,6 +22,18 @@ namespace Beinder
             return CalculateMatchSize(this, other) == _fragments.Length;
         }
 
+        public PropertyPath Rebase(PropertyPath other)
+        {
+            if (other.MatchesStartOf(this))
+            {
+                return new PropertyPath(_fragments.Skip(other._fragments.Length).ToArray());
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public int CompareTo(PropertyPath other)
         {
             return Compare(this, other);
@@ -32,10 +44,10 @@ namespace Beinder
             int len1 = path1._fragments.Length;
             int len2 = path2._fragments.Length;
             int len =
-                len1 == len2 ? len1 : len1 < len2 ? len1: len2;
+                len1 == len2 ? len1 : len1 < len2 ? len1 : len2;
             for (int i = 0; i < len; i++)
             {
-                int cmp = path1._fragments[i].CompareTo(path2._fragments[i]);
+                int cmp = string.Compare(path1._fragments[i], path2._fragments[i], StringComparison.Ordinal);
                 if (cmp != 0)
                     return cmp;
             }

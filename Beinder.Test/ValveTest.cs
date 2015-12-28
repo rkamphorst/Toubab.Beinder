@@ -25,7 +25,6 @@ namespace Beinder
             // Assert
             Assert.AreEqual("banaan", propb.Value);
             Assert.AreEqual("banaan", propc.Value);
-            Assert.AreEqual("banaan", v.Value);
         }
 
         [Test()]

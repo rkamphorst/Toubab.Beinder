@@ -56,7 +56,7 @@ namespace Beinder.PropertyScanners
                 );
             }
 
-            public event EventHandler<ValueChangedEventArgs> ValueChanged;
+            public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
             public bool TrySetObject(object newObject)
             {

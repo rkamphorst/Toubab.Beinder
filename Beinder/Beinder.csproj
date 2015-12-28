@@ -34,7 +34,6 @@
     <Compile Include="Valve.cs" />
     <Compile Include="TypeAdapterRegistry.cs" />
     <Compile Include="PropertyPath.cs" />
-    <Compile Include="ValueChangdEventArgs.cs" />
     <Compile Include="IObjectPropertyScanner.cs" />
     <Compile Include="IProperty.cs" />
     <Compile Include="ITypePropertyScanner.cs" />
@@ -56,6 +55,7 @@
     <Compile Include="PropertyScanners\CustomPropertyScanner.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="TypeAdapterFactory.cs" />
+    <Compile Include="PropertyValueChangedEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
