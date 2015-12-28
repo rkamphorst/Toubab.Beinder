@@ -89,16 +89,6 @@ namespace Beinder
             Assert.IsTrue(cnt > 0);
         }
 
-        [Test]
-        public void ChildPropertyClone()
-        {
-            var prop = new ChildProperty(new MockProperty(), new MockProperty());
-            object o1 = new MockView();
-            object o2 = new MockView();
-            CloneYieldsIndependentPropertiesWithSameObject(prop, o1);
-            ClonedPropertyCanChangeObjectIndependently(prop, o1, o2);
-            ClonedPropertyCanChangeObjectIndependently(prop, o2, null);
-        }
     }
 }
 
