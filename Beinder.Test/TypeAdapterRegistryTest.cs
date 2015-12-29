@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Beinder.Mocks;
 using System.Linq;
+using Beinder.Mocks.Fruits;
 
 namespace Beinder
 {

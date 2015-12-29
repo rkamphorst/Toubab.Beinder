@@ -53,14 +53,28 @@
     <Compile Include="PropertyPathParsers\CamelCasePropertyPathParserTest.cs" />
     <Compile Include="PropertyTest.cs" />
     <Compile Include="Mocks\MockProperty.cs" />
-    <Compile Include="Mocks\Abcd.cs" />
     <Compile Include="TypeExtensionsAdapteeArgumentTest.cs" />
-    <Compile Include="Mocks\DisguisedFruits.cs" />
     <Compile Include="TypeAdapterRegistryTest.cs" />
     <Compile Include="Mocks\MockViewExtensions.cs" />
     <Compile Include="BinderWithCustomExtensionsScannerTest.cs" />
     <Compile Include="Mocks\MockViewExtensions2.cs" />
     <Compile Include="BinderWithReflectionScannersTest.cs" />
+    <Compile Include="Mocks\Fruits\IApple.cs" />
+    <Compile Include="Mocks\Fruits\IPear.cs" />
+    <Compile Include="Mocks\Fruits\IBadApple.cs" />
+    <Compile Include="Mocks\Fruits\Pear.cs" />
+    <Compile Include="Mocks\Fruits\SpecialPear.cs" />
+    <Compile Include="Mocks\Fruits\Orange.cs" />
+    <Compile Include="Mocks\Fruits\DisguisePearAsApple.cs" />
+    <Compile Include="Mocks\Fruits\DisguiseSpecialPearAndPearAsApple.cs" />
+    <Compile Include="Mocks\Fruits\DisguiseSpecialPearAsApple.cs" />
+    <Compile Include="Mocks\Fruits\DisguisePearOrOrangeAsApple.cs" />
+    <Compile Include="Mocks\Fruits\DisguisePearInterfaceAsApple.cs" />
+    <Compile Include="Mocks\Fruits\DisguisePearAsBadApple.cs" />
+    <Compile Include="Mocks\Fruits\DisguisePearAndOrangeAsApple.cs" />
+    <Compile Include="Mocks\Abcd\Abcd1.cs" />
+    <Compile Include="Mocks\Abcd\Abcd2.cs" />
+    <Compile Include="Mocks\Abcd\Abcd3.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -70,6 +84,8 @@
     <Folder Include="Mocks\" />
     <Folder Include="PropertyScanners\" />
     <Folder Include="PropertyPathParsers\" />
+    <Folder Include="Mocks\Fruits\" />
+    <Folder Include="Mocks\Abcd\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Beinder\Beinder.csproj">
