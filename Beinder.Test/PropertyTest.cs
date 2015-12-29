@@ -10,25 +10,25 @@ namespace Beinder
         static void CloneYieldsIndependentPropertiesWithSameObject(IProperty property, object o)
         {
             // Arrange
-            property.TrySetObject(o);
+            property.SetObject(o);
 
             // Act
-            IProperty clone = property.Clone();
+            IProperty clone = property.CloneWithoutObject();
 
             // Assert
             Assert.AreNotSame(property, clone);
             Assert.AreSame(o, property.Object);
-            Assert.AreSame(o, clone.Object);
+            Assert.IsNull(clone.Object);
         }
 
         static void ClonedPropertyCanChangeObjectIndependently(IProperty property, object o1, object o2)
         {
             // Arrange
-            property.TrySetObject(o1);
+            property.SetObject(o1);
 
             // Act
-            IProperty clone = property.Clone();
-            clone.TrySetObject(o2);
+            IProperty clone = property.CloneWithoutObject();
+            clone.SetObject(o2);
 
             // Assert
             Assert.AreSame(o1, property.Object);

@@ -48,7 +48,6 @@
     <Compile Include="AggregateProperty.cs" />
     <Compile Include="PropertyScanners\DictionaryPropertyScanner.cs" />
     <Compile Include="TypeProperty.cs" />
-    <Compile Include="PropertyMetaInfo.cs" />
     <Compile Include="IExtensions.cs" />
     <Compile Include="PropertyScanners\CustomExtensionsScanner.cs" />
     <Compile Include="PropertyScanners\CustomPropertyScanner.cs" />

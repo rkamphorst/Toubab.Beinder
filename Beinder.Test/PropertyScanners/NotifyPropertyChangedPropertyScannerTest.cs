@@ -32,7 +32,7 @@ namespace Beinder.PropertyScanners
                 .FirstOrDefault(p => Equals(p.Path, (PropertyPath) "property"));
             var ob = new NotifyPropertyChangedClass();
             ob.Property = "banaan";
-            property.TrySetObject(ob);
+            property.SetObject(ob);
             property.ValueChanged += (sender, e) => newValue = e.NewValue;
 
             // Act

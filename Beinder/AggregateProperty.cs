@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Beinder
@@ -7,45 +6,22 @@ namespace Beinder
     public class AggregateProperty : IProperty
     {
         readonly IProperty[] _properties;
-        readonly IProperty _readProperty;
-        readonly IProperty _writeProperty;
-        readonly PropertyMetaInfo _metaInfo;
 
         public AggregateProperty(IProperty[] properties)
         {
             _properties = properties;
-            IProperty readProp = null;
-            IProperty writeProp = null;
-            foreach (var prop in _properties)
+            _value = properties[0].Value;
+            foreach (var prop in properties) 
             {
                 prop.ValueChanged += HandleContainedPropertyValueChanged;
-                if (readProp == null)
-                {
-                    if (prop.MetaInfo.IsReadable)
-                        readProp = prop;
-                }
-                if (writeProp == null)
-                {
-                    if (prop.MetaInfo.IsWritable)
-                        writeProp = prop;
-                }
             }
-            _readProperty = readProp;
-            _writeProperty = writeProp;
-            _value = _readProperty != null ? _readProperty.Value : null;
-
-            _metaInfo = new PropertyMetaInfo(
-                _properties.FirstOrDefault(p => p.MetaInfo.ObjectType != null)?.MetaInfo.ObjectType,
-                _properties.FirstOrDefault(p => p.MetaInfo.ValueType != null)?.MetaInfo.ValueType,
-                _readProperty != null,
-                _writeProperty != null
-            );
         }
 
         void HandleContainedPropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
             if (!Equals(_value, e.NewValue))
             {
+                _value = e.NewValue;
                 OnValueChanged(e.NewValue);
             }
         }
@@ -58,18 +34,13 @@ namespace Beinder
 
         public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
-        public PropertyMetaInfo MetaInfo
-        {
-            get { return _metaInfo; }
-        }
-
         object _value;
 
         public object Value
         {
             get
             {
-                _value = _readProperty != null ? _readProperty.Value : null;
+                _value = _properties[0].Value;
                 return _value;
             }
         }
@@ -77,7 +48,7 @@ namespace Beinder
         public bool TrySetValue(object value)
         {
             // first, make sure _value is up to date
-            _value = _readProperty != null ? _readProperty.Value : null;
+            _value = _properties[0].Value;
 
             // if new value equals old value, do nothing.
             if (Equals(value, _value))
@@ -85,17 +56,21 @@ namespace Beinder
 
             // prevent lots of events from propagating
             // by setting _value first.
-            // That way, HandleValueChanged won't call 
+            // That way, HandleContainedPropertyValueChanged won't call 
             // OnValueChanged
             _value = value;
 
-            // write the property
-            if (_writeProperty != null && _writeProperty.TrySetValue(value))
+            // write the property, try each one until one accepts
+            foreach (var prop in _properties)
             {
-                // Now, call OnValueChanged to make sure the event is fired exactly once.
-                OnValueChanged(_value);
-                return true;
+                if (prop.TrySetValue(value))
+                {
+                    // Now, call OnValueChanged to make sure the event is fired exactly once.
+                    OnValueChanged(_value);
+                    return true;
+                }
             }
+            _value = _properties[0].Value;
             return false;
         }
 
@@ -103,29 +78,27 @@ namespace Beinder
         {
             get
             {
-                return _readProperty.Object;
+                return _properties[0].Object;
             }
         }
 
-        public bool TrySetObject(object value)
+        public void SetObject(object value)
         {
-            bool result = false;
             foreach (var prop in _properties)
-                result |= prop.TrySetObject(value);
-            return result;
+                prop.SetObject(value);
         }
 
         public PropertyPath Path
         {
             get
             {
-                return _readProperty.Path;
+                return _properties[0].Path;
             }
         }
 
-        public IProperty Clone()
+        public IProperty CloneWithoutObject()
         {
-            return new AggregateProperty(_properties.Select(p => p.Clone()).ToArray());
+            return new AggregateProperty(_properties.Select(p => p.CloneWithoutObject()).ToArray());
         }
 
         public override string ToString()

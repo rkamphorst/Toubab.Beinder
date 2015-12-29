@@ -4,9 +4,9 @@ namespace Beinder
 {
     public interface IExtensions
     {
-        bool TrySetObject(object newObject);
+        void SetObject(object newObject);
 
-        IExtensions Clone();
+        IExtensions CloneWithoutObject();
     }
 
     public interface IExtensions<T> : IExtensions 

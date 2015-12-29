@@ -7,18 +7,11 @@ namespace Beinder
     {
         protected readonly PropertyInfo _propertyInfo;
         protected readonly IPropertyPathParser _pathParser;
-        readonly PropertyMetaInfo _metaInfo;
 
-        protected TypeProperty(Type type, IPropertyPathParser pathParser, PropertyInfo property)
+        protected TypeProperty(IPropertyPathParser pathParser, PropertyInfo property)
         {
             _propertyInfo = property;
             _pathParser = pathParser;
-            _metaInfo = new PropertyMetaInfo(
-                type,
-                property.PropertyType,
-                property.GetMethod != null && property.GetMethod.IsPublic,
-                property.SetMethod != null && property.SetMethod.IsPublic
-            );
         }
 
         protected abstract void DetachObjectPropertyChangeEvent(object obj);
@@ -32,11 +25,6 @@ namespace Beinder
                 evt(this, new PropertyValueChangedEventArgs(this, Value));
         }
 
-        public PropertyMetaInfo MetaInfo 
-        {
-            get { return _metaInfo; }
-        }
-
         public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
         object _object;
@@ -46,22 +34,16 @@ namespace Beinder
             get { return _object; }
         }
 
-        public bool TrySetObject(object value)
+        public void SetObject(object value)
         {
             var t = _object;
-            if (value == null || _propertyInfo.DeclaringType.GetTypeInfo()
-                .IsAssignableFrom(value.GetType().GetTypeInfo()))
-            {
-                if (t != null)
-                    DetachObjectPropertyChangeEvent(t);
+            if (t != null)
+                DetachObjectPropertyChangeEvent(t);
 
-                t = _object = value;
+            t = _object = value;
 
-                if (t != null)
-                    AttachObjectPropertyChangeEvent(t);
-                return true;
-            }
-            return false;
+            if (t != null)
+                AttachObjectPropertyChangeEvent(t);
         }
 
         PropertyPath _path;
@@ -80,7 +62,7 @@ namespace Beinder
         {
             get
             { 
-                if (!MetaInfo.IsReadable)
+                if (!_propertyInfo.CanRead)
                     return null;
 
                 var t = Object;
@@ -90,7 +72,7 @@ namespace Beinder
 
         public bool TrySetValue(object value)
         {
-            if (!MetaInfo.IsWritable)
+            if (!_propertyInfo.CanWrite)
                 return false;
 
             var t = Object;
@@ -108,7 +90,7 @@ namespace Beinder
         }
 
 
-        public abstract IProperty Clone();
+        public abstract IProperty CloneWithoutObject();
 
         public override string ToString()
         {

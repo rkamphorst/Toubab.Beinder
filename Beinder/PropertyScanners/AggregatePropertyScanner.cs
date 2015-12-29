@@ -46,7 +46,7 @@ namespace Beinder.PropertyScanners
                 _typeCache[type] =
                     _typeScanners.SelectMany(s => s.Scan(type)).ToList();
             }
-            return _typeCache[type].Select(tp => tp.Clone());
+            return _typeCache[type].Select(tp => tp.CloneWithoutObject());
         }
 
     }

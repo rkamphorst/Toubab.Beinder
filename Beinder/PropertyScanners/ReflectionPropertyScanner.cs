@@ -27,7 +27,7 @@ namespace Beinder.PropertyScanners
                         ((info.GetMethod != null && info.GetMethod.IsPublic) ||
                          (info.SetMethod != null && info.SetMethod.IsPublic))
             )
-                    .Select(prop => new ReflectionTypeProperty(type, _pathParser, prop, type.GetRuntimeEvent(prop.Name + "Changed"))
+                    .Select(prop => new ReflectionTypeProperty(_pathParser, prop, type.GetRuntimeEvent(prop.Name + "Changed"))
             );
         }
 
@@ -36,8 +36,8 @@ namespace Beinder.PropertyScanners
             readonly EventInfo _event;
             readonly EventHandler _onValueChanged;
 
-            public ReflectionTypeProperty(Type type, IPropertyPathParser pathParser, PropertyInfo property, EventInfo evt)
-                : base(type, pathParser, property)
+            public ReflectionTypeProperty(IPropertyPathParser pathParser, PropertyInfo property, EventInfo evt)
+                : base(pathParser, property)
             {
                 if (evt != null && evt.EventHandlerType == typeof(EventHandler))
                     _event = evt;
@@ -56,11 +56,9 @@ namespace Beinder.PropertyScanners
                     _event.AddEventHandler(obj, _onValueChanged);
             }
 
-            public override IProperty Clone()
+            public override IProperty CloneWithoutObject()
             {
-                var result = new ReflectionTypeProperty(MetaInfo.ObjectType, _pathParser, _propertyInfo, _event);
-                result.TrySetObject(Object);
-                return result;
+                return new ReflectionTypeProperty(_pathParser, _propertyInfo, _event);
             }
 
         }

@@ -36,7 +36,7 @@ namespace Beinder.PropertyScanners
             var tparent = (TParent) obj;
 
             return ScanHierarchy(tparent).Select(
-                kvp => new ObjectProperty(tparent, kvp.Key, kvp.Value, _pathParser)
+                kvp => new ObjectProperty(kvp.Key, kvp.Value, _pathParser)
             );
         }
             
@@ -77,31 +77,23 @@ namespace Beinder.PropertyScanners
         class ObjectProperty : IProperty
         {
             readonly PropertyPath _propertyPath;
-            readonly PropertyMetaInfo _metaInfo = new PropertyMetaInfo(null, null, true, false);
             readonly TNode _value;
-            readonly TParent _object;
+            TParent _object;
 
-            public ObjectProperty(TParent obj, string key, TNode value, IPropertyPathParser pathParser)
+            public ObjectProperty(string key, TNode value, IPropertyPathParser pathParser)
             {
                 _propertyPath = pathParser.Parse(key);
-                _object = obj;
                 _value = value;
             }
 
-            private ObjectProperty(TParent obj, PropertyPath path, TNode value)
+            private ObjectProperty(PropertyPath path, TNode value)
             {
                 _propertyPath = path;
-                _object = obj;
                 _value = value;
             }
 
 
             public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
-
-            public PropertyMetaInfo MetaInfo
-            {
-                get { return _metaInfo; }
-            }
 
             public object Value
             {
@@ -124,9 +116,9 @@ namespace Beinder.PropertyScanners
                 } 
             }
 
-            public bool TrySetObject(object value)
+            public void SetObject(object obj)
             {
-                return false;
+                _object = (TParent) obj;
             }
 
             public PropertyPath Path
@@ -137,9 +129,9 @@ namespace Beinder.PropertyScanners
                 }
             }
 
-            public IProperty Clone()
+            public IProperty CloneWithoutObject()
             {
-                return new ObjectProperty(_object, _propertyPath, _value);
+                return new ObjectProperty(_propertyPath, _value);
             }
 
         }

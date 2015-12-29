@@ -4,18 +4,11 @@ namespace Beinder.Mocks
 {
     class MockProperty : IProperty
     {
-        PropertyMetaInfo _metaInfo = new PropertyMetaInfo(null, null, true, true);
-
         public int Changed { get; set; }
 
         public string Name { get; set; }
 
         public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
-
-        public PropertyMetaInfo MetaInfo
-        {
-            get { return _metaInfo; }
-        }
 
         object _value;
 
@@ -39,10 +32,9 @@ namespace Beinder.Mocks
             set; 
         }
 
-        public bool TrySetObject(object value)
+        public void SetObject(object value)
         {
             Object = value;
-            return true;
         }
 
         public PropertyPath Path
@@ -50,13 +42,12 @@ namespace Beinder.Mocks
             get { return "abc"; }
         }
 
-        public IProperty Clone()
+        public IProperty CloneWithoutObject()
         {
             return new MockProperty
             {
                 Name = Name,
-                _value = _value,
-                Object = Object
+                _value = _value
             };
         }
 

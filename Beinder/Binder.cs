@@ -12,6 +12,74 @@ namespace Beinder
 
         public AggregatePropertyScanner PropertyScanner { get { return _propertyScanner; } }
 
+        public Valve[] Bind(IEnumerable<object> objects)
+        {
+            return Bind(objects.ToArray(), null, null);
+        }
+
+        Valve[] Bind(object[] objects, object activator, BinderState externalState)
+        {
+            var resultList = new List<Valve>();
+
+            // entryList: list of Binder Entries, each holding an IProperty instance.
+            // The list is sorted on Path, which is important because
+            // the shortest property path will be on top, followed by the
+            // property paths that start with that path, and so on.
+            // Furthermore, all properties with the same paths will be next
+            // to each other in the list.
+            var state = BinderState.FromScan(PropertyScanner, objects);
+
+            if (externalState != null)
+                state.Merge(externalState);
+
+            ValveParameters valveParams;
+            while (state.PopValveParameters(out valveParams))
+            {
+                var newValve = new Valve();
+                foreach (var entry in valveParams.Properties)
+                {
+                    var newProp = entry.Property.CloneWithoutObject();
+                    newProp.SetObject(entry.Object);
+                    newValve.AddProperty(newProp);
+                }
+                newValve.Activate(activator);
+
+                BindChildValves(newValve, activator, valveParams.ExternalState);
+
+                resultList.Add(newValve);
+            }
+
+            return resultList.ToArray();
+        }
+
+        void BindChildValves(Valve parentValve, object parentActivator, BinderState externalState)
+        {
+            var childValves = Bind(
+                                  parentValve.GetValues(), 
+                                  GetChildActivator(parentActivator, parentValve, externalState), 
+                                  externalState
+                              );
+            parentValve.ValueChanged += (source, evt) =>
+            {
+                foreach (var cvalve in childValves)
+                    cvalve.Dispose();
+                childValves = Bind(parentValve.GetValues(), GetChildActivator(evt.Property.Object, parentValve, externalState), externalState);
+            };
+            parentValve.Disposing += delegate
+            {
+                foreach (var cvalve in childValves)
+                    cvalve.Dispose();
+            };
+        }
+
+        object GetChildActivator(object parentActivator, Valve parentValve, BinderState externalState)
+        {
+            return 
+                externalState.ContainsPropertyForObject(parentActivator) 
+                    ? parentActivator 
+                    : parentValve.GetValueForObject(parentActivator);
+        }
+
         struct CandidateProperty
         {
             public CandidateProperty(object obj, IProperty property)
@@ -141,75 +209,6 @@ namespace Beinder
                 return _list.Any(p => ReferenceEquals(o, p.Object));
             }
         }
-
-        public Valve[] Bind(IEnumerable<object> objects)
-        {
-            return Bind(objects.ToArray(), null, null);
-        }
-
-        Valve[] Bind(object[] objects, object activator, BinderState externalState)
-        {
-            var resultList = new List<Valve>();
-
-            // entryList: list of Binder Entries, each holding an IProperty instance.
-            // The list is sorted on Path, which is important because
-            // the shortest property path will be on top, followed by the
-            // property paths that start with that path, and so on.
-            // Furthermore, all properties with the same paths will be next
-            // to each other in the list.
-            var state = BinderState.FromScan(PropertyScanner, objects);
-
-            if (externalState != null)
-                state.Merge(externalState);
-
-            ValveParameters valveParams;
-            while (state.PopValveParameters(out valveParams))
-            {
-                var newValve = new Valve();
-                foreach (var entry in valveParams.Properties)
-                {
-                    var newProp = entry.Property.Clone();
-                    newProp.TrySetObject(entry.Object);
-                    newValve.AddProperty(newProp);
-                }
-                newValve.Activate(activator);
-
-                BindChildValves(newValve, activator, valveParams.ExternalState);
-
-                resultList.Add(newValve);
-            }
-
-            return resultList.ToArray();
-        }
-
-        void BindChildValves(Valve parentValve, object parentActivator, BinderState externalState)
-        {
-            var childValves = Bind(
-                                  parentValve.GetValues(), 
-                                  GetChildActivator(parentActivator, parentValve, externalState), 
-                                  externalState
-                              );
-            parentValve.ValueChanged += (source, evt) =>
-            {
-                foreach (var cvalve in childValves)
-                    cvalve.Dispose();
-                childValves = Bind(parentValve.GetValues(), GetChildActivator(evt.Property.Object, parentValve, externalState), externalState);
-            };
-            parentValve.Disposing += delegate
-            {
-                foreach (var cvalve in childValves)
-                    cvalve.Dispose();
-            };
-        }
-
-        object GetChildActivator(object parentActivator, Valve parentValve, BinderState externalState)
-        {
-            return 
-                externalState.ContainsPropertyForObject(parentActivator) 
-                    ? parentActivator 
-                    : parentValve.GetValueForObject(parentActivator);
-        }
-
 
     }
 }

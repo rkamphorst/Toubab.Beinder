@@ -24,7 +24,7 @@ namespace Beinder.PropertyScanners
                 return Enumerable.Empty<IProperty>();
             
             return dict.Select(
-                kvp => new DictionaryEntryProperty(dict, kvp.Key, _pathParser)
+                kvp => new DictionaryEntryProperty(kvp.Key, _pathParser)
             );
         }
 
@@ -32,21 +32,18 @@ namespace Beinder.PropertyScanners
         {
             readonly string _key;
             readonly PropertyPath _propertyPath;
-            readonly PropertyMetaInfo _metaInfo = new PropertyMetaInfo(null, null, true, true);
             Dictionary<string,object> _object;
 
-            public DictionaryEntryProperty(Dictionary<string,object> obj, string key, IPropertyPathParser pathParser)
+            public DictionaryEntryProperty(string key, IPropertyPathParser pathParser)
             {
                 _propertyPath = pathParser.Parse(key);
                 _key = key;
-                TrySetObject(obj);
             }
 
-            private DictionaryEntryProperty(Dictionary<string,object> obj, string key, PropertyPath path)
+            DictionaryEntryProperty(string key, PropertyPath path)
             {
                 _propertyPath = path;
                 _key = key;
-                TrySetObject(obj);
             }
 
             void HandleDictionaryChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -70,11 +67,6 @@ namespace Beinder.PropertyScanners
             }
 
             public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
-
-            public PropertyMetaInfo MetaInfo
-            {
-                get { return _metaInfo; }
-            }
 
             public object Value
             {
@@ -101,11 +93,9 @@ namespace Beinder.PropertyScanners
                 } 
             }
 
-            public bool TrySetObject(object value)
+            public void SetObject(object value)
             {
-                var newdict = value as Dictionary<string,object>;
-                if (newdict == null)
-                    return false;
+                var newdict = (Dictionary<string,object>)value;
 
                 {
                     var incc = _object as INotifyCollectionChanged;
@@ -125,7 +115,6 @@ namespace Beinder.PropertyScanners
                     }
                 }
 
-                return true;
             }
 
             public PropertyPath Path
@@ -136,11 +125,9 @@ namespace Beinder.PropertyScanners
                 }
             }
 
-            public IProperty Clone()
+            public IProperty CloneWithoutObject()
             {
-                var result = new DictionaryEntryProperty(_object, _key, _propertyPath);
-                result.TrySetObject(Object);
-                return result;
+                return new DictionaryEntryProperty(_key, _propertyPath);
             }
 
         }

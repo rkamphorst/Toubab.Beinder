@@ -9,13 +9,12 @@ namespace Beinder.Mocks
 
         MockView _mockView;
 
-        public bool TrySetObject(object newObject)
+        public void SetObject(object newObject)
         {
-            _mockView = newObject as MockView;
-            return Equals(_mockView,newObject);
+            _mockView = (MockView) newObject;
         }
 
-        public IExtensions Clone() 
+        public IExtensions CloneWithoutObject() 
         {
             return new MockViewExtensions2();
         }

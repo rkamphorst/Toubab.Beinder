@@ -20,8 +20,6 @@ namespace Beinder
 
         readonly LinkedList<WeakReference<IProperty>> _properties = 
             new LinkedList<WeakReference<IProperty>>();
-        readonly PropertyMetaInfo _metaInfo = 
-            new PropertyMetaInfo(null, null, true, true);
         
 
         object _value = _initialValue;

@@ -24,17 +24,14 @@ namespace Beinder.PropertyScanners
             {
                 foreach (IProperty prop in _extensionsScanner.Scan(ext))
                 {
-                    if (prop.TrySetObject(ext))
-                    {
-                        yield return new ExtensionProperty(objectType, prop);
-                    }
+                    prop.SetObject(ext);
+                    yield return new ExtensionProperty(objectType, prop);
                 }
             }
         }
 
         class ExtensionProperty : IProperty
         {
-            readonly PropertyMetaInfo _metaInfo;
             readonly Type _objectType;
             readonly IProperty _property;
 
@@ -48,25 +45,15 @@ namespace Beinder.PropertyScanners
                     if (evt != null)
                         evt(sender, e);
                 };
-                _metaInfo = new PropertyMetaInfo(
-                    objectType,
-                    property.MetaInfo.ValueType,
-                    property.MetaInfo.IsReadable,
-                    property.MetaInfo.IsWritable
-                );
             }
 
             public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
-            public bool TrySetObject(object newObject)
+            public void SetObject(object newObject)
             {
                 var ext = _property.Object as IExtensions;
-                if (ext != null && ext.TrySetObject(newObject))
-                {
-                    _object = newObject;
-                    return true;
-                }
-                return false;
+                ext.SetObject(newObject);
+                _object = newObject;
             }
 
             public bool TrySetValue(object newValue)
@@ -74,21 +61,11 @@ namespace Beinder.PropertyScanners
                 return _property.TrySetValue(newValue);
             }
 
-            public IProperty Clone()
+            public IProperty CloneWithoutObject()
             {
-                var prop = _property.Clone();
-                prop.TrySetObject(((IExtensions) _property.Object).Clone());
-                var result = new ExtensionProperty(_objectType, prop);
-                result.TrySetObject(Object);
-                return result;
-            }
-
-            public PropertyMetaInfo MetaInfo
-            {
-                get
-                {
-                    return _metaInfo;
-                }
+                var prop = _property.CloneWithoutObject();
+                prop.SetObject(((IExtensions) _property.Object).CloneWithoutObject());
+                return new ExtensionProperty(_objectType, prop);
             }
 
             object _object;

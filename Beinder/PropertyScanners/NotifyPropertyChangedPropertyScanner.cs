@@ -36,14 +36,14 @@ namespace Beinder.PropertyScanners
                         ((info.GetMethod != null && info.GetMethod.IsPublic) ||
                          (info.SetMethod != null && info.SetMethod.IsPublic))
                     )
-                    .Select(prop => new NotifyPropertyChangedTypeProperty(type, _pathParser, prop)
+                    .Select(prop => new NotifyPropertyChangedTypeProperty(_pathParser, prop)
                 );
         }
 
         class NotifyPropertyChangedTypeProperty : TypeProperty
         {
-            public NotifyPropertyChangedTypeProperty(Type type, IPropertyPathParser pathParser, PropertyInfo property)
-                : base(type, pathParser, property)
+            public NotifyPropertyChangedTypeProperty(IPropertyPathParser pathParser, PropertyInfo property)
+                : base(pathParser, property)
             {
             }
 
@@ -69,11 +69,9 @@ namespace Beinder.PropertyScanners
                     inpc.PropertyChanged += HandlePropertyChanged;
             }
 
-            public override IProperty Clone()
+            public override IProperty CloneWithoutObject()
             {
-                var result = new NotifyPropertyChangedTypeProperty(MetaInfo.ObjectType, _pathParser, _propertyInfo);
-                result.TrySetObject(Object);
-                return result;
+                return new NotifyPropertyChangedTypeProperty(_pathParser, _propertyInfo);
             }
                 
         }
