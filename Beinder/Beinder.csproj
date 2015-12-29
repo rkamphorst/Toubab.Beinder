@@ -55,6 +55,9 @@
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="TypeAdapterFactory.cs" />
     <Compile Include="PropertyValueChangedEventArgs.cs" />
+    <Compile Include="NamespaceAffinityComparer.cs" />
+    <Compile Include="NamespaceSpecializationComparer.cs" />
+    <Compile Include="NamespacePreferenceComparer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
