@@ -7,7 +7,7 @@ using Toubab.Beinder.PropertyPathParsers;
 namespace Toubab.Beinder.PropertyScanners
 {
 
-    public class ReflectionPropertyScanner : ITypePropertyScanner
+    public class ReflectionPropertyScanner : TypePropertyScanner
     {
         IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();
 
@@ -17,7 +17,7 @@ namespace Toubab.Beinder.PropertyScanners
             set { _pathParser = value; }
         }
 
-        public IEnumerable<IProperty> Scan(Type type)
+        public override IEnumerable<IProperty> Scan(Type type)
         {
             return
                 type.GetRuntimeProperties()

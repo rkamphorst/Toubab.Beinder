@@ -3,10 +3,11 @@ using System;
 
 namespace Toubab.Beinder
 {
+
     /// <summary>
     /// Interface for a property scanner of object instances.
     /// </summary>
-    public interface IObjectPropertyScanner
+    public interface IPropertyScanner
     {
         /// <summary>
         /// Scan the specified object and enumerate the properties

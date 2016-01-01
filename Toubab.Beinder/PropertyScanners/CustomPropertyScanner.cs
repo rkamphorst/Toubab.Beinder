@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Toubab.Beinder.PropertyScanners
 {
-    public class CustomPropertyScanner<TParent, TNode> : IObjectPropertyScanner
+    public class CustomPropertyScanner : IPropertyScanner
     {
         readonly TypeAdapterFactory<IProperty> _adapterFactory;
 
-        protected CustomPropertyScanner()
+        public CustomPropertyScanner()
         {
             _adapterFactory = new TypeAdapterFactory<IProperty>();
         }

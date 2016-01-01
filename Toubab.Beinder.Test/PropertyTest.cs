@@ -73,9 +73,9 @@ namespace Toubab.Beinder
         public void AggregatePropertyClone()
         {
             int cnt = 0;
-            var scanner = new AggregatePropertyScanner();
-            scanner.AddScanner(new ReflectionPropertyScanner());
-            scanner.AddScanner(new NotifyPropertyChangedPropertyScanner());
+            var scanner = new CombinedPropertyScanner();
+            scanner.Add(new ReflectionPropertyScanner());
+            scanner.Add(new NotifyPropertyChangedPropertyScanner());
             var props = scanner.Scan(typeof(MockView));
             foreach (var prop in props)
             {

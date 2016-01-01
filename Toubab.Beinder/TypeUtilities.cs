@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Toubab.Beinder
 {
-    public static class TypeExtensions
+    public static class TypeUtilities
     {
         public static Regex BaseClassNameRegex = new Regex(@"^[^\s\.\+`]+");
 

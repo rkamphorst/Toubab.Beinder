@@ -6,7 +6,7 @@ using System.Collections.Specialized;
 
 namespace Toubab.Beinder.PropertyScanners
 {
-    public class DictionaryPropertyScanner : IObjectPropertyScanner
+    public class DictionaryPropertyScanner : IPropertyScanner
     {
         IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();
 

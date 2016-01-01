@@ -15,7 +15,7 @@ namespace Toubab.Beinder.PropertyScanners
     /// built views (or other structures).
     /// </para>
     /// </remarks>
-    public abstract class HierarchyPropertyScanner<TParent, TNode> : IObjectPropertyScanner
+    public abstract class HierarchyPropertyScanner<TParent, TNode> : IPropertyScanner
         where TNode : class
         where TParent : class, TNode
     {

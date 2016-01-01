@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace Toubab.Beinder.Mocks
 {
 
-    public class MockViewExtensions2 : IExtensions<MockView>
+    public class MockViewExtensions2 : ITypeExtension<MockView>
     {
 
         MockView _mockView;
@@ -14,7 +14,7 @@ namespace Toubab.Beinder.Mocks
             _mockView = (MockView) newObject;
         }
 
-        public IExtensions CloneWithoutObject() 
+        public ITypeExtension CloneWithoutObject() 
         {
             return new MockViewExtensions2();
         }

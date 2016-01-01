@@ -2,19 +2,63 @@ using System.Collections.Generic;
 using System.Linq;
 using Toubab.Beinder.PropertyScanners;
 using System;
+using System.Collections;
 
 namespace Toubab.Beinder
 {
 
     public class Binder
     {
-        readonly AggregatePropertyScanner _propertyScanner = new AggregatePropertyScanner();
-
-        public AggregatePropertyScanner PropertyScanner { get { return _propertyScanner; } }
-
-        public Valve[] Bind(IEnumerable<object> objects)
+        public static CombinedPropertyScanner CreateDefaultPropertyScanner()
         {
-            return Bind(objects.ToArray(), null, null);
+            var result = new CombinedPropertyScanner();
+            result.Add(new ReflectionPropertyScanner());
+            result.Add(new NotifyPropertyChangedPropertyScanner());
+            result.Add(new DictionaryPropertyScanner());
+            result.Add(new TypeExtensionsScanner(result));
+            result.Add(new CustomPropertyScanner());
+            return result;
+        }
+
+        readonly CombinedPropertyScanner _propertyScanner;
+
+        public Binder()
+            : this(CreateDefaultPropertyScanner())
+        {
+        }
+
+        public Binder(CombinedPropertyScanner propertyScanner)
+        {
+            _propertyScanner = propertyScanner;
+
+        }
+
+        public Binder(params IPropertyScanner[] propertyScanners)
+        {
+            var aggregatePropertyScanner = new CombinedPropertyScanner();
+            foreach (var ps in propertyScanners)
+            {
+                var aggps = ps as CombinedPropertyScanner;
+                if (aggps != null)
+                {
+                    foreach (var ps2 in aggps)
+                    {
+                        aggregatePropertyScanner.Add(ps2);
+                    }
+                }
+                else
+                {
+                    aggregatePropertyScanner.Add(ps);
+                }
+            }
+            _propertyScanner = aggregatePropertyScanner;
+        }
+
+        public CombinedPropertyScanner PropertyScanner { get { return _propertyScanner; } }
+
+        public IBindings Bind(IEnumerable<object> objects)
+        {
+            return new Bindings(Bind(objects.ToArray(), null, null));
         }
 
         Valve[] Bind(object[] objects, object activator, BinderState externalState)
@@ -128,7 +172,7 @@ namespace Toubab.Beinder
 
         class BinderState
         {
-            public static BinderState FromScan(IObjectPropertyScanner scanner, IEnumerable<object> objects)
+            public static BinderState FromScan(IPropertyScanner scanner, IEnumerable<object> objects)
             {
                 return new BinderState(
                     objects
@@ -207,6 +251,39 @@ namespace Toubab.Beinder
             public bool ContainsPropertyForObject(object o)
             {
                 return _list.Any(p => ReferenceEquals(o, p.Object));
+            }
+        }
+
+        class Bindings : IBindings
+        {
+
+            Valve[] _valves;
+
+            public Bindings(Valve[] valves)
+            {
+                _valves = valves;
+            }
+
+            public void Dispose()
+            {
+                if (_valves == null)
+                    return;
+                foreach (var valve in _valves)
+                {
+                    valve.Dispose();
+                }
+                _valves = null;
+            }
+
+
+            public IEnumerator<object> GetEnumerator()
+            {
+                return _valves.Cast<object>().GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
             }
         }
 

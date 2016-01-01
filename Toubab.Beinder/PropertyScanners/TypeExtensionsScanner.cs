@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace Toubab.Beinder.PropertyScanners
 {
-    public class CustomExtensionsScanner : IObjectPropertyScanner
+    public class TypeExtensionsScanner : IPropertyScanner
     {
-        readonly IObjectPropertyScanner _extensionsScanner;
-        readonly TypeAdapterFactory<IExtensions> _adapterFactory;
+        readonly IPropertyScanner _extensionsScanner;
+        readonly TypeAdapterFactory<ITypeExtension> _adapterFactory;
 
-        public CustomExtensionsScanner(IObjectPropertyScanner extensionsScanner)
+        public TypeExtensionsScanner(IPropertyScanner extensionsScanner)
         {
-            _adapterFactory = new TypeAdapterFactory<IExtensions>();
+            _adapterFactory = new TypeAdapterFactory<ITypeExtension>();
             _extensionsScanner = extensionsScanner;
         }
 
-        public TypeAdapterRegistry<IExtensions> AdapterRegistry { get { return _adapterFactory.Registry; } }
+        public TypeAdapterRegistry<ITypeExtension> AdapterRegistry { get { return _adapterFactory.Registry; } }
 
         public IEnumerable<IProperty> Scan(object ob)
         {
@@ -51,7 +51,7 @@ namespace Toubab.Beinder.PropertyScanners
 
             public void SetObject(object newObject)
             {
-                var ext = _property.Object as IExtensions;
+                var ext = _property.Object as ITypeExtension;
                 ext.SetObject(newObject);
                 _object = newObject;
             }
@@ -64,7 +64,7 @@ namespace Toubab.Beinder.PropertyScanners
             public IProperty CloneWithoutObject()
             {
                 var prop = _property.CloneWithoutObject();
-                prop.SetObject(((IExtensions) _property.Object).CloneWithoutObject());
+                prop.SetObject(((ITypeExtension) _property.Object).CloneWithoutObject());
                 return new ExtensionProperty(_objectType, prop);
             }
 
