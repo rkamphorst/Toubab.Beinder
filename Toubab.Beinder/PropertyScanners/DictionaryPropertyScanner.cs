@@ -68,6 +68,8 @@ namespace Toubab.Beinder.PropertyScanners
 
             public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
+            public Type ValueType { get { return typeof(object); } }
+
             public object Value
             {
                 get

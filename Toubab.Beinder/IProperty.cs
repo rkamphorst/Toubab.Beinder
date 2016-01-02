@@ -49,6 +49,11 @@ namespace Toubab.Beinder
         PropertyPath Path { get; }
 
         /// <summary>
+        /// Type of values that can be set
+        /// </summary>
+        Type ValueType { get; } 
+
+        /// <summary>
         /// Value of the property.
         /// </summary>
         /// <remarks>

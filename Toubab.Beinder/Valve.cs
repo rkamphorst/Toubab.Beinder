@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Toubab.Beinder
 {
@@ -145,6 +146,13 @@ namespace Toubab.Beinder
 
         bool Push(object source, object payload)
         {
+            var payloadType = payload != null ? payload.GetType().GetTypeInfo() : null;
+            if (payloadType == null)
+            {
+                var srcProp = source as IProperty;
+                payloadType = srcProp == null ? null : srcProp.ValueType.GetTypeInfo();
+            }
+
             lock (_properties)
             {
                 if (!Equals(payload, _value))
@@ -154,7 +162,13 @@ namespace Toubab.Beinder
                     foreach (var prop in EnumerateLiveRefsAndRemoveDefuncts(_properties))
                     {
                         if (!ReferenceEquals(source, prop))
-                            valueWasSet |= prop.TrySetValue(payload);
+                        {
+                            var propValueType = prop.ValueType.GetTypeInfo();
+                            if (propValueType.IsAssignableFrom(payloadType))
+                            {
+                                valueWasSet |= prop.TrySetValue(payload);
+                            }
+                        }
                     }
                     return valueWasSet;
                 }

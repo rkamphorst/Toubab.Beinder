@@ -37,7 +37,6 @@
     <Compile Include="IProperty.cs" />
     <Compile Include="IPropertyPathParser.cs" />
     <Compile Include="Binder.cs" />
-    <Compile Include="PropertyScanners\HierarchyPropertyScanner.cs" />
     <Compile Include="PropertyScanners\ReflectionPropertyScanner.cs" />
     <Compile Include="PropertyScanners\NotifyPropertyChangedPropertyScanner.cs" />
     <Compile Include="PropertyPathParsers\UnderscorePropertyPathParser.cs" />
@@ -60,6 +59,7 @@
     <Compile Include="TypeUtilities.cs" />
     <Compile Include="TypeExtension.cs" />
     <Compile Include="ITypeExtension.cs" />
+    <Compile Include="NotifyPropertyChanged.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

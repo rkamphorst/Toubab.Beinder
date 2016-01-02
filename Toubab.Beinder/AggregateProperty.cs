@@ -34,6 +34,9 @@ namespace Toubab.Beinder
 
         public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
+
+        public Type ValueType { get { return _properties[0].ValueType; } }
+
         object _value;
 
         public object Value

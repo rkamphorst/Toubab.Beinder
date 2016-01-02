@@ -83,6 +83,8 @@ namespace Toubab.Beinder.PropertyScanners
                 }
             }
 
+            public Type ValueType { get { return _property.ValueType; } }
+
             public object Value
             {
                 get

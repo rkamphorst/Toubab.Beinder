@@ -42,7 +42,6 @@
     <Compile Include="Mocks\NotifyPropertyChangedClass.cs" />
     <Compile Include="Mocks\MockControl.cs" />
     <Compile Include="Mocks\MockView.cs" />
-    <Compile Include="Mocks\NotifyPropertyChanged.cs" />
     <Compile Include="Mocks\MockViewModel.cs" />
     <Compile Include="PropertyPathTest.cs" />
     <Compile Include="Mocks\MockControlViewModel.cs" />
@@ -75,6 +74,7 @@
     <Compile Include="Mocks\Abcd\Abcd1.cs" />
     <Compile Include="Mocks\Abcd\Abcd2.cs" />
     <Compile Include="Mocks\Abcd\Abcd3.cs" />
+    <Compile Include="ReadmeTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Toubab.Beinder.Mocks
+namespace Toubab.Beinder
 {
 
     public abstract class NotifyPropertyChanged : INotifyPropertyChanged

@@ -10,6 +10,11 @@ namespace Toubab.Beinder.Mocks
 
         public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
 
+        public Type ValueType
+        { 
+            get { return typeof(object); }
+        }
+
         object _value;
 
         public object Value

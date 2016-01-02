@@ -56,9 +56,16 @@ namespace Toubab.Beinder
 
         public CombinedPropertyScanner PropertyScanner { get { return _propertyScanner; } }
 
+        public IBindings Bind(params object[] objects)
+        {
+            return Bind((IEnumerable<object>)objects);
+        }
+
         public IBindings Bind(IEnumerable<object> objects)
         {
-            return new Bindings(Bind(objects.ToArray(), null, null));
+            var objectArray = objects.ToArray();
+            var activator = objectArray.FirstOrDefault();
+            return new Bindings(Bind(objectArray, activator, null));
         }
 
         Valve[] Bind(object[] objects, object activator, BinderState externalState)
@@ -118,10 +125,12 @@ namespace Toubab.Beinder
 
         object GetChildActivator(object parentActivator, Valve parentValve, BinderState externalState)
         {
-            return 
-                externalState.ContainsPropertyForObject(parentActivator) 
-                    ? parentActivator 
-                    : parentValve.GetValueForObject(parentActivator);
+            var activator = parentValve.GetValueForObject(parentActivator);
+            if (activator == null && externalState.ContainsPropertyForObject(parentActivator))
+            {
+                return parentActivator;
+            } 
+            return activator;
         }
 
         struct CandidateProperty

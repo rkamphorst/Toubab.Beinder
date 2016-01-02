@@ -58,6 +58,8 @@ namespace Toubab.Beinder
             }
         }
 
+        public Type ValueType { get { return _propertyInfo.PropertyType; } }
+
         public object Value
         {
             get

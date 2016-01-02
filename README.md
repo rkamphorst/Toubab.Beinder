@@ -1,4 +1,4 @@
-# Beinder: implicit data binding
+# Beinder: simple data binding
 
 From [Wikipedia](https://en.wikipedia.org/wiki/Data_binding):
 
@@ -9,7 +9,7 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Data_binding):
 There are a lot of implementations of data binding, in C# and beyond. So why this library? I've written up a small 
 [justification](#justification) for myself below. It explains the main goals for Beinder:
 
-1. **Only do data binding.**    
+1. **Only do binding.**    
 2. **Be loosely coupled to the software that uses it.**    
 3. **Be adaptable through extension.**    
 4. **Be usable with minimal configuration.**    
@@ -22,11 +22,13 @@ var binder = new Binder();
 
 /* Establish bindings.
  * Store the bindings in this._bindings to make sure it is not garbage collected.
- * This is typically done when the view appears (not when it is created!)
+ * This is typically done when the view appears (*not* when it is created!)
  */
 this._bindings = binder.Bind(viewModel, view);
 
-/* Destroy bindings, for example when the view disappears */
+/* Destroy bindings.
+ * Typically when the view disappears.
+ */
 this._bindings.Dispose();
 this._bindings = null;
 ```
@@ -34,8 +36,8 @@ this._bindings = null;
 ## Features
 
 * [Pattern agnostic](#pattern-agnostic)
-* [Implicit data binding](#implicit-data-binding)
-* [Recursive data binding](#recursive-data-binding)
+* [Name-based binding](#name-based-binding)
+* [Recursive binding](#recursive-binding)
 * [Binding across object boundaries](#binding-across-object-boundaries)
 * [Binding of collections](#binding-of-collections) (not yet implemented)
 * [Value conversion](#value-conversion) (not yet implemented)
@@ -56,7 +58,7 @@ And although in MVVM, you typically only bind two objects, it is possible to use
 to bind more than two. If, for some reason, you need to do this, just pass more objects to
 `Binder.Bind()`. 
 
-### Implicit data binding
+### Name-based binding
 
 When you bind two (or more) objects, properties with the same name get bound to each other. 
 
@@ -74,7 +76,7 @@ When you bind two (or more) objects, properties with the same name get bound to 
   If a property could not be set because (for example) it has the wrong data type, this 
   will fail silently. However, if there are 'properties of properties' (a.k.a. *child properties*) 
   that match, those will be bound to each other instead 
-  (see [Recursive data binding](#recursive-data-binding)).
+  (see [Recursive binding](#recursive-binding)).
 
 Example:
 
@@ -85,7 +87,7 @@ Example:
 var view = new ViewClass { MyProperty = "aaa" };
 var viewModel = new ViewModelClass { MyProperty = "bbb" };
 
-this._bindings = binder.Bind(viewModel, view)
+this._bindings = binder.Bind(viewModel, view);
 
 //  viewModel.MyProperty is now bound to view.MyProperty.
 //  view.MyProperty will have the value "bbb".
@@ -94,7 +96,7 @@ view.MyProperty = "ccc";      // propagates "ccc" to viewModel.MyProperty
 viewModel.MyProperty = "ddd"; // propagates "ddd" to view.MyProperty
 ```
 
-### Recursive data binding
+### Recursive binding
 
 If values of properties that are bound have matching properties, those *child properties* 
 will be bound as well. This can be extended to child properties of child properties, and 
@@ -109,7 +111,7 @@ Example:
 var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
 var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb" } };
 
-this._bindings = binder.Bind(viewModel, view)
+this._bindings = binder.Bind(viewModel, view);
 
 //  viewModel.MyControl.Label is now bound to view.MyControl.Label.
 //  both will have the value "bbb".
@@ -122,7 +124,7 @@ viewModel.MyControl.Label = "ddd"; // propagates "ddd" to view.MyControl.Label
 
 If a property's name is a concatenation of another property's name and the name of one of 
 it's child properties, the former property is bound to the child property. Again, this
-is true for child properties of child properties, etc.
+can be extended to child properties of child properties, etc.
 
 Example:
 
@@ -133,7 +135,7 @@ Example:
 var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
 var viewModel = new ViewModelClass() { MyControlLabel = "bbb" };
 
-this._bindings = binder.Bind(viewModel, view)
+this._bindings = binder.Bind(viewModel, view);
 
 //  viewModel.MyControlLabel is now bound to view.MyControl.Label.
 //  both will have the value "bbb".
@@ -153,8 +155,8 @@ viewModel.MyControlLabel = "ddd";  // propagates "ddd" to view.MyControl.Label
 ### Value change propagation
 
 When `Binder.Bind()` is called, properties are bound, and then values are propagated. 
-The values are propagated from those properties that appear on earlier parameters
-to those that appear on later parameters. Recall that in in the previous examples, the bound
+The values are propagated from properties on the first parameter to properties
+on the other parameters. Recall that in in the previous examples, the bound
 properties would initially be set to the value of the `viewModel`'s property: this
 is because `viewModel` was always the first parameter to `Bind()`.
 
@@ -174,6 +176,31 @@ property comes from. There are two standard ways in order to do this:
 
 ### Dynamic rebinding
 
+Whenever a property's value changes, and this new value is propagated to other properties,
+what happens to the property's *child properties*? They get rebound.
+
+Consider the following example.
+
+```csharp
+/* ViewModelClass, ViewClass, ControlModelClass, ControlClass and TextControlClass all 
+ * implement interface INotifyPropertyChanged.
+ */
+var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
+var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb", Text = "ccc" };
+
+this._bindings = binder.Bind(viewModel, view);
+
+//  viewModel.MyControl.Label is now bound to view.MyControl.Label.
+//  Both will have the value "bbb".
+//  viewModel.MyControl.Text is not bound to anything and will have value null.
+
+view.MyControl = new TextControlClass { Text = "ddd" };
+
+// viewModel.MyControl.Text gets *rebound* to view.MyControl.Text.
+// Both will now have value "ddd".
+// viewModel.MyControl.Label will still have value "bbb".
+```
+
 ### Adaptation through extension
 
 #### Properties: `IProperty<T>`
@@ -190,7 +217,7 @@ property comes from. There are two standard ways in order to do this:
 
 So why roll my own binding library? 
 
-Data binding is implememented as part of many frameworks, for many languages and for many programming environments (see
+(Data) binding is implememented as part of many frameworks, for many languages and for many programming environments (see
 the mentioned wikipedia page for more examples). Examples for C# include a myriad of UI frameworks that Microsoft has
 made over the years (Windows Forms, WPF, ASP.NET, ...), and the last couple of years the various MVVM frameworks that
 have sprung up to support cross-platform app development in C# (examples are
@@ -211,7 +238,7 @@ Most existing implementations, IMHO, have the following drawbacks:
    
 Therefore, the goals of Beinder are to:
 
-1. **Only do data binding.**    
+1. **Only do binding.**    
    ...but do it as well as any other framework, or better. 
 2. **Be loosely coupled to the software that uses it.**    
    The code/configuration footprint related to the use of this library should be as small as possible and in a small number of places.

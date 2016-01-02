@@ -178,8 +178,8 @@ namespace Toubab.Beinder
             var ob1 = new Abcd1();
             var ob2 = new Abcd2();
             var ob3 = new Abcd3();
-            ob2.AaaBee.CeeDee.Eee = "x";
             _bindings = bnd.Bind(new object[] { ob1, ob2, ob3 });
+            ob2.AaaBee.CeeDee.Eee = "x";
 
             // Act
             Abcd2.AB oldAaaBee = ob2.AaaBee;
