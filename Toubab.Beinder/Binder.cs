@@ -90,9 +90,9 @@ namespace Toubab.Beinder
                 var newValve = new StateValve();
                 foreach (var entry in valveParams.BindableStates)
                 {
-                    var newProp = (IBindableState)entry.Bindable.CloneWithoutObject();
-                    newProp.SetObject(entry.Object);
-                    newValve.Add(newProp);
+                        var newState = (IBindableState)entry.Bindable.CloneWithoutObject();
+                        newState.SetObject(entry.Object);
+                        newValve.Add(newState);
                 }
                 newValve.Activate(activator);
 
