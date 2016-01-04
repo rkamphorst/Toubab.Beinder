@@ -227,6 +227,8 @@ namespace Toubab.Beinder
 
                 var states = new LinkedList<CandidateBindable>();
                 var broadcasts = new LinkedList<CandidateBindable>();
+                int numBcConsumers = 0;
+                int numBcProducers = 0;
                 var first = _list.First;
                 while (first != null && first.Value.RelativePath.CompareTo(firstPath) == 0)
                 {
@@ -237,6 +239,10 @@ namespace Toubab.Beinder
                     }
                     else
                     {
+                        if (first.Value.Bindable is IBindableBroadcastConsumer)
+                            numBcConsumers++;
+                        else if (first.Value.Bindable is IBindableBroadcastProducer)
+                            numBcProducers++;
                         broadcasts.AddLast(first);
                     }
                     first = _list.First;
