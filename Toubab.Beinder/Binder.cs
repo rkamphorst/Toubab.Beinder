@@ -249,6 +249,8 @@ namespace Toubab.Beinder
                 }
 
                 var relativeBindables = new BinderState();
+                if (states.Count >= 1)
+                {
                 while (_list.Count > 0)
                 {
                     var rebased = _list.First.Value.RelativeTo(firstPath);
@@ -257,6 +259,7 @@ namespace Toubab.Beinder
 
                     relativeBindables._list.AddLast(rebased.Value);
                     _list.RemoveFirst();
+                }
                 }
 
                 if (_list.Count > 0 && broadcasts.Count < 2 && states.Count < 2 && relativeBindables._list.Count == 0)
