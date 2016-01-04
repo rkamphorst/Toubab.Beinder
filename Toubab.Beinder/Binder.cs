@@ -87,6 +87,8 @@ namespace Toubab.Beinder
             ValveParameters valveParams;
             while (state.PopValveParameters(out valveParams))
             {
+                if (valveParams.BindableStates != null)
+                {
                 var newValve = new StateValve();
                 foreach (var entry in valveParams.BindableStates)
                 {
@@ -99,6 +101,19 @@ namespace Toubab.Beinder
                 BindChildValves(newValve, activator, valveParams.ExternalState);
 
                 resultList.Add(newValve);
+            }
+                if (valveParams.BindableBroadcasts != null)
+                {
+                    var newValve = new BroadcastValve();
+                    foreach (var entry in valveParams.BindableBroadcasts)
+                    {
+                        var newBroadcast = entry.Bindable.CloneWithoutObject();
+                        newBroadcast.SetObject(entry.Object);
+                        newValve.Add(newBroadcast);
+                    }
+
+                    resultList.Add(newValve);
+                }
             }
 
             return resultList.ToArray();
