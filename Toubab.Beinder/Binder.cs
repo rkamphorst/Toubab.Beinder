@@ -69,9 +69,9 @@ namespace Toubab.Beinder
             return new Bindings(Bind(objectArray, activator, null));
         }
 
-        StateValve[] Bind(object[] objects, object activator, BinderState externalState)
+        BroadcastValve[] Bind(object[] objects, object activator, BinderState externalState)
         {
-            var resultList = new List<StateValve>();
+            var resultList = new List<BroadcastValve>();
 
             // entryList: list of Binder Entries, each holding an IProperty instance.
             // The list is sorted on Path, which is important because
@@ -279,9 +279,9 @@ namespace Toubab.Beinder
         class Bindings : IBindings
         {
 
-            StateValve[] _valves;
+            BroadcastValve[] _valves;
 
-            public Bindings(StateValve[] valves)
+            public Bindings(BroadcastValve[] valves)
             {
                 _valves = valves;
             }
