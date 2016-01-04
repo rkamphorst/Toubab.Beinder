@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Toubab.Beinder.PropertyPathParsers;
 using System.Collections.Specialized;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.PropertyScanners
 {
-    public class DictionaryPropertyScanner : IPropertyScanner
+    public class DictionaryPropertyScanner : IBindableScanner
     {
         IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();
 
@@ -16,19 +17,19 @@ namespace Toubab.Beinder.PropertyScanners
             set { _pathParser = value; }
         }
 
-        public IEnumerable<IProperty> Scan(object obj)
+        public IEnumerable<IBindable> Scan(object obj)
         {
             var dict = obj as Dictionary<string,object>;
 
             if (dict == null)
-                return Enumerable.Empty<IProperty>();
+                return Enumerable.Empty<IBindableState>();
             
             return dict.Select(
                 kvp => new DictionaryEntryProperty(kvp.Key, _pathParser)
             );
         }
 
-        class DictionaryEntryProperty : IProperty
+        class DictionaryEntryProperty : IBindableState
         {
             readonly string _key;
             readonly PropertyPath _propertyPath;
@@ -55,18 +56,18 @@ namespace Toubab.Beinder.PropertyScanners
                     .Select(kvp => kvp.Key)
                     .Contains(_key))
                 {
-                    OnValueChanged(Value);
+                    OnBroadcast(Value);
                 }
             }
 
-            void OnValueChanged(object newValue)
+            void OnBroadcast(object argument)
             {
-                var e = ValueChanged;
+                var e = Broadcast;
                 if (e != null)
-                    e(this, new PropertyValueChangedEventArgs(this, newValue));
+                    e(this, new BindableBroadcastEventArgs(this, argument));
             }
 
-            public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
+            public event EventHandler<BindableBroadcastEventArgs> Broadcast;
 
             public Type ValueType { get { return typeof(object); } }
 
@@ -79,11 +80,11 @@ namespace Toubab.Beinder.PropertyScanners
                 }
             }
 
-            public bool TrySetValue(object value)
+            public bool TryHandleBroadcast(object argument)
             { 
-                if (value == null)
+                if (argument == null)
                     _object.Remove(_key);
-                _object[_key] = value;
+                _object[_key] = argument;
                 return true;
             }
 
@@ -127,7 +128,7 @@ namespace Toubab.Beinder.PropertyScanners
                 }
             }
 
-            public IProperty CloneWithoutObject()
+            public IBindable CloneWithoutObject()
             {
                 return new DictionaryEntryProperty(_key, _propertyPath);
             }

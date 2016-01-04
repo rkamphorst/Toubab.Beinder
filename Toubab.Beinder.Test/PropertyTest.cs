@@ -1,19 +1,20 @@
 ﻿using NUnit.Framework;
 using Toubab.Beinder.PropertyScanners;
 using Toubab.Beinder.Mocks;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder
 {
     [TestFixture]
     public class PropertyTest
     {
-        static void CloneYieldsIndependentPropertiesWithSameObject(IProperty property, object o)
+        static void CloneYieldsIndependentPropertiesWithSameObject(IBindable property, object o)
         {
             // Arrange
             property.SetObject(o);
 
             // Act
-            IProperty clone = property.CloneWithoutObject();
+            var clone = (IBindable) property.CloneWithoutObject();
 
             // Assert
             Assert.AreNotSame(property, clone);
@@ -21,13 +22,13 @@ namespace Toubab.Beinder
             Assert.IsNull(clone.Object);
         }
 
-        static void ClonedPropertyCanChangeObjectIndependently(IProperty property, object o1, object o2)
+        static void ClonedPropertyCanChangeObjectIndependently(IBindable property, object o1, object o2)
         {
             // Arrange
             property.SetObject(o1);
 
             // Act
-            IProperty clone = property.CloneWithoutObject();
+            IBindableState clone = (IBindableState)property.CloneWithoutObject();
             clone.SetObject(o2);
 
             // Assert
@@ -73,7 +74,7 @@ namespace Toubab.Beinder
         public void AggregatePropertyClone()
         {
             int cnt = 0;
-            var scanner = new CombinedPropertyScanner();
+            var scanner = new CombinedBindableScanner();
             scanner.Add(new ReflectionPropertyScanner());
             scanner.Add(new NotifyPropertyChangedPropertyScanner());
             var props = scanner.Scan(typeof(MockView));

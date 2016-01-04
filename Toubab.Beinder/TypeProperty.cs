@@ -1,9 +1,10 @@
 using System;
 using System.Reflection;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder
 {
-    public abstract class TypeProperty : IProperty
+    public abstract class TypeProperty : IBindableState
     {
         protected readonly PropertyInfo _propertyInfo;
         protected readonly IPropertyPathParser _pathParser;
@@ -18,14 +19,14 @@ namespace Toubab.Beinder
 
         protected abstract void AttachObjectPropertyChangeEvent(object obj);
 
-        protected void OnValueChanged(object source, EventArgs args)
+        protected void OnBroadcast(object source, EventArgs args)
         {
-            var evt = ValueChanged;
+            var evt = Broadcast;
             if (evt != null)
-                evt(this, new PropertyValueChangedEventArgs(this, Value));
+                evt(this, new BindableBroadcastEventArgs(this, Value));
         }
 
-        public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
+        public event EventHandler<BindableBroadcastEventArgs> Broadcast;
 
         object _object;
 
@@ -72,7 +73,7 @@ namespace Toubab.Beinder
             }
         }
 
-        public bool TrySetValue(object value)
+        public bool TryHandleBroadcast(object value)
         {
             if (!_propertyInfo.CanWrite)
                 return false;
@@ -92,7 +93,7 @@ namespace Toubab.Beinder
         }
 
 
-        public abstract IProperty CloneWithoutObject();
+        public abstract IBindable CloneWithoutObject();
 
         public override string ToString()
         {

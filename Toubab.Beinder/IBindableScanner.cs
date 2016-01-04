@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder
 {
@@ -7,7 +8,7 @@ namespace Toubab.Beinder
     /// <summary>
     /// Interface for a property scanner of object instances.
     /// </summary>
-    public interface IPropertyScanner
+    public interface IBindableScanner
     {
         /// <summary>
         /// Scan the specified object and enumerate the properties
@@ -17,7 +18,7 @@ namespace Toubab.Beinder
         /// to it! This is done by the binder at the latest stage possible.
         /// </remarks>
         /// <param name="obj">Object to scan.</param>
-        IEnumerable<IProperty> Scan(object obj);
+        IEnumerable<IBindable> Scan(object obj);
     }
 
 }

@@ -33,10 +33,10 @@ namespace Toubab.Beinder.PropertyScanners
             var ob = new NotifyPropertyChangedClass();
             ob.Property = "banaan";
             property.SetObject(ob);
-            property.ValueChanged += (sender, e) => newValue = e.NewValue;
+            property.Broadcast += (sender, e) => newValue = e.Argument;
 
             // Act
-            property.TrySetValue("asdf");
+            property.TryHandleBroadcast("asdf");
 
             // Assert
             Assert.AreEqual("asdf", ob.Property);

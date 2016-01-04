@@ -1,47 +1,48 @@
 ﻿using NUnit.Framework;
-using System;
 using Toubab.Beinder.Mocks;
+using System.Linq;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder
 {
-    [TestFixture()]
+    [TestFixture]
     public class ValveTest
     {
-        [Test()]
+        [Test]
         public void ValuesArePropagated()
         {
             // Arrange
             var propa = CreateProperty("a");
             var propb = CreateProperty("b");
             var propc = CreateProperty("c");
-            Valve v = new Valve();
-            v.AddProperty(propa);
-            v.AddProperty(propb);
-            v.AddProperty(propc);
+            var v = new StateValve();
+            v.Add(propa);
+            v.Add(propb);
+            v.Add(propc);
 
             // Act
-            propa.TrySetValue("banaan");
+            propa.TryHandleBroadcast("banaan");
 
             // Assert
             Assert.AreEqual("banaan", propb.Value);
             Assert.AreEqual("banaan", propc.Value);
         }
 
-        [Test()]
+        [Test]
         public void UnchangedValueIsNotChanged()
         {
             // Arrange
             var propa = CreateProperty("a");
             var propb = CreateProperty("b");
             var propc = CreateProperty("c");
-            Valve v = new Valve();
-            v.AddProperty(propa);
-            v.AddProperty(propb);
-            v.AddProperty(propc);
+            var v = new StateValve();
+            v.Add(propa);
+            v.Add(propb);
+            v.Add(propc);
 
             // Act
-            propa.TrySetValue("banaan");
-            propb.TrySetValue("banaan");
+            propa.TryHandleBroadcast("banaan");
+            propb.TryHandleBroadcast("banaan");
 
             // Assert
             Assert.AreEqual(1, propa.Changed);
@@ -49,7 +50,7 @@ namespace Toubab.Beinder
             Assert.AreEqual(1, propc.Changed);
         }
 
-        [Test()]
+        [Test]
         public void PropertiesAreGarbageCollectedFromValve()
         {
             // Arrange
@@ -57,13 +58,10 @@ namespace Toubab.Beinder
             var propb = CreateProperty("b");
             var propc = CreateProperty("c");
 
-            var v = new Valve();
-            v.AddProperty(propa);
-            v.AddProperty(propb);
-            v.AddProperty(propc);
-
-            // Precondition check
-            Assert.AreEqual(3, v.LiveProperties.Count);
+            var v = new StateValve();
+            v.Add(propa);
+            v.Add(propb);
+            v.Add(propc);
 
             // Act
             propa = null;
@@ -82,12 +80,12 @@ namespace Toubab.Beinder
             // Assert
             Assert.IsNull(propa);
             // propa should be garbage collected
-            Assert.AreEqual(2, v.LiveProperties.Count);
+            Assert.AreEqual(2, v.Count());
         }
 
         static MockProperty CreateProperty(string name)
         {
-            return new MockProperty() { Changed = 0, Name = name };
+            return new MockProperty { Changed = 0, Name = name };
         }
 
 

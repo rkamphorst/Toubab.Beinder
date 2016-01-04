@@ -16,10 +16,10 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            var customExtensionsScanner = new TypeExtensionsScanner(bnd.PropertyScanner);
+            var customExtensionsScanner = new TypeExtensionsScanner(bnd.Scanner);
             customExtensionsScanner.AdapterRegistry.Register<MockViewExtensions>();
-            bnd.PropertyScanner.Add(new NotifyPropertyChangedPropertyScanner());
-            bnd.PropertyScanner.Add(customExtensionsScanner);
+            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(customExtensionsScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
             _bindings = bnd.Bind(new object[] { ob1, ob2 });
@@ -37,11 +37,11 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            var customExtensionsScanner = new TypeExtensionsScanner(bnd.PropertyScanner);
+            var customExtensionsScanner = new TypeExtensionsScanner(bnd.Scanner);
             customExtensionsScanner.AdapterRegistry.Register<MockViewExtensions2>();
-            bnd.PropertyScanner.Add(new NotifyPropertyChangedPropertyScanner());
-            bnd.PropertyScanner.Add(new ReflectionPropertyScanner());
-            bnd.PropertyScanner.Add(customExtensionsScanner);
+            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionPropertyScanner());
+            bnd.Scanner.Add(customExtensionsScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
             _bindings = bnd.Bind(new object[] { ob1, ob2 });

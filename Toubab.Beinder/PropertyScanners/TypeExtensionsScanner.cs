@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.PropertyScanners
 {
-    public class TypeExtensionsScanner : IPropertyScanner
+    public class TypeExtensionsScanner : IBindableScanner
     {
-        readonly IPropertyScanner _extensionsScanner;
+        readonly IBindableScanner _extensionsScanner;
         readonly TypeAdapterFactory<ITypeExtension> _adapterFactory;
 
-        public TypeExtensionsScanner(IPropertyScanner extensionsScanner)
+        public TypeExtensionsScanner(IBindableScanner extensionsScanner)
         {
             _adapterFactory = new TypeAdapterFactory<ITypeExtension>();
             _extensionsScanner = extensionsScanner;
@@ -16,13 +17,13 @@ namespace Toubab.Beinder.PropertyScanners
 
         public TypeAdapterRegistry<ITypeExtension> AdapterRegistry { get { return _adapterFactory.Registry; } }
 
-        public IEnumerable<IProperty> Scan(object ob)
+        public IEnumerable<IBindable> Scan(object ob)
         {
             Type objectType = ob.GetType();
 
             foreach (var ext in _adapterFactory.GetAdaptersFor(objectType))
             {
-                foreach (IProperty prop in _extensionsScanner.Scan(ext))
+                foreach (IBindableState prop in _extensionsScanner.Scan(ext))
                 {
                     prop.SetObject(ext);
                     yield return new ExtensionProperty(objectType, prop);
@@ -30,24 +31,24 @@ namespace Toubab.Beinder.PropertyScanners
             }
         }
 
-        class ExtensionProperty : IProperty
+        class ExtensionProperty : IBindableState
         {
             readonly Type _objectType;
-            readonly IProperty _property;
+            readonly IBindableState _property;
 
-            public ExtensionProperty(Type objectType, IProperty property)
+            public ExtensionProperty(Type objectType, IBindableState property)
             {
                 _property = property;
                 _objectType = objectType;
-                _property.ValueChanged += (sender, e) =>
+                _property.Broadcast += (sender, e) =>
                 {
-                    var evt = ValueChanged;
+                    var evt = Broadcast;
                     if (evt != null)
                         evt(sender, e);
                 };
             }
 
-            public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
+            public event EventHandler<BindableBroadcastEventArgs> Broadcast;
 
             public void SetObject(object newObject)
             {
@@ -56,14 +57,14 @@ namespace Toubab.Beinder.PropertyScanners
                 _object = newObject;
             }
 
-            public bool TrySetValue(object newValue)
+            public bool TryHandleBroadcast(object newValue)
             {
-                return _property.TrySetValue(newValue);
+                return _property.TryHandleBroadcast(newValue);
             }
 
-            public IProperty CloneWithoutObject()
+            public IBindable CloneWithoutObject()
             {
-                var prop = _property.CloneWithoutObject();
+                var prop = (IBindableState)_property.CloneWithoutObject();
                 prop.SetObject(((ITypeExtension) _property.Object).CloneWithoutObject());
                 return new ExtensionProperty(_objectType, prop);
             }
@@ -89,7 +90,8 @@ namespace Toubab.Beinder.PropertyScanners
             {
                 get
                 {
-                    return _property.Value;
+                    var t = Object;
+                    return t == null ? null : _property.Value;
                 }
             }
 

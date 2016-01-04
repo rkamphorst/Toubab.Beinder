@@ -3,58 +3,59 @@ using System.Linq;
 using Toubab.Beinder.PropertyScanners;
 using System;
 using System.Collections;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder
 {
 
     public class Binder
     {
-        public static CombinedPropertyScanner CreateDefaultPropertyScanner()
+        public static CombinedBindableScanner CreateDefaultPropertyScanner()
         {
-            var result = new CombinedPropertyScanner();
+            var result = new CombinedBindableScanner();
             result.Add(new ReflectionPropertyScanner());
             result.Add(new NotifyPropertyChangedPropertyScanner());
             result.Add(new DictionaryPropertyScanner());
             result.Add(new TypeExtensionsScanner(result));
-            result.Add(new CustomPropertyScanner());
+            result.Add(new CustomBindableScanner());
             return result;
         }
 
-        readonly CombinedPropertyScanner _propertyScanner;
+        readonly CombinedBindableScanner _propertyScanner;
 
         public Binder()
             : this(CreateDefaultPropertyScanner())
         {
         }
 
-        public Binder(CombinedPropertyScanner propertyScanner)
+        public Binder(CombinedBindableScanner propertyScanner)
         {
             _propertyScanner = propertyScanner;
 
         }
 
-        public Binder(params IPropertyScanner[] propertyScanners)
+        public Binder(params IBindableScanner[] bindableScanners)
         {
-            var aggregatePropertyScanner = new CombinedPropertyScanner();
-            foreach (var ps in propertyScanners)
+            var combinedScanner = new CombinedBindableScanner();
+            foreach (var ps in bindableScanners)
             {
-                var aggps = ps as CombinedPropertyScanner;
-                if (aggps != null)
+                var cps = ps as CombinedBindableScanner;
+                if (cps != null)
                 {
-                    foreach (var ps2 in aggps)
+                    foreach (var ps2 in cps)
                     {
-                        aggregatePropertyScanner.Add(ps2);
+                        combinedScanner.Add(ps2);
                     }
                 }
                 else
                 {
-                    aggregatePropertyScanner.Add(ps);
+                    combinedScanner.Add(ps);
                 }
             }
-            _propertyScanner = aggregatePropertyScanner;
+            _propertyScanner = combinedScanner;
         }
 
-        public CombinedPropertyScanner PropertyScanner { get { return _propertyScanner; } }
+        public CombinedBindableScanner Scanner { get { return _propertyScanner; } }
 
         public IBindings Bind(params object[] objects)
         {
@@ -68,9 +69,9 @@ namespace Toubab.Beinder
             return new Bindings(Bind(objectArray, activator, null));
         }
 
-        Valve[] Bind(object[] objects, object activator, BinderState externalState)
+        StateValve[] Bind(object[] objects, object activator, BinderState externalState)
         {
-            var resultList = new List<Valve>();
+            var resultList = new List<StateValve>();
 
             // entryList: list of Binder Entries, each holding an IProperty instance.
             // The list is sorted on Path, which is important because
@@ -78,7 +79,7 @@ namespace Toubab.Beinder
             // property paths that start with that path, and so on.
             // Furthermore, all properties with the same paths will be next
             // to each other in the list.
-            var state = BinderState.FromScan(PropertyScanner, objects);
+            var state = BinderState.FromScan(Scanner, objects);
 
             if (externalState != null)
                 state.Merge(externalState);
@@ -86,12 +87,12 @@ namespace Toubab.Beinder
             ValveParameters valveParams;
             while (state.PopValveParameters(out valveParams))
             {
-                var newValve = new Valve();
-                foreach (var entry in valveParams.Properties)
+                var newValve = new StateValve();
+                foreach (var entry in valveParams.BindableStates)
                 {
-                    var newProp = entry.Property.CloneWithoutObject();
+                    var newProp = (IBindableState)entry.Bindable.CloneWithoutObject();
                     newProp.SetObject(entry.Object);
-                    newValve.AddProperty(newProp);
+                    newValve.Add(newProp);
                 }
                 newValve.Activate(activator);
 
@@ -103,7 +104,7 @@ namespace Toubab.Beinder
             return resultList.ToArray();
         }
 
-        void BindChildValves(Valve parentValve, object parentActivator, BinderState externalState)
+        void BindChildValves(StateValve parentValve, object parentActivator, BinderState externalState)
         {
             var childValves = Bind(
                                   parentValve.GetValues(), 
@@ -114,7 +115,7 @@ namespace Toubab.Beinder
             {
                 foreach (var cvalve in childValves)
                     cvalve.Dispose();
-                childValves = Bind(parentValve.GetValues(), GetChildActivator(evt.Property.Object, parentValve, externalState), externalState);
+                childValves = Bind(parentValve.GetValues(), GetChildActivator(evt.Source.Object, parentValve, externalState), externalState);
             };
             parentValve.Disposing += delegate
             {
@@ -123,7 +124,7 @@ namespace Toubab.Beinder
             };
         }
 
-        object GetChildActivator(object parentActivator, Valve parentValve, BinderState externalState)
+        object GetChildActivator(object parentActivator, StateValve parentValve, BinderState externalState)
         {
             var activator = parentValve.GetValueForObject(parentActivator);
             if (activator == null && externalState.ContainsPropertyForObject(parentActivator))
@@ -133,30 +134,30 @@ namespace Toubab.Beinder
             return activator;
         }
 
-        struct CandidateProperty
+        struct CandidateBindable
         {
-            public CandidateProperty(object obj, IProperty property)
+            public CandidateBindable(object obj, IBindable property)
                 : this(obj, property, new PropertyPath(property.Path))
             {
             }
 
-            CandidateProperty(object obj, IProperty property, PropertyPath path)
+            CandidateBindable(object obj, IBindable bindable, PropertyPath path)
             {
                 Object = obj;
-                Property = property;
+                Bindable = bindable;
                 RelativePath = path;
             }
 
-            public IProperty Property { get; private set; }
+            public IBindable Bindable { get; private set; }
 
             public PropertyPath RelativePath { get; private set; }
 
             public object Object { get; private set; }
 
-            public CandidateProperty? RelativeTo(PropertyPath basePath)
+            public CandidateBindable? RelativeTo(PropertyPath basePath)
             {
                 var newPath = RelativePath.RelativeTo(basePath);
-                return newPath != null ? (CandidateProperty?)new CandidateProperty(Object, Property, newPath) : null;
+                return newPath != null ? (CandidateBindable?)new CandidateBindable(Object, Bindable, newPath) : null;
             }
 
             public override string ToString()
@@ -168,88 +169,100 @@ namespace Toubab.Beinder
         struct ValveParameters
         {
 
-            public ValveParameters(IEnumerable<CandidateProperty> properties, BinderState relativeProperties)
+            public ValveParameters(IEnumerable<CandidateBindable> states, IEnumerable<CandidateBindable> broadcasts, BinderState relativeProperties)
             {
-                Properties = properties;
+                BindableStates = states;
+                BindableBroadcasts = broadcasts;
                 ExternalState = relativeProperties;
             }
 
-            public IEnumerable<CandidateProperty> Properties { get; private set; }
+            public IEnumerable<CandidateBindable> BindableBroadcasts { get; private set; }
+
+            public IEnumerable<CandidateBindable> BindableStates { get; private set; }
 
             public BinderState ExternalState { get; private set; }
         }
 
         class BinderState
         {
-            public static BinderState FromScan(IPropertyScanner scanner, IEnumerable<object> objects)
+            public static BinderState FromScan(IBindableScanner scanner, IEnumerable<object> objects)
             {
                 return new BinderState(
                     objects
-                    .SelectMany(o => scanner.Scan(o).Select(p => new CandidateProperty(o, p)))
+                    .SelectMany(o => scanner.Scan(o).Select(p => new CandidateBindable(o, p)))
                     .OrderBy(be => be.RelativePath)
                 );
             }
 
-            readonly LinkedList<CandidateProperty> _list;
+            readonly LinkedList<CandidateBindable> _list;
 
             BinderState()
             {
-                _list = new LinkedList<CandidateProperty>();
+                _list = new LinkedList<CandidateBindable>();
             }
 
-            BinderState(IEnumerable<CandidateProperty> collection)
+            BinderState(IEnumerable<CandidateBindable> collection)
             {
-                _list = new LinkedList<CandidateProperty>(collection);
+                _list = new LinkedList<CandidateBindable>(collection);
             }
 
             public bool PopValveParameters(out ValveParameters result)
             {
                 var firstPath = _list.Count == 0 ? null : _list.First.Value.RelativePath;
 
-                var properties = new LinkedList<CandidateProperty>();
+                var states = new LinkedList<CandidateBindable>();
+                var broadcasts = new LinkedList<CandidateBindable>();
                 var first = _list.First;
                 while (first != null && first.Value.RelativePath.CompareTo(firstPath) == 0)
                 {
                     _list.RemoveFirst();
-                    properties.AddLast(first);
+                    if (first.Value.Bindable is IBindableState)
+                    {
+                        states.AddLast(first);
+                    }
+                    else
+                    {
+                        broadcasts.AddLast(first);
+                    }
                     first = _list.First;
                 }
 
-                var relativeProperties = new BinderState();
+                var relativeBindables = new BinderState();
                 while (_list.Count > 0)
                 {
                     var rebased = _list.First.Value.RelativeTo(firstPath);
                     if (!rebased.HasValue)
                         break;
 
-                    relativeProperties._list.AddLast(rebased.Value);
+                    relativeBindables._list.AddLast(rebased.Value);
                     _list.RemoveFirst();
                 }
 
-                if (_list.Count > 0 && properties.Count < 2 && relativeProperties._list.Count == 0)
+                if (_list.Count > 0 && broadcasts.Count < 2 && states.Count < 2 && relativeBindables._list.Count == 0)
                 {
                     return PopValveParameters(out result);
                 }
-                result = new ValveParameters(properties, relativeProperties);
-                return (properties.Count >= 2 || relativeProperties._list.Count > 0);
+                result = new ValveParameters(states, broadcasts, relativeBindables);
+                return (broadcasts.Count >=2 || states.Count >= 2 || relativeBindables._list.Count > 0);
             }
 
             public void Merge(BinderState toMerge)
             {
-                var cur = _list.First;
+                var curState = _list.First;
+
                 foreach (var mergeEntry in toMerge._list)
                 {
-                    while (cur != null)
+                    while (curState != null)
                     {
-                        if (cur.Value.RelativePath.CompareTo(mergeEntry.RelativePath) > 0)
+                        if (curState.Value.RelativePath.CompareTo(mergeEntry.RelativePath) > 0)
                         {
                             // cur comes *after* mergeEntry, so add newProp before cur
-                            _list.AddBefore(cur, mergeEntry);
+                            _list.AddBefore(curState, mergeEntry);
                             break;
                         }
-                        cur = cur.Next;
+                        curState = curState.Next;
                     }
-                    if (cur == null)
+                    if (curState == null)
                     {
                         // traversed the whole list without adding...
                         _list.AddLast(mergeEntry);
@@ -266,9 +279,9 @@ namespace Toubab.Beinder
         class Bindings : IBindings
         {
 
-            Valve[] _valves;
+            StateValve[] _valves;
 
-            public Bindings(Valve[] valves)
+            public Bindings(StateValve[] valves)
             {
                 _valves = valves;
             }

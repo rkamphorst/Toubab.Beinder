@@ -34,10 +34,10 @@ namespace Toubab.Beinder.PropertyScanners
             var ob = new ClassWithPropertyAndEvents();
             ob.Property = "banaan";
             property.SetObject(ob);
-            property.ValueChanged += (sender, e) => newValue = e.NewValue;
+            property.Broadcast += (sender, e) => newValue = e.Argument;
 
             // Act
-            property.TrySetValue("fdsa");
+            property.TryHandleBroadcast("fdsa");
 
             // Assert
             Assert.AreEqual("fdsa", ob.Property);

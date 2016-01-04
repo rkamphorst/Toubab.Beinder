@@ -1,14 +1,15 @@
 ﻿using System;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.Mocks
 {
-    class MockProperty : IProperty
+    class MockProperty : IBindableState
     {
         public int Changed { get; set; }
 
         public string Name { get; set; }
 
-        public event EventHandler<PropertyValueChangedEventArgs> ValueChanged;
+        public event EventHandler<BindableBroadcastEventArgs> Broadcast;
 
         public Type ValueType
         { 
@@ -22,12 +23,12 @@ namespace Toubab.Beinder.Mocks
             get { return _value; }
         }
 
-        public bool TrySetValue(object value)
+        public bool TryHandleBroadcast(object value)
         {
             _value = value;
             Changed++;
-            if (ValueChanged != null)
-                ValueChanged(this, new PropertyValueChangedEventArgs(this, value));
+            if (Broadcast != null)
+                Broadcast(this, new BindableBroadcastEventArgs(this, value));
             return true;
         }
 
@@ -47,7 +48,7 @@ namespace Toubab.Beinder.Mocks
             get { return "abc"; }
         }
 
-        public IProperty CloneWithoutObject()
+        public IBindable CloneWithoutObject()
         {
             return new MockProperty
             {

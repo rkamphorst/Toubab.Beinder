@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using Toubab.Beinder.PropertyPathParsers;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.PropertyScanners
 {
@@ -17,7 +18,7 @@ namespace Toubab.Beinder.PropertyScanners
             set { _pathParser = value; }
         }
 
-        public override IEnumerable<IProperty> Scan(Type type)
+        public override IEnumerable<IBindableState> Scan(Type type)
         {
             return
                 type.GetRuntimeProperties()
@@ -41,7 +42,7 @@ namespace Toubab.Beinder.PropertyScanners
             {
                 if (evt != null && evt.EventHandlerType == typeof(EventHandler))
                     _event = evt;
-                _onValueChanged = new EventHandler(OnValueChanged);
+                _onValueChanged = new EventHandler(OnBroadcast);
             }
 
             protected override void DetachObjectPropertyChangeEvent(object obj)
@@ -56,7 +57,7 @@ namespace Toubab.Beinder.PropertyScanners
                     _event.AddEventHandler(obj, _onValueChanged);
             }
 
-            public override IProperty CloneWithoutObject()
+            public override IBindable CloneWithoutObject()
             {
                 return new ReflectionTypeProperty(_pathParser, _propertyInfo, _event);
             }

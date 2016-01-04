@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Linq;
 using System.ComponentModel;
 using Toubab.Beinder.PropertyPathParsers;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.PropertyScanners
 {
@@ -19,13 +20,13 @@ namespace Toubab.Beinder.PropertyScanners
             set { _pathParser = value; }
         }
 
-        public override IEnumerable<IProperty> Scan(Type type)
+        public override IEnumerable<IBindableState> Scan(Type type)
         {
             var isNotifyPropertyChanged =
                 typeof(INotifyPropertyChanged).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
 
             if (!isNotifyPropertyChanged)
-                return Enumerable.Empty<IProperty>();
+                return Enumerable.Empty<IBindableState>();
             
 
             return
@@ -51,7 +52,7 @@ namespace Toubab.Beinder.PropertyScanners
             {
                 if (Equals(args.PropertyName, _propertyInfo.Name))
                 {
-                    OnValueChanged(this, EventArgs.Empty);
+                    OnBroadcast(this, EventArgs.Empty);
                 }
             }
 
@@ -69,7 +70,7 @@ namespace Toubab.Beinder.PropertyScanners
                     inpc.PropertyChanged += HandlePropertyChanged;
             }
 
-            public override IProperty CloneWithoutObject()
+            public override IBindable CloneWithoutObject()
             {
                 return new NotifyPropertyChangedTypeProperty(_pathParser, _propertyInfo);
             }

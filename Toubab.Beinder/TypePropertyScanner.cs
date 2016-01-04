@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder
 {
     /// <summary>
     /// Abstract class for strongly typed scanners
     /// </summary>
-    public abstract class TypePropertyScanner : IPropertyScanner
+    public abstract class TypePropertyScanner : IBindableScanner
     {
-        readonly Dictionary<Type, List<IProperty>> _typeCache = new Dictionary<Type, List<IProperty>>();
+        readonly Dictionary<Type, List<IBindableState>> _typeCache = new Dictionary<Type, List<IBindableState>>();
 
-        public IEnumerable<IProperty> Scan(object obj)
+        public IEnumerable<IBindable> Scan(object obj)
         {
             var type = obj.GetType();
-            List<IProperty> result;
+            List<IBindableState> result;
             if (!_typeCache.TryGetValue(type, out result))
             {
                 result = Scan(type).ToList();
@@ -28,7 +29,7 @@ namespace Toubab.Beinder
         /// Scan the specified type and enumerate the properties
         /// </summary>
         /// <param name="type">Type to scan.</param>
-        public abstract IEnumerable<IProperty> Scan(Type type);
+        public abstract IEnumerable<IBindableState> Scan(Type type);
     }
         
 }

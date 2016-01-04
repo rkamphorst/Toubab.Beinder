@@ -20,6 +20,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -28,43 +29,52 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Valve.cs" />
     <Compile Include="TypeAdapterRegistry.cs" />
     <Compile Include="PropertyPath.cs" />
-    <Compile Include="IProperty.cs" />
     <Compile Include="IPropertyPathParser.cs" />
     <Compile Include="Binder.cs" />
     <Compile Include="PropertyScanners\ReflectionPropertyScanner.cs" />
     <Compile Include="PropertyScanners\NotifyPropertyChangedPropertyScanner.cs" />
     <Compile Include="PropertyPathParsers\UnderscorePropertyPathParser.cs" />
     <Compile Include="PropertyPathParsers\CamelCasePropertyPathParser.cs" />
-    <Compile Include="AggregateProperty.cs" />
-    <Compile Include="PropertyScanners\DictionaryPropertyScanner.cs" />
     <Compile Include="TypeProperty.cs" />
-    <Compile Include="PropertyScanners\CustomPropertyScanner.cs" />
     <Compile Include="TypeAdapterFactory.cs" />
-    <Compile Include="PropertyValueChangedEventArgs.cs" />
     <Compile Include="NamespaceAffinityComparer.cs" />
     <Compile Include="NamespaceSpecializationComparer.cs" />
     <Compile Include="NamespacePreferenceComparer.cs" />
     <Compile Include="IBindings.cs" />
-    <Compile Include="PropertyScanners\DefaultPropertyScanner.cs" />
     <Compile Include="TypePropertyScanner.cs" />
-    <Compile Include="IPropertyScanner.cs" />
-    <Compile Include="PropertyScanners\CombinedPropertyScanner.cs" />
     <Compile Include="PropertyScanners\TypeExtensionsScanner.cs" />
     <Compile Include="TypeUtilities.cs" />
     <Compile Include="TypeExtension.cs" />
     <Compile Include="ITypeExtension.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
+    <Compile Include="Valve\BindableBroadcastEventArgs.cs" />
+    <Compile Include="Valve\IBindable.cs" />
+    <Compile Include="Valve\IBindableBroadcastConsumer.cs" />
+    <Compile Include="Valve\IBindableBroadcastProducer.cs" />
+    <Compile Include="ICustomEventHandler.cs" />
+    <Compile Include="ICustomEvent.cs" />
+    <Compile Include="ICustomBindable.cs" />
+    <Compile Include="ICustomProperty.cs" />
+    <Compile Include="PropertyScanners\CustomBindableScanner.cs" />
+    <Compile Include="Valve\IBindableState.cs" />
+    <Compile Include="IBindableScanner.cs" />
+    <Compile Include="PropertyScanners\CombinedBindableScanner.cs" />
+    <Compile Include="AggregateBindableState.cs" />
+    <Compile Include="Valve\StateValve.cs" />
+    <Compile Include="Valve\BroadcastValve.cs" />
+    <Compile Include="PropertyScanners\DictionaryPropertyScanner.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
     <Folder Include="PropertyScanners\" />
     <Folder Include="PropertyPathParsers\" />
+    <Folder Include="Valve\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime" />
