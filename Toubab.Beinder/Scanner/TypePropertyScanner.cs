@@ -3,12 +3,12 @@ using System;
 using System.Linq;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Scanner
 {
     /// <summary>
     /// Abstract class for strongly typed scanners
     /// </summary>
-    public abstract class TypePropertyScanner : IBindableScanner
+    public abstract class TypePropertyScanner : IScanner
     {
         readonly Dictionary<Type, List<IBindableState>> _typeCache = new Dictionary<Type, List<IBindableState>>();
 

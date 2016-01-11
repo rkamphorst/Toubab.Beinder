@@ -4,12 +4,12 @@ using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.Scanner
 {
-    public class TypeExtensionsScanner : IBindableScanner
+    public class TypeExtensionsScanner : IScanner
     {
-        readonly IBindableScanner _extensionsScanner;
+        readonly IScanner _extensionsScanner;
         readonly TypeAdapterFactory<ITypeExtension> _adapterFactory;
 
-        public TypeExtensionsScanner(IBindableScanner extensionsScanner)
+        public TypeExtensionsScanner(IScanner extensionsScanner)
         {
             _adapterFactory = new TypeAdapterFactory<ITypeExtension>();
             _extensionsScanner = extensionsScanner;

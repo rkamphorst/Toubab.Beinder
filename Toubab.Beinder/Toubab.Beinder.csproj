@@ -35,13 +35,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeAdapterRegistry.cs" />
     <Compile Include="Binder.cs" />
-    <Compile Include="TypeProperty.cs" />
     <Compile Include="TypeAdapterFactory.cs" />
     <Compile Include="NamespaceAffinityComparer.cs" />
     <Compile Include="NamespaceSpecializationComparer.cs" />
     <Compile Include="NamespacePreferenceComparer.cs" />
     <Compile Include="IBindings.cs" />
-    <Compile Include="TypePropertyScanner.cs" />
     <Compile Include="TypeUtilities.cs" />
     <Compile Include="TypeExtension.cs" />
     <Compile Include="ITypeExtension.cs" />
@@ -55,8 +53,6 @@
     <Compile Include="ICustomBindable.cs" />
     <Compile Include="ICustomProperty.cs" />
     <Compile Include="Valve\IBindableState.cs" />
-    <Compile Include="IBindableScanner.cs" />
-    <Compile Include="AggregateBindableState.cs" />
     <Compile Include="Valve\StateValve.cs" />
     <Compile Include="Valve\BroadcastValve.cs" />
     <Compile Include="Scanner\TypeExtensionsScanner.cs" />
@@ -65,10 +61,14 @@
     <Compile Include="Scanner\ReflectionScanner.cs" />
     <Compile Include="Scanner\DictionaryScanner.cs" />
     <Compile Include="Scanner\CombinedScanner.cs" />
-    <Compile Include="IPathParser.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="PathParser\CamelCasePathParser.cs" />
     <Compile Include="PathParser\UnderscorePathParser.cs" />
+    <Compile Include="Scanner\TypePropertyScanner.cs" />
+    <Compile Include="Scanner\TypeProperty.cs" />
+    <Compile Include="IScanner.cs" />
+    <Compile Include="IPathParser.cs" />
+    <Compile Include="Scanner\CombinedState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

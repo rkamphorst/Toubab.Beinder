@@ -2,13 +2,13 @@ using System;
 using System.Linq;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Scanner
 {
-    public class AggregateBindableState : IBindableState
+    public class CombinedState : IBindableState
     {
         readonly IBindableState[] _states;
 
-        public AggregateBindableState(IBindableState[] states)
+        public CombinedState(IBindableState[] states)
         {
             _states = states;
             _value = states[0].Value;
@@ -102,7 +102,7 @@ namespace Toubab.Beinder
 
         public IBindable CloneWithoutObject()
         {
-            return new AggregateBindableState(_states.Select(p => (IBindableState)p.CloneWithoutObject()).ToArray());
+            return new CombinedState(_states.Select(p => (IBindableState)p.CloneWithoutObject()).ToArray());
         }
 
         public override string ToString()

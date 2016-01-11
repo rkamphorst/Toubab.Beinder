@@ -7,16 +7,16 @@ using Toubab.Beinder.Valve;
 namespace Toubab.Beinder.Scanner
 {
 
-    public class CombinedScanner : IBindableScanner, IEnumerable<IBindableScanner>
+    public class CombinedScanner : IScanner, IEnumerable<IScanner>
     {
-        readonly LinkedList<IBindableScanner> _scanners = new LinkedList<IBindableScanner>();
+        readonly LinkedList<IScanner> _scanners = new LinkedList<IScanner>();
 
-        public void Add(IBindableScanner scanner)
+        public void Add(IScanner scanner)
         {
             _scanners.AddFirst(scanner);
         }
 
-        public IEnumerator<IBindableScanner> GetEnumerator()
+        public IEnumerator<IScanner> GetEnumerator()
         {
             return _scanners.GetEnumerator();
         }
@@ -44,7 +44,7 @@ namespace Toubab.Beinder.Scanner
                 {
                     var proparray = propgroup.Cast<IBindableState>().ToArray();
                     prop = proparray.Length > 1 
-                        ? new AggregateBindableState(proparray) 
+                        ? new CombinedState(proparray) 
                         : proparray[0];
                     yield return prop;
                 }

@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Scanner
 {
 
     /// <summary>
     /// Interface for a property scanner of object instances.
     /// </summary>
-    public interface IBindableScanner
+    public interface IScanner
     {
         /// <summary>
         /// Scan the specified object and enumerate the properties

@@ -34,7 +34,7 @@ namespace Toubab.Beinder
 
         }
 
-        public Binder(params IBindableScanner[] bindableScanners)
+        public Binder(params IScanner[] bindableScanners)
         {
             var combinedScanner = new CombinedScanner();
             foreach (var ps in bindableScanners)
@@ -200,7 +200,7 @@ namespace Toubab.Beinder
 
         class BinderState
         {
-            public static BinderState FromScan(IBindableScanner scanner, IEnumerable<object> objects)
+            public static BinderState FromScan(IScanner scanner, IEnumerable<object> objects)
             {
                 return new BinderState(
                     objects

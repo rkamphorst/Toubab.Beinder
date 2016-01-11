@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Scanner
 {
     public abstract class TypeProperty : IBindableState
     {
