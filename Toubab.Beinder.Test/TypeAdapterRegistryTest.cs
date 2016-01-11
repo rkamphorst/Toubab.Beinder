@@ -1,8 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using Toubab.Beinder.Mocks;
+using Toubab.Beinder.Mock;
 using System.Linq;
-using Toubab.Beinder.Mocks.Fruits;
+using Toubab.Beinder.Mock.Fruit;
 
 namespace Toubab.Beinder
 {

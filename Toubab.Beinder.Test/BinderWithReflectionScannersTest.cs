@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
 using Toubab.Beinder.Scanner;
-using Toubab.Beinder.Mocks;
+using Toubab.Beinder.Mock;
 using System.Linq;
+using Toubab.Beinder.Mock.Abcd;
 
 namespace Toubab.Beinder
 {

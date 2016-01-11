@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Toubab.Beinder.Mocks;
+using Toubab.Beinder.Mock;
 
 namespace Toubab.Beinder
 {
