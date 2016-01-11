@@ -3,16 +3,16 @@ using NUnit.Framework;
 using Toubab.Beinder.Mocks;
 using System.Linq;
 
-namespace Toubab.Beinder.PropertyScanners
+namespace Toubab.Beinder.Scanner
 {
 
     [TestFixture]
-    public class ReflectionPropertyScannerTest
+    public class ReflectionScannerTest
     {
         [Test]
         public void ScanProperties() {
             // Arrange
-            var scanner = new ReflectionPropertyScanner();
+            var scanner = new ReflectionScanner();
 
             // Act
             var result = scanner.Scan(typeof(ClassWithPropertyAndEvents)).ToArray();
@@ -27,7 +27,7 @@ namespace Toubab.Beinder.PropertyScanners
         public void ValueIsSetAndEventIsRaised() 
         {
             // Arrange
-            var scanner = new ReflectionPropertyScanner();
+            var scanner = new ReflectionScanner();
             object newValue = null;
             var property = scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (PropertyPath) "property"));

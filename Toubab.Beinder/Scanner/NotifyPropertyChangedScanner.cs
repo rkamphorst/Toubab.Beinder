@@ -6,10 +6,10 @@ using System.ComponentModel;
 using Toubab.Beinder.PropertyPathParsers;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder.PropertyScanners
+namespace Toubab.Beinder.Scanner
 {
 
-    public class NotifyPropertyChangedPropertyScanner : TypePropertyScanner
+    public class NotifyPropertyChangedScanner : TypePropertyScanner
     {
      
         IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();

@@ -167,12 +167,12 @@ property comes from. There are two standard ways in order to do this:
 
 1. Implement `INotifyPropertyChanged` on the objects you want to bind.    
    See also
-   [NotifyPropertyChangedPropertyScanner](Toubab.Beinder/PropertyScanners/NotifyPropertyChangedPropertyScanner.cs).
+   [NotifyPropertyChangedScanner](Toubab.Beinder/PropertyScanners/NotifyPropertyChangedScanner.cs).
 2. Implement an event (handler type `EventHandler`) for each property you wan to bind, 
    with the same name, but postfixed with "Changed". Raise it whenever the property is 
    set with a new value.    
    See also
-   [ReflectionPropertyScanner](Toubab.Beinder/PropertyScanners/ReflectionPropertyScanner.cs).
+   [ReflectionScanner](Toubab.Beinder/PropertyScanners/ReflectionScanner.cs).
 
 ### Dynamic rebinding
 

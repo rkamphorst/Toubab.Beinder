@@ -5,9 +5,9 @@ using Toubab.Beinder.PropertyPathParsers;
 using System.Collections.Specialized;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder.PropertyScanners
+namespace Toubab.Beinder.Scanner
 {
-    public class DictionaryPropertyScanner : IBindableScanner
+    public class DictionaryScanner : IBindableScanner
     {
         IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();
 

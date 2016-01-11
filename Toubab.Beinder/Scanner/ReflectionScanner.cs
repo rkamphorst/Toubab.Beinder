@@ -5,10 +5,10 @@ using System.Linq;
 using Toubab.Beinder.PropertyPathParsers;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder.PropertyScanners
+namespace Toubab.Beinder.Scanner
 {
 
-    public class ReflectionPropertyScanner : TypePropertyScanner
+    public class ReflectionScanner : TypePropertyScanner
     {
         IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();
 

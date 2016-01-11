@@ -3,15 +3,15 @@ using NUnit.Framework;
 using Toubab.Beinder.Mocks;
 using System.Linq;
 
-namespace Toubab.Beinder.PropertyScanners
+namespace Toubab.Beinder.Scanner
 {
     [TestFixture]
-    public class NotifyPropertyChangedPropertyScannerTest
+    public class NotifyPropertyChangedScannerTest
     {
         [Test]
         public void ScanProperties() {
             // Arrange
-            var scanner = new NotifyPropertyChangedPropertyScanner();
+            var scanner = new NotifyPropertyChangedScanner();
 
             // Act
             var result = scanner.Scan(typeof(NotifyPropertyChangedClass)).ToArray();
@@ -26,7 +26,7 @@ namespace Toubab.Beinder.PropertyScanners
         public void ValueIsSetAndEventIsRaised() 
         {
             // Arrange
-            var scanner = new NotifyPropertyChangedPropertyScanner();
+            var scanner = new NotifyPropertyChangedScanner();
             object newValue = null;
             var property = scanner.Scan(typeof(NotifyPropertyChangedClass))
                 .FirstOrDefault(p => Equals(p.Path, (PropertyPath) "property"));

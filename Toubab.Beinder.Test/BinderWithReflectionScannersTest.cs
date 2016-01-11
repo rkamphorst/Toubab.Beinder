@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Toubab.Beinder.PropertyScanners;
+using Toubab.Beinder.Scanner;
 using Toubab.Beinder.Mocks;
 using System.Linq;
 
@@ -15,7 +15,7 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new NotifyPropertyChangedClass();
             var ob2 = new NotifyPropertyChangedClass();
             _bindings = bnd.Bind(new object[] { ob1, ob2 });
@@ -34,7 +34,7 @@ namespace Toubab.Beinder
             {
                 // Arrange
                 var bnd = new Binder();
-                bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+                bnd.Scanner.Add(new NotifyPropertyChangedScanner());
                 var ob1 = new NotifyPropertyChangedClass();
                 var ob2 = new NotifyPropertyChangedClass();
                 var ob3 = new NotifyPropertyChangedClass();
@@ -53,7 +53,7 @@ namespace Toubab.Beinder
             {
                 // Arrange
                 var bnd = new Binder();
-                bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+                bnd.Scanner.Add(new NotifyPropertyChangedScanner());
                 var ob1 = new NotifyPropertyChangedClass();
                 var ob2 = new NotifyPropertyChangedClass();
                 var ob3 = new NotifyPropertyChangedClass();
@@ -72,7 +72,7 @@ namespace Toubab.Beinder
             {
                 // Arrange
                 var bnd = new Binder();
-                bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+                bnd.Scanner.Add(new NotifyPropertyChangedScanner());
                 var ob1 = new NotifyPropertyChangedClass();
                 var ob2 = new NotifyPropertyChangedClass();
                 var ob3 = new NotifyPropertyChangedClass();
@@ -94,8 +94,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new ClassWithPropertyAndEvents();
             var ob2 = new ClassWithPropertyAndEvents();
             _bindings = bnd.Bind(new object[] { ob1, ob2 });
@@ -113,8 +113,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new ClassWithPropertyAndEvents();
             var ob2 = new NotifyPropertyChangedClass();
             _bindings = bnd.Bind(new object[] { ob1, ob2 });
@@ -132,8 +132,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new NotifyPropertyChangedClass();
             var ob2 = new ClassWithPropertyAndEvents();
             _bindings = bnd.Bind(new object[] { ob1, ob2 });
@@ -151,8 +151,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new Abcd1();
             var ob2 = new Abcd2();
             var ob3 = new Abcd3();
@@ -173,8 +173,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new Abcd1();
             var ob2 = new Abcd2();
             var ob3 = new Abcd3();
@@ -205,8 +205,8 @@ namespace Toubab.Beinder
             // Arrange
             int ob1cnt = 0, ob2cnt = 0;
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new NotifyPropertyChangedClass();
             var ob2 = new ClassWithPropertyAndEvents();
             ob1.PropertyChanged += delegate
@@ -235,8 +235,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
             var vm = new MockViewModel();
             _bindings = bnd.Bind(new object[] { vm, view });
@@ -256,8 +256,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
             var vm = new MockViewModel();
             _bindings = bnd.Bind(new object[] { vm, view });
@@ -277,8 +277,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
             var vm = new MockViewModel();
             _bindings = bnd.Bind(new object[] { vm, view });
@@ -301,8 +301,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
             var vm = new MockViewModel2 { Control = new MockControlViewModel("VmOrig") };
             _bindings = bnd.Bind(new object[] { vm, view });
@@ -325,8 +325,8 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder();
-            bnd.Scanner.Add(new ReflectionPropertyScanner());
-            bnd.Scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            bnd.Scanner.Add(new ReflectionScanner());
+            bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") { Text = "Appel", Size = 100 } };
             var viewCtl = view.Control;
             var vm = new MockView { Control = new MockControl("VmOrig") { Text = "Peer", Size = 200 } };

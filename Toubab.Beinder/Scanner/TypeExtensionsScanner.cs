@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder.PropertyScanners
+namespace Toubab.Beinder.Scanner
 {
     public class TypeExtensionsScanner : IBindableScanner
     {

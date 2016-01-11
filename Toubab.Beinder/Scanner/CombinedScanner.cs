@@ -4,10 +4,10 @@ using System.Linq;
 using System.Collections;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder.PropertyScanners
+namespace Toubab.Beinder.Scanner
 {
 
-    public class CombinedBindableScanner : IBindableScanner, IEnumerable<IBindableScanner>
+    public class CombinedScanner : IBindableScanner, IEnumerable<IBindableScanner>
     {
         readonly LinkedList<IBindableScanner> _scanners = new LinkedList<IBindableScanner>();
 

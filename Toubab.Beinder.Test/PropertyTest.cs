@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Toubab.Beinder.PropertyScanners;
+using Toubab.Beinder.Scanner;
 using Toubab.Beinder.Mocks;
 using Toubab.Beinder.Valve;
 
@@ -40,7 +40,7 @@ namespace Toubab.Beinder
         public void NotifyPropertyChangedPropertyClone()
         {
             int cnt = 0;
-            var props = new NotifyPropertyChangedPropertyScanner().Scan(typeof(NotifyPropertyChangedClass));
+            var props = new NotifyPropertyChangedScanner().Scan(typeof(NotifyPropertyChangedClass));
             foreach (var prop in props)
             {
                 object o1 = new NotifyPropertyChangedClass();
@@ -57,7 +57,7 @@ namespace Toubab.Beinder
         public void ReflectionPropertyClone()
         {
             int cnt = 0;
-            var props = new ReflectionPropertyScanner().Scan(typeof(MockView));
+            var props = new ReflectionScanner().Scan(typeof(MockView));
             foreach (var prop in props)
             {
                 object o1 = new MockView();
@@ -74,9 +74,9 @@ namespace Toubab.Beinder
         public void AggregatePropertyClone()
         {
             int cnt = 0;
-            var scanner = new CombinedBindableScanner();
-            scanner.Add(new ReflectionPropertyScanner());
-            scanner.Add(new NotifyPropertyChangedPropertyScanner());
+            var scanner = new CombinedScanner();
+            scanner.Add(new ReflectionScanner());
+            scanner.Add(new NotifyPropertyChangedScanner());
             var props = scanner.Scan(typeof(MockView));
             foreach (var prop in props)
             {

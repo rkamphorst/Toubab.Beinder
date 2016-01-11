@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Toubab.Beinder.PropertyScanners;
+using Toubab.Beinder.Scanner;
 using System;
 using System.Collections;
 using Toubab.Beinder.Valve;
@@ -10,25 +10,25 @@ namespace Toubab.Beinder
 
     public class Binder
     {
-        public static CombinedBindableScanner CreateDefaultPropertyScanner()
+        public static CombinedScanner CreateDefaultPropertyScanner()
         {
-            var result = new CombinedBindableScanner();
-            result.Add(new ReflectionPropertyScanner());
-            result.Add(new NotifyPropertyChangedPropertyScanner());
-            result.Add(new DictionaryPropertyScanner());
+            var result = new CombinedScanner();
+            result.Add(new ReflectionScanner());
+            result.Add(new NotifyPropertyChangedScanner());
+            result.Add(new DictionaryScanner());
             result.Add(new TypeExtensionsScanner(result));
             result.Add(new CustomBindableScanner());
             return result;
         }
 
-        readonly CombinedBindableScanner _propertyScanner;
+        readonly CombinedScanner _propertyScanner;
 
         public Binder()
             : this(CreateDefaultPropertyScanner())
         {
         }
 
-        public Binder(CombinedBindableScanner propertyScanner)
+        public Binder(CombinedScanner propertyScanner)
         {
             _propertyScanner = propertyScanner;
 
@@ -36,10 +36,10 @@ namespace Toubab.Beinder
 
         public Binder(params IBindableScanner[] bindableScanners)
         {
-            var combinedScanner = new CombinedBindableScanner();
+            var combinedScanner = new CombinedScanner();
             foreach (var ps in bindableScanners)
             {
-                var cps = ps as CombinedBindableScanner;
+                var cps = ps as CombinedScanner;
                 if (cps != null)
                 {
                     foreach (var ps2 in cps)
@@ -55,7 +55,7 @@ namespace Toubab.Beinder
             _propertyScanner = combinedScanner;
         }
 
-        public CombinedBindableScanner Scanner { get { return _propertyScanner; } }
+        public CombinedScanner Scanner { get { return _propertyScanner; } }
 
         public IBindings Bind(params object[] objects)
         {
