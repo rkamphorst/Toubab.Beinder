@@ -89,19 +89,19 @@ namespace Toubab.Beinder
             {
                 if (valveParams.BindableStates != null)
                 {
-                var newValve = new StateValve();
-                foreach (var entry in valveParams.BindableStates)
-                {
+                    var newValve = new StateValve();
+                    foreach (var entry in valveParams.BindableStates)
+                    {
                         var newState = (IBindableState)entry.Bindable.CloneWithoutObject();
                         newState.SetObject(entry.Object);
                         newValve.Add(newState);
+                    }
+                    newValve.Activate(activator);
+
+                    BindChildValves(newValve, activator, valveParams.ExternalState);
+
+                    resultList.Add(newValve);
                 }
-                newValve.Activate(activator);
-
-                BindChildValves(newValve, activator, valveParams.ExternalState);
-
-                resultList.Add(newValve);
-            }
                 if (valveParams.BindableBroadcasts != null)
                 {
                     var newValve = new BroadcastValve();
@@ -251,23 +251,34 @@ namespace Toubab.Beinder
                 var relativeBindables = new BinderState();
                 if (states.Count >= 1)
                 {
-                while (_list.Count > 0)
+                    while (_list.Count > 0)
+                    {
+                        var rebased = _list.First.Value.RelativeTo(firstPath);
+                        if (!rebased.HasValue)
+                            break;
+
+                        relativeBindables._list.AddLast(rebased.Value);
+                        _list.RemoveFirst();
+                    }
+                }
+
+                if (states.Count < 2 && relativeBindables._list.Count == 0)
                 {
-                    var rebased = _list.First.Value.RelativeTo(firstPath);
-                    if (!rebased.HasValue)
-                        break;
-
-                    relativeBindables._list.AddLast(rebased.Value);
-                    _list.RemoveFirst();
-                }
+                    states = null;
                 }
 
-                if (_list.Count > 0 && broadcasts.Count < 2 && states.Count < 2 && relativeBindables._list.Count == 0)
+                if (numBcConsumers == 0 || numBcProducers == 0)
+                {
+                    broadcasts = null;
+                }
+
+                if (_list.Count > 0 && states == null && broadcasts == null)
                 {
                     return PopValveParameters(out result);
                 }
                 result = new ValveParameters(states, broadcasts, relativeBindables);
-                return (broadcasts.Count >=2 || states.Count >= 2 || relativeBindables._list.Count > 0);
+
+                return states != null || broadcasts != null;
             }
 
             public void Merge(BinderState toMerge)
