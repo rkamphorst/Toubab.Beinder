@@ -92,7 +92,7 @@ namespace Toubab.Beinder
                 prop.SetObject(value);
         }
 
-        public PropertyPath Path
+        public Path Path
         {
             get
             {

@@ -76,7 +76,7 @@ namespace Toubab.Beinder.Scanner
                 get { return _object; }
             }
 
-            public PropertyPath Path
+            public Path Path
             {
                 get
                 {

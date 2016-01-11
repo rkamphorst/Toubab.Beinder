@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Toubab.Beinder.PropertyPathParsers;
+using Toubab.Beinder.PathParser;
 using System.Collections.Specialized;
 using Toubab.Beinder.Valve;
 
@@ -9,9 +9,9 @@ namespace Toubab.Beinder.Scanner
 {
     public class DictionaryScanner : IBindableScanner
     {
-        IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();
+        IPathParser _pathParser = new CamelCasePathParser();
 
-        public IPropertyPathParser PathParser
+        public IPathParser PathParser
         { 
             get { return _pathParser; }
             set { _pathParser = value; }
@@ -32,16 +32,16 @@ namespace Toubab.Beinder.Scanner
         class DictionaryEntryProperty : IBindableState
         {
             readonly string _key;
-            readonly PropertyPath _propertyPath;
+            readonly Path _propertyPath;
             Dictionary<string,object> _object;
 
-            public DictionaryEntryProperty(string key, IPropertyPathParser pathParser)
+            public DictionaryEntryProperty(string key, IPathParser pathParser)
             {
                 _propertyPath = pathParser.Parse(key);
                 _key = key;
             }
 
-            DictionaryEntryProperty(string key, PropertyPath path)
+            DictionaryEntryProperty(string key, Path path)
             {
                 _propertyPath = path;
                 _key = key;
@@ -120,7 +120,7 @@ namespace Toubab.Beinder.Scanner
 
             }
 
-            public PropertyPath Path
+            public Path Path
             {
                 get
                 {

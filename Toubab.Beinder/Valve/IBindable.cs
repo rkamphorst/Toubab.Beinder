@@ -47,7 +47,7 @@ namespace Toubab.Beinder.Valve
         /// this path to get access to the bindable property, event or event handler.
         /// </remarks>
         /// <seealso cref="PropertyPath"/>
-        PropertyPath Path { get; }
+        Path Path { get; }
 
         /// <summary>
         /// Makes an independent copy of this property, without attaching an 

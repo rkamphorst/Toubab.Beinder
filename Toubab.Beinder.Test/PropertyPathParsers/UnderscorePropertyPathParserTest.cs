@@ -1,17 +1,17 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Toubab.Beinder.PropertyPathParsers
+namespace Toubab.Beinder.PathParser
 {
     [TestFixture]
     public class UnderscorePropertyPathParserTest
     {
-        UnderscorePropertyPathParser _parser;
+        UnderscorePathParser _parser;
 
         [SetUp]
         public void Setup()
         {
-            _parser = new UnderscorePropertyPathParser();    
+            _parser = new UnderscorePathParser();    
         }
 
         [Test]
@@ -19,7 +19,7 @@ namespace Toubab.Beinder.PropertyPathParsers
         {
             {
                 // Act
-                PropertyPath result = _parser.Parse("Property");
+                Path result = _parser.Parse("Property");
 
                 // Assert
                 Assert.AreEqual("property", result.ToString());
@@ -27,7 +27,7 @@ namespace Toubab.Beinder.PropertyPathParsers
 
             {
                 // Act
-                PropertyPath result = _parser.Parse("property");
+                Path result = _parser.Parse("property");
 
                 // Assert
                 Assert.AreEqual("property", result.ToString());
@@ -39,7 +39,7 @@ namespace Toubab.Beinder.PropertyPathParsers
         {
             {
                 // Act
-                PropertyPath result = _parser.Parse("Property_Property_Property");
+                Path result = _parser.Parse("Property_Property_Property");
 
                 // Assert
                 Assert.AreEqual("property/property/property", result.ToString());
@@ -47,7 +47,7 @@ namespace Toubab.Beinder.PropertyPathParsers
 
             {
                 // Act
-                PropertyPath result = _parser.Parse("property_property_property");
+                Path result = _parser.Parse("property_property_property");
 
                 // Assert
                 Assert.AreEqual("property/property/property", result.ToString());
@@ -59,7 +59,7 @@ namespace Toubab.Beinder.PropertyPathParsers
         {
             {
                 // Act
-                PropertyPath result = _parser.Parse("XYZProperty_Property_Property");
+                Path result = _parser.Parse("XYZProperty_Property_Property");
 
                 // Assert
                 Assert.AreEqual("xyzproperty/property/property", result.ToString());

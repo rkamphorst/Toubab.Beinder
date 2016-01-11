@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using Toubab.Beinder.PropertyPathParsers;
+using Toubab.Beinder.PathParser;
 using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.Scanner
@@ -10,9 +10,9 @@ namespace Toubab.Beinder.Scanner
 
     public class ReflectionScanner : TypePropertyScanner
     {
-        IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();
+        IPathParser _pathParser = new CamelCasePathParser();
 
-        public IPropertyPathParser PathParser
+        public IPathParser PathParser
         { 
             get { return _pathParser; }
             set { _pathParser = value; }
@@ -37,7 +37,7 @@ namespace Toubab.Beinder.Scanner
             readonly EventInfo _event;
             readonly EventHandler _onValueChanged;
 
-            public ReflectionTypeProperty(IPropertyPathParser pathParser, PropertyInfo property, EventInfo evt)
+            public ReflectionTypeProperty(IPathParser pathParser, PropertyInfo property, EventInfo evt)
                 : base(pathParser, property)
             {
                 if (evt != null && evt.EventHandlerType == typeof(EventHandler))

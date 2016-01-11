@@ -7,9 +7,9 @@ namespace Toubab.Beinder
     public abstract class TypeProperty : IBindableState
     {
         protected readonly PropertyInfo _propertyInfo;
-        protected readonly IPropertyPathParser _pathParser;
+        protected readonly IPathParser _pathParser;
 
-        protected TypeProperty(IPropertyPathParser pathParser, PropertyInfo property)
+        protected TypeProperty(IPathParser pathParser, PropertyInfo property)
         {
             _propertyInfo = property;
             _pathParser = pathParser;
@@ -47,9 +47,9 @@ namespace Toubab.Beinder
                 AttachObjectPropertyChangeEvent(t);
         }
 
-        PropertyPath _path;
+        Path _path;
 
-        public PropertyPath Path
+        public Path Path
         {
             get
             { 

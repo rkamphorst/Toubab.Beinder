@@ -43,7 +43,7 @@ namespace Toubab.Beinder.Mocks
             Object = value;
         }
 
-        public PropertyPath Path
+        public Path Path
         {
             get { return "abc"; }
         }

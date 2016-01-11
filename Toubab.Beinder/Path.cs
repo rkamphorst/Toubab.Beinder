@@ -3,30 +3,30 @@ using System.Linq;
 
 namespace Toubab.Beinder
 {
-    public class PropertyPath : IComparable<PropertyPath>
+    public class Path : IComparable<Path>
     {
         readonly string[] _fragments;
 
-        public PropertyPath(params PropertyPath[] paths)
+        public Path(params Path[] paths)
         {
             _fragments = paths.SelectMany(p => p._fragments).ToArray();
         }
 
-        public PropertyPath(params string[] fragments)
+        public Path(params string[] fragments)
         {
             _fragments = fragments;
         }
 
-        public bool MatchesStartOf(PropertyPath other)
+        public bool MatchesStartOf(Path other)
         {
             return CalculateMatchSize(this, other) == _fragments.Length;
         }
 
-        public PropertyPath RelativeTo(PropertyPath other)
+        public Path RelativeTo(Path other)
         {
             if (other.MatchesStartOf(this))
             {
-                return new PropertyPath(_fragments.Skip(other._fragments.Length).ToArray());
+                return new Path(_fragments.Skip(other._fragments.Length).ToArray());
             }
             else
             {
@@ -34,12 +34,12 @@ namespace Toubab.Beinder
             }
         }
 
-        public int CompareTo(PropertyPath other)
+        public int CompareTo(Path other)
         {
             return Compare(this, other);
         }
 
-        public static int Compare(PropertyPath path1, PropertyPath path2)
+        public static int Compare(Path path1, Path path2)
         {
             int len1 = path1._fragments.Length;
             int len2 = path2._fragments.Length;
@@ -58,7 +58,7 @@ namespace Toubab.Beinder
             return 0;
         }
 
-        static int CalculateMatchSize(PropertyPath path1, PropertyPath path2)
+        static int CalculateMatchSize(Path path1, Path path2)
         {
             // fIdx: fragment index
             int fIdx;
@@ -74,7 +74,7 @@ namespace Toubab.Beinder
 
         public override bool Equals(object obj)
         {
-            var other = obj as PropertyPath;
+            var other = obj as Path;
             if (other != null)
             {
                 return this.CompareTo(other) == 0;
@@ -101,24 +101,24 @@ namespace Toubab.Beinder
             return string.Join("/", _fragments);
         }
 
-        public static PropertyPath Add(PropertyPath path1, PropertyPath path2)
+        public static Path Add(Path path1, Path path2)
         {
-            return new PropertyPath(path1, path2);
+            return new Path(path1, path2);
         }
 
-        public static PropertyPath operator +(PropertyPath path1, PropertyPath path2)
+        public static Path operator +(Path path1, Path path2)
         {
             return Add(path1, path2);
         }
 
-        public static implicit operator PropertyPath(string[] fragments)
+        public static implicit operator Path(string[] fragments)
         {
-            return new PropertyPath(fragments);
+            return new Path(fragments);
         }
 
-        public static implicit operator PropertyPath(string fragment)
+        public static implicit operator Path(string fragment)
         {
-            return new PropertyPath(fragment);
+            return new Path(fragment);
         }
     }
 

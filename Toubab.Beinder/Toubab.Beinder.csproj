@@ -34,11 +34,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeAdapterRegistry.cs" />
-    <Compile Include="PropertyPath.cs" />
-    <Compile Include="IPropertyPathParser.cs" />
     <Compile Include="Binder.cs" />
-    <Compile Include="PropertyPathParsers\UnderscorePropertyPathParser.cs" />
-    <Compile Include="PropertyPathParsers\CamelCasePropertyPathParser.cs" />
     <Compile Include="TypeProperty.cs" />
     <Compile Include="TypeAdapterFactory.cs" />
     <Compile Include="NamespaceAffinityComparer.cs" />
@@ -69,12 +65,16 @@
     <Compile Include="Scanner\ReflectionScanner.cs" />
     <Compile Include="Scanner\DictionaryScanner.cs" />
     <Compile Include="Scanner\CombinedScanner.cs" />
+    <Compile Include="IPathParser.cs" />
+    <Compile Include="Path.cs" />
+    <Compile Include="PathParser\CamelCasePathParser.cs" />
+    <Compile Include="PathParser\UnderscorePathParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="PropertyPathParsers\" />
     <Folder Include="Valve\" />
     <Folder Include="Scanner\" />
+    <Folder Include="PathParser\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime" />

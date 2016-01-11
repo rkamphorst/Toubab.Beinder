@@ -1,17 +1,17 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Toubab.Beinder.PropertyPathParsers
+namespace Toubab.Beinder.PathParser
 {
     [TestFixture]
     public class CamelCasePropertyPathParserTest
     {
-        CamelCasePropertyPathParser _parser;
+        CamelCasePathParser _parser;
 
         [SetUp]
         public void Setup()
         {
-            _parser = new CamelCasePropertyPathParser();    
+            _parser = new CamelCasePathParser();    
         }
 
         [Test]
@@ -19,7 +19,7 @@ namespace Toubab.Beinder.PropertyPathParsers
         {
             {
                 // Act
-                PropertyPath result = _parser.Parse("Property");
+                Path result = _parser.Parse("Property");
 
                 // Assert
                 Assert.AreEqual("property", result.ToString());
@@ -27,7 +27,7 @@ namespace Toubab.Beinder.PropertyPathParsers
 
             {
                 // Act
-                PropertyPath result = _parser.Parse("property");
+                Path result = _parser.Parse("property");
 
                 // Assert
                 Assert.AreEqual("property", result.ToString());
@@ -38,7 +38,7 @@ namespace Toubab.Beinder.PropertyPathParsers
         public void ParsePropertyCamelCased()
         {
             // Act
-            PropertyPath result = _parser.Parse("PropertyPropertyProperty");
+            Path result = _parser.Parse("PropertyPropertyProperty");
 
             // Assert
             Assert.AreEqual("property/property/property", result.ToString());
@@ -48,7 +48,7 @@ namespace Toubab.Beinder.PropertyPathParsers
         public void ParsePropertyUpperAndCamelCased()
         {
             // Act
-            PropertyPath result = _parser.Parse("XYZPropertyPropertyProperty");
+            Path result = _parser.Parse("XYZPropertyPropertyProperty");
 
             // Assert
             Assert.AreEqual("xyzproperty/property/property", result.ToString());

@@ -152,11 +152,11 @@ namespace Toubab.Beinder
         struct CandidateBindable
         {
             public CandidateBindable(object obj, IBindable property)
-                : this(obj, property, new PropertyPath(property.Path))
+                : this(obj, property, new Path(property.Path))
             {
             }
 
-            CandidateBindable(object obj, IBindable bindable, PropertyPath path)
+            CandidateBindable(object obj, IBindable bindable, Path path)
             {
                 Object = obj;
                 Bindable = bindable;
@@ -165,11 +165,11 @@ namespace Toubab.Beinder
 
             public IBindable Bindable { get; private set; }
 
-            public PropertyPath RelativePath { get; private set; }
+            public Path RelativePath { get; private set; }
 
             public object Object { get; private set; }
 
-            public CandidateBindable? RelativeTo(PropertyPath basePath)
+            public CandidateBindable? RelativeTo(Path basePath)
             {
                 var newPath = RelativePath.RelativeTo(basePath);
                 return newPath != null ? (CandidateBindable?)new CandidateBindable(Object, Bindable, newPath) : null;

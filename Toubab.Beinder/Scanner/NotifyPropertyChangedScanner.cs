@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.ComponentModel;
-using Toubab.Beinder.PropertyPathParsers;
+using Toubab.Beinder.PathParser;
 using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.Scanner
@@ -12,9 +12,9 @@ namespace Toubab.Beinder.Scanner
     public class NotifyPropertyChangedScanner : TypePropertyScanner
     {
      
-        IPropertyPathParser _pathParser = new CamelCasePropertyPathParser();
+        IPathParser _pathParser = new CamelCasePathParser();
 
-        public IPropertyPathParser PathParser
+        public IPathParser PathParser
         { 
             get { return _pathParser; }
             set { _pathParser = value; }
@@ -43,7 +43,7 @@ namespace Toubab.Beinder.Scanner
 
         class NotifyPropertyChangedTypeProperty : TypeProperty
         {
-            public NotifyPropertyChangedTypeProperty(IPropertyPathParser pathParser, PropertyInfo property)
+            public NotifyPropertyChangedTypeProperty(IPathParser pathParser, PropertyInfo property)
                 : base(pathParser, property)
             {
             }
