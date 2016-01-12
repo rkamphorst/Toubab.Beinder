@@ -65,10 +65,13 @@
     <Compile Include="PathParser\CamelCasePathParser.cs" />
     <Compile Include="PathParser\UnderscorePathParser.cs" />
     <Compile Include="Scanner\TypePropertyScanner.cs" />
-    <Compile Include="Scanner\TypeProperty.cs" />
     <Compile Include="IScanner.cs" />
     <Compile Include="IPathParser.cs" />
     <Compile Include="Scanner\CombinedState.cs" />
+    <Compile Include="Scanner\ReflectedBindable.cs" />
+    <Compile Include="Scanner\ReflectedEvent.cs" />
+    <Compile Include="Scanner\ReflectedEventHandler.cs" />
+    <Compile Include="Scanner\TypeProperty.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

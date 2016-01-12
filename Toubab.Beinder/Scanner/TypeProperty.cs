@@ -1,9 +1,11 @@
 using System;
 using System.Reflection;
 using Toubab.Beinder.Valve;
+using System.Linq;
 
 namespace Toubab.Beinder.Scanner
 {
+
     public abstract class TypeProperty : IBindableState
     {
         protected readonly PropertyInfo _propertyInfo;
