@@ -36,11 +36,11 @@ namespace Toubab.Beinder.Scanner
             property.Broadcast += (sender, e) => newValue = e.Argument;
 
             // Act
-            property.TryHandleBroadcast("asdf");
+            property.TryHandleBroadcast(new object[] { "asdf" });
 
             // Assert
             Assert.AreEqual("asdf", ob.Property);
-            Assert.AreEqual("asdf", newValue);
+            Assert.AreEqual(new object[] {"asdf"}, newValue);
         }
     }
 

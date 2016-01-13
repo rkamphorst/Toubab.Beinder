@@ -16,28 +16,24 @@ namespace Toubab.Beinder.Scanner
             _parameterTypes = Member.GetParameters().Select(p => p.ParameterType).ToArray();
         }
 
-        ReflectedEventHandler(ReflectedEventHandler toCopy) 
+        ReflectedEventHandler(ReflectedEventHandler toCopy)
             : base(toCopy)
         {
             _parameterTypes = toCopy._parameterTypes;
         }
 
-        public override Type ValueType
+        public override Type[] ValueType
         {
             get
             {
-                return _parameterTypes.Length > 0 ? _parameterTypes[0] : null;
+                return _parameterTypes;
             }
         }
 
-        public bool TryHandleBroadcast(object argument)
+        public bool TryHandleBroadcast(object[] argument)
         {
-            var args = argument as object[];
-            if (args.Select(t => t.GetType()).SequenceEqual(_parameterTypes)) {
-                Member.Invoke(Object, args);
-                return true;
-            }
-            return false;
+            Member.Invoke(Object, argument);
+            return true;
         }
 
         public override IBindable CloneWithoutObject()

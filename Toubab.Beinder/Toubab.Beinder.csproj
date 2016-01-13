@@ -40,7 +40,6 @@
     <Compile Include="NamespaceSpecializationComparer.cs" />
     <Compile Include="NamespacePreferenceComparer.cs" />
     <Compile Include="IBindings.cs" />
-    <Compile Include="TypeUtilities.cs" />
     <Compile Include="TypeExtension.cs" />
     <Compile Include="ITypeExtension.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
@@ -72,12 +71,15 @@
     <Compile Include="Scanner\ReflectedEvent.cs" />
     <Compile Include="Scanner\ReflectedEventHandler.cs" />
     <Compile Include="Scanner\TypeProperty.cs" />
+    <Compile Include="Util\TypeUtilities.cs" />
+    <Compile Include="Util\EnumerableUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Valve\" />
     <Folder Include="Scanner\" />
     <Folder Include="PathParser\" />
+    <Folder Include="Util\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime" />

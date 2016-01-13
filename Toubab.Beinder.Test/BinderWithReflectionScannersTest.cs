@@ -151,7 +151,7 @@ namespace Toubab.Beinder
         public void BindDifferentlyDistributedObjectHierarchiesChangeChild()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new Abcd1();

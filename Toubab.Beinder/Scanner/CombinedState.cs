@@ -27,7 +27,7 @@ namespace Toubab.Beinder.Scanner
             }
         }
 
-        void OnBroadcast(object argument)
+        void OnBroadcast(object[] argument)
         {
             if (Broadcast != null)
                 Broadcast(this, new BindableBroadcastEventArgs(this, argument));
@@ -36,11 +36,11 @@ namespace Toubab.Beinder.Scanner
         public event EventHandler<BindableBroadcastEventArgs> Broadcast;
 
 
-        public Type ValueType { get { return _states[0].ValueType; } }
+        public Type[] ValueType { get { return _states[0].ValueType; } }
 
-        object _value;
+        object[] _value;
 
-        public object Value
+        public object[] Value
         {
             get
             {
@@ -49,13 +49,13 @@ namespace Toubab.Beinder.Scanner
             }
         }
 
-        public bool TryHandleBroadcast(object argument)
+        public bool TryHandleBroadcast(object[] argument)
         {
             // first, make sure _value is up to date
             _value = _states[0].Value;
 
             // if new value equals old value, do nothing.
-            if (Equals(_value, argument))
+            if (_value.SequenceEqual(argument))
                 return false;
 
             // prevent lots of events from propagating

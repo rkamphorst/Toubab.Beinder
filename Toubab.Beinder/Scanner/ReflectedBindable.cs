@@ -56,7 +56,7 @@ namespace Toubab.Beinder.Scanner
         protected virtual void AfterSetObject(object oldValue, object newValue) {
         }
 
-        public abstract Type ValueType { get; }
+        public abstract Type[] ValueType { get; }
 
         public abstract IBindable CloneWithoutObject();
 

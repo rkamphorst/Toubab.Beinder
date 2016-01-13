@@ -46,7 +46,6 @@ namespace Toubab.Beinder.Scanner
                     prop = proparray.Length > 1 
                         ? new CombinedState(proparray) 
                         : proparray[0];
-                    yield return prop;
                 }
                 else 
                 {

@@ -69,51 +69,56 @@ namespace Toubab.Beinder
             return new Bindings(Bind(objectArray, activator, null));
         }
 
+        BroadcastValve[] BindMultiple(object[][] objectss, object[] activators, object parentActivator, BinderState externalState)
+        {
+            var results = new List<BroadcastValve[]>();
+            for (int i = 0; i < objectss.Length; i++)
+            {
+                var activator = (activators.Length > i ? activators[i] : parentActivator) ?? parentActivator;
+                results.Add(Bind(objectss[i], activator, externalState));
+            }
+            return results.SelectMany(r => r).ToArray();
+        }
+
         BroadcastValve[] Bind(object[] objects, object activator, BinderState externalState)
         {
             var resultList = new List<BroadcastValve>();
 
-            // entryList: list of Binder Entries, each holding an IProperty instance.
-            // The list is sorted on Path, which is important because
-            // the shortest property path will be on top, followed by the
-            // property paths that start with that path, and so on.
-            // Furthermore, all properties with the same paths will be next
-            // to each other in the list.
             var state = BinderState.FromScan(Scanner, objects);
-
             if (externalState != null)
                 state.Merge(externalState);
 
             ValveParameters valveParams;
             while (state.PopValveParameters(out valveParams))
             {
-                if (valveParams.BindableStates != null)
+                BroadcastValve newValve;
+
+                var bs = new List<IBindable>();
+                foreach (var c in valveParams.Bindables)
                 {
-                    var newValve = new StateValve();
-                    foreach (var entry in valveParams.BindableStates)
-                    {
-                        var newState = (IBindableState)entry.Bindable.CloneWithoutObject();
-                        newState.SetObject(entry.Object);
-                        newValve.Add(newState);
-                    }
-                    newValve.Activate(activator);
-
-                    BindChildValves(newValve, activator, valveParams.ExternalState);
-
-                    resultList.Add(newValve);
+                    var b = c.Bindable.CloneWithoutObject();
+                    b.SetObject(c.Object);
+                    bs.Add(b);
                 }
-                if (valveParams.BindableBroadcasts != null)
+
+                if (valveParams.ContainsState)
                 {
-                    var newValve = new BroadcastValve();
-                    foreach (var entry in valveParams.BindableBroadcasts)
-                    {
-                        var newBroadcast = entry.Bindable.CloneWithoutObject();
-                        newBroadcast.SetObject(entry.Object);
-                        newValve.Add(newBroadcast);
-                    }
-
-                    resultList.Add(newValve);
+                    var v = new StateValve();
+                    foreach (var b in bs)
+                        v.Add(b);
+                    v.Activate(activator);
+                    BindChildValves(v, activator, valveParams.ExternalState);
+                    newValve = v;
                 }
+                else
+                {
+                    var v = new BroadcastValve();
+                    foreach (var b in bs)
+                        v.Add(b);
+                    newValve = v;
+                }
+
+                resultList.Add(newValve);
             }
 
             return resultList.ToArray();
@@ -121,32 +126,29 @@ namespace Toubab.Beinder
 
         void BindChildValves(StateValve parentValve, object parentActivator, BinderState externalState)
         {
-            var childValves = Bind(
-                                  parentValve.GetValues(), 
-                                  GetChildActivator(parentActivator, parentValve, externalState), 
-                                  externalState
-                              );
-            parentValve.ValueChanged += (source, evt) =>
-            {
-                foreach (var cvalve in childValves)
-                    cvalve.Dispose();
-                childValves = Bind(parentValve.GetValues(), GetChildActivator(evt.Source.Object, parentValve, externalState), externalState);
-            };
-            parentValve.Disposing += delegate
-            {
-                foreach (var cvalve in childValves)
-                    cvalve.Dispose();
-            };
-        }
+            BroadcastValve[] childValves = null;
 
-        object GetChildActivator(object parentActivator, StateValve parentValve, BinderState externalState)
-        {
-            var activator = parentValve.GetValueForObject(parentActivator);
-            if (activator == null && externalState.ContainsPropertyForObject(parentActivator))
+            Action disposeChildValve = () =>
             {
-                return parentActivator;
-            } 
-            return activator;
+                foreach (var cvalve in childValves)
+                    cvalve.Dispose();
+            };
+
+            Func<object, BroadcastValve[]> recursiveBind = (pa) =>
+            {
+                var childObjects = parentValve.GetChildValveObjects();
+                var activators = parentValve.GetValueForObject(pa);
+                return BindMultiple(childObjects, activators, pa, externalState);
+            };
+
+            childValves = recursiveBind(parentActivator);
+            
+            parentValve.ValueChanged += (s, e) =>
+            {
+                disposeChildValve();
+                childValves = recursiveBind(e.Source.Object);
+            };
+            parentValve.Disposing += (s, e) => disposeChildValve();
         }
 
         struct CandidateBindable
@@ -184,16 +186,16 @@ namespace Toubab.Beinder
         struct ValveParameters
         {
 
-            public ValveParameters(IEnumerable<CandidateBindable> states, IEnumerable<CandidateBindable> broadcasts, BinderState relativeProperties)
+            public ValveParameters(IEnumerable<CandidateBindable> bindables, bool containsState, BinderState relativeProperties)
             {
-                BindableStates = states;
-                BindableBroadcasts = broadcasts;
+                Bindables = bindables;
                 ExternalState = relativeProperties;
+                ContainsState = containsState;
             }
 
-            public IEnumerable<CandidateBindable> BindableBroadcasts { get; private set; }
+            public bool ContainsState { get; set; }
 
-            public IEnumerable<CandidateBindable> BindableStates { get; private set; }
+            public IEnumerable<CandidateBindable> Bindables { get; private set; }
 
             public BinderState ExternalState { get; private set; }
         }
@@ -204,6 +206,7 @@ namespace Toubab.Beinder
             {
                 return new BinderState(
                     objects
+                    .Where(o => o != null)
                     .SelectMany(o => scanner.Scan(o).Select(p => new CandidateBindable(o, p)))
                     .OrderBy(be => be.RelativePath)
                 );
@@ -225,31 +228,26 @@ namespace Toubab.Beinder
             {
                 var firstPath = _list.Count == 0 ? null : _list.First.Value.RelativePath;
 
-                var states = new LinkedList<CandidateBindable>();
-                var broadcasts = new LinkedList<CandidateBindable>();
-                int numBcConsumers = 0;
-                int numBcProducers = 0;
+                var bindables = new LinkedList<CandidateBindable>();
+                int numConsumers = 0;
+                int numProducers = 0;
+                int numStates = 0;
                 var first = _list.First;
                 while (first != null && first.Value.RelativePath.CompareTo(firstPath) == 0)
                 {
                     _list.RemoveFirst();
+                    if (first.Value.Bindable is IBindableBroadcastConsumer)
+                        numConsumers++;
+                    if (first.Value.Bindable is IBindableBroadcastProducer)
+                        numProducers++;
                     if (first.Value.Bindable is IBindableState)
-                    {
-                        states.AddLast(first);
-                    }
-                    else
-                    {
-                        if (first.Value.Bindable is IBindableBroadcastConsumer)
-                            numBcConsumers++;
-                        else if (first.Value.Bindable is IBindableBroadcastProducer)
-                            numBcProducers++;
-                        broadcasts.AddLast(first);
-                    }
+                        numStates++;
+                    bindables.AddLast(first);
                     first = _list.First;
                 }
 
                 var relativeBindables = new BinderState();
-                if (states.Count >= 1)
+                if (numStates >= 1)
                 {
                     while (_list.Count > 0)
                     {
@@ -262,23 +260,18 @@ namespace Toubab.Beinder
                     }
                 }
 
-                if (states.Count < 2 && relativeBindables._list.Count == 0)
+                if (bindables.Count < 2 && relativeBindables._list.Count == 0)
                 {
-                    states = null;
+                    bindables = null;
                 }
 
-                if (numBcConsumers == 0 || numBcProducers == 0)
-                {
-                    broadcasts = null;
-                }
-
-                if (_list.Count > 0 && states == null && broadcasts == null)
+                if (_list.Count > 0 && bindables == null)
                 {
                     return PopValveParameters(out result);
                 }
-                result = new ValveParameters(states, broadcasts, relativeBindables);
+                result = new ValveParameters(bindables, numStates >= 1, relativeBindables);
 
-                return states != null || broadcasts != null;
+                return bindables != null;
             }
 
             public void Merge(BinderState toMerge)

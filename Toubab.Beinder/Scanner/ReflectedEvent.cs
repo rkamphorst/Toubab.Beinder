@@ -31,11 +31,11 @@ namespace Toubab.Beinder.Scanner
             _handleEventDelegate = toCopy._handleEventDelegate;
         }
 
-        public override Type ValueType
+        public override Type[] ValueType
         {
             get
             {
-                return _parameterTypes.Length > 0 ? _parameterTypes[0] : null;
+                return _parameterTypes;
             }
         }
 

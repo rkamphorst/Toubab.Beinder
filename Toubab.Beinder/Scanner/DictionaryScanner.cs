@@ -60,7 +60,7 @@ namespace Toubab.Beinder.Scanner
                 }
             }
 
-            void OnBroadcast(object argument)
+            void OnBroadcast(object[] argument)
             {
                 var e = Broadcast;
                 if (e != null)
@@ -69,22 +69,25 @@ namespace Toubab.Beinder.Scanner
 
             public event EventHandler<BindableBroadcastEventArgs> Broadcast;
 
-            public Type ValueType { get { return typeof(object); } }
+            public Type[] ValueType { get { return new[] { typeof(object) }; } }
 
-            public object Value
+            public object[] Value
             {
                 get
                 {
                     object result;
-                    return _object.TryGetValue(_key, out result) ? result : null;
+                    return _object.TryGetValue(_key, out result) ? new object[] { result } : new object[] { null };
                 }
             }
 
-            public bool TryHandleBroadcast(object argument)
+            public bool TryHandleBroadcast(object[] argument)
             { 
-                if (argument == null)
+                var value = argument[0];
+                if (value == null)
                     _object.Remove(_key);
-                _object[_key] = argument;
+                else
+                    _object[_key] = value;
+                
                 return true;
             }
 

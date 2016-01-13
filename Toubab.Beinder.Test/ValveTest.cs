@@ -21,11 +21,11 @@ namespace Toubab.Beinder
             v.Add(propc);
 
             // Act
-            propa.TryHandleBroadcast("banaan");
+            propa.TryHandleBroadcast(new object [] { "banaan" });
 
             // Assert
-            Assert.AreEqual("banaan", propb.Value);
-            Assert.AreEqual("banaan", propc.Value);
+            Assert.AreEqual(new object[] {"banaan"}, propb.Value);
+            Assert.AreEqual(new object[] {"banaan"}, propc.Value);
         }
 
         [Test]
@@ -41,8 +41,8 @@ namespace Toubab.Beinder
             v.Add(propc);
 
             // Act
-            propa.TryHandleBroadcast("banaan");
-            propb.TryHandleBroadcast("banaan");
+            propa.TryHandleBroadcast(new object[] {"banaan"});
+            propb.TryHandleBroadcast(new object[] {"banaan"});
 
             // Assert
             Assert.AreEqual(1, propa.Changed);

@@ -33,7 +33,7 @@ namespace Toubab.Beinder.Valve
         /// instances through binding (see <see cref="Binder.Bind"/> and
         /// <see cref="Valve"/>).
         /// </remarks>
-        object Value { get; }
+        object[] Value { get; }
     }
 
 }

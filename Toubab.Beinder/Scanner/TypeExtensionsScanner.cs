@@ -57,7 +57,7 @@ namespace Toubab.Beinder.Scanner
                 _object = newObject;
             }
 
-            public bool TryHandleBroadcast(object newValue)
+            public bool TryHandleBroadcast(object[] newValue)
             {
                 return _property.TryHandleBroadcast(newValue);
             }
@@ -84,14 +84,14 @@ namespace Toubab.Beinder.Scanner
                 }
             }
 
-            public Type ValueType { get { return _property.ValueType; } }
+            public Type[] ValueType { get { return _property.ValueType; } }
 
-            public object Value
+            public object[] Value
             {
                 get
                 {
                     var t = Object;
-                    return t == null ? null : _property.Value;
+                    return t == null ? new object[] { null } : _property.Value;
                 }
             }
 

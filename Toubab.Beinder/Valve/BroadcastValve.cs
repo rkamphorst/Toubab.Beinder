@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace Toubab.Beinder.Valve
 {
@@ -91,12 +92,12 @@ namespace Toubab.Beinder.Valve
 
         #endregion
 
-        protected virtual bool Push(object source, object payload)
+        protected virtual bool Push(object source, object[] payload)
         {
             var srcProp = source as IBindableState;
             var payloadType = srcProp != null 
-                ? srcProp.ValueType.GetTypeInfo()
-                : payload == null ? null : payload.GetType().GetTypeInfo();
+                ? srcProp.ValueType.Select(t => t.GetTypeInfo()).ToArray()
+                : payload.Select(p => p == null ? null : p.GetType().GetTypeInfo()).ToArray();
 
             lock (_bindables)
             {
@@ -106,9 +107,11 @@ namespace Toubab.Beinder.Valve
                     var cons = prop as IBindableBroadcastConsumer;
                     if (cons != null && !ReferenceEquals(source, cons))
                     {
-                        var propValueType = cons.ValueType.GetTypeInfo();
-                        if (payloadType == null || propValueType.IsAssignableFrom(payloadType))
+                        var propValueType = cons.ValueType.Select(t => t.GetTypeInfo()).ToArray();
+                        if (propValueType.Select((t,i) => t.IsAssignableFrom(payloadType[i])).All(b => b))
                         {
+                            var broadcastParams = new object[propValueType.Length];
+                            Array.Copy(payload, broadcastParams, broadcastParams.Length);
                             valueWasBroadcast |= cons.TryHandleBroadcast(payload);
                         }
                     }

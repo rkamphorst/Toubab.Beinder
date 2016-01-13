@@ -35,7 +35,7 @@ namespace Toubab.Beinder.Valve
         /// <summary>
         /// Type of values that can be set
         /// </summary>
-        Type ValueType { get; } 
+        Type[] ValueType { get; } 
 
         /// <summary>
         /// Property path

@@ -61,9 +61,9 @@ namespace Toubab.Beinder.Scanner
             }
         }
 
-        public Type ValueType { get { return _propertyInfo.PropertyType; } }
+        public Type[] ValueType { get { return new[] { _propertyInfo.PropertyType }; } }
 
-        public object Value
+        public object[] Value
         {
             get
             { 
@@ -71,24 +71,19 @@ namespace Toubab.Beinder.Scanner
                     return null;
 
                 var t = Object;
-                return t == null ? null : _propertyInfo.GetValue(t); 
+                return t == null ? new object[]{ null } : new[] { _propertyInfo.GetValue(t) };
             }
         }
 
-        public bool TryHandleBroadcast(object value)
+        public bool TryHandleBroadcast(object[] value)
         {
             if (!_propertyInfo.CanWrite)
                 return false;
 
             var t = Object;
-            if (t != null && (
-                    value == null ||
-                    _propertyInfo.PropertyType.GetTypeInfo().IsAssignableFrom(
-                        value.GetType().GetTypeInfo()
-                    )
-                ))
+            if (t != null)
             {
-                _propertyInfo.SetValue(t, value);
+                _propertyInfo.SetValue(t, value[0]);
                 return true;
             }
             return false;
