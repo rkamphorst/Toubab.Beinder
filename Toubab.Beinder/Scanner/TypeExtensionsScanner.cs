@@ -86,18 +86,18 @@ namespace Toubab.Beinder.Scanner
 
             public Type[] ValueType { get { return _property.ValueType; } }
 
-            public object[] Value
+            public object[] Values
             {
                 get
                 {
                     var t = Object;
-                    return t == null ? new object[] { null } : _property.Value;
+                    return t == null ? new object[] { null } : _property.Values;
                 }
             }
 
             public override string ToString()
             {
-                return string.Format("[ExtProp: Path={0}, Value={1}]", Path, Value);
+                return string.Format("[ExtProp: Path={0}]", Path);
             }
         }
     }

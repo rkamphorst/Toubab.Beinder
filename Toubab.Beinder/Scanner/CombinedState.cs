@@ -11,7 +11,7 @@ namespace Toubab.Beinder.Scanner
         public CombinedState(IBindableState[] states)
         {
             _states = states;
-            _value = states[0].Value;
+            _values = states[0].Values;
             foreach (var prop in states)
             {
                 prop.Broadcast += HandleContainedBroadcast;
@@ -20,10 +20,10 @@ namespace Toubab.Beinder.Scanner
 
         void HandleContainedBroadcast(object sender, BindableBroadcastEventArgs e)
         {
-            if (!Equals(_value, e.Argument))
+            if (!Equals(_values, e.Payload))
             {
-                _value = e.Argument;
-                OnBroadcast(e.Argument);
+                _values = e.Payload;
+                OnBroadcast(e.Payload);
             }
         }
 
@@ -38,31 +38,31 @@ namespace Toubab.Beinder.Scanner
 
         public Type[] ValueType { get { return _states[0].ValueType; } }
 
-        object[] _value;
+        object[] _values;
 
-        public object[] Value
+        public object[] Values
         {
             get
             {
-                _value = _states[0].Value;
-                return _value;
+                _values = _states[0].Values;
+                return _values;
             }
         }
 
         public bool TryHandleBroadcast(object[] argument)
         {
             // first, make sure _value is up to date
-            _value = _states[0].Value;
+            _values = _states[0].Values;
 
             // if new value equals old value, do nothing.
-            if (_value.SequenceEqual(argument))
+            if (_values.SequenceEqual(argument))
                 return false;
 
             // prevent lots of events from propagating
             // by setting _value first.
             // That way, HandleContainedPropertyValueChanged won't call 
             // OnValueChanged
-            _value = argument;
+            _values = argument;
 
             // write the property, try each one until one accepts
             foreach (var prop in _states)
@@ -74,7 +74,7 @@ namespace Toubab.Beinder.Scanner
                     return true;
                 }
             }
-            _value = _states[0].Value;
+            _values = _states[0].Values;
             return false;
         }
 
@@ -107,7 +107,7 @@ namespace Toubab.Beinder.Scanner
 
         public override string ToString()
         {
-            return string.Format("[AggregateProperty: Path={0}, Value={1}]", Path, Value);
+            return string.Format("[AggregateProperty: Path={0}]", Path);
         }
     }
 

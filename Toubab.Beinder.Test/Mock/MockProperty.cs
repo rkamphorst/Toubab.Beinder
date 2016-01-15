@@ -16,19 +16,19 @@ namespace Toubab.Beinder.Mock
             get { return new[] { typeof(object) }; }
         }
 
-        object[] _value;
+        object[] _values;
 
-        public object[] Value
+        public object[] Values
         {
-            get { return _value; }
+            get { return _values; }
         }
 
-        public bool TryHandleBroadcast(object[] value)
+        public bool TryHandleBroadcast(object[] values)
         {
-            _value = value;
+            _values = values;
             Changed++;
             if (Broadcast != null)
-                Broadcast(this, new BindableBroadcastEventArgs(this, value));
+                Broadcast(this, new BindableBroadcastEventArgs(this, values));
             return true;
         }
 
@@ -53,7 +53,7 @@ namespace Toubab.Beinder.Mock
             return new MockProperty
             {
                 Name = Name,
-                _value = _value
+                _values = _values
             };
         }
 

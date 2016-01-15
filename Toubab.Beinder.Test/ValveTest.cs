@@ -24,8 +24,8 @@ namespace Toubab.Beinder
             propa.TryHandleBroadcast(new object [] { "banaan" });
 
             // Assert
-            Assert.AreEqual(new object[] {"banaan"}, propb.Value);
-            Assert.AreEqual(new object[] {"banaan"}, propc.Value);
+            Assert.AreEqual(new object[] {"banaan"}, propb.Values);
+            Assert.AreEqual(new object[] {"banaan"}, propc.Values);
         }
 
         [Test]

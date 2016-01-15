@@ -25,7 +25,7 @@ namespace Toubab.Beinder.Scanner
         {
             var evt = Broadcast;
             if (evt != null)
-                evt(this, new BindableBroadcastEventArgs(this, Value));
+                evt(this, new BindableBroadcastEventArgs(this, Values));
         }
 
         public event EventHandler<BindableBroadcastEventArgs> Broadcast;
@@ -63,7 +63,7 @@ namespace Toubab.Beinder.Scanner
 
         public Type[] ValueType { get { return new[] { _propertyInfo.PropertyType }; } }
 
-        public object[] Value
+        public object[] Values
         {
             get
             { 
@@ -94,7 +94,7 @@ namespace Toubab.Beinder.Scanner
 
         public override string ToString()
         {
-            return string.Format("[{0}: Path={1}, Value={2}]", GetType().Name, Path, Value);
+            return string.Format("[{0}: Path={1}]", GetType().Name, Path);
         }
     }
 

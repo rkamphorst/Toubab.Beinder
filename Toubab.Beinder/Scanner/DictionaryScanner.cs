@@ -56,7 +56,7 @@ namespace Toubab.Beinder.Scanner
                     .Select(kvp => kvp.Key)
                     .Contains(_key))
                 {
-                    OnBroadcast(Value);
+                    OnBroadcast(Values);
                 }
             }
 
@@ -71,7 +71,7 @@ namespace Toubab.Beinder.Scanner
 
             public Type[] ValueType { get { return new[] { typeof(object) }; } }
 
-            public object[] Value
+            public object[] Values
             {
                 get
                 {

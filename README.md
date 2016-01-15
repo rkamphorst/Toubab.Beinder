@@ -203,15 +203,15 @@ view.MyControl = new TextControlClass { Text = "ddd" };
 
 ### Adaptation through extension
 
-#### Properties: `IProperty<T>`
+#### Properties: `ICustomProperty<T>`
 
 #### Type extensions: `ITypeExtensions<T>`
 
 #### Namespace preference: affinity and specialization
 
-#### Property scanners: `IPropertyScanner`
+#### Scanners: `IScanner`
 
-#### Property path parsers: `IPropertyPathParser`
+#### Path Parsers: `IPathParser`
 
 ## Justification
 

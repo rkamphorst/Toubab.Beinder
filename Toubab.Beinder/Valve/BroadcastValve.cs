@@ -25,7 +25,7 @@ namespace Toubab.Beinder.Valve
 
         protected virtual void HandleBroadcast(object sender, BindableBroadcastEventArgs e)
         {
-            Push(sender, e.Argument);
+            Push(sender, e.Payload);
         }
 
         #region IDisposable implementation

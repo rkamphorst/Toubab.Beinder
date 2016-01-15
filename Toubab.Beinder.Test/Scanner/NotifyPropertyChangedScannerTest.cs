@@ -33,7 +33,7 @@ namespace Toubab.Beinder.Scanner
             var ob = new NotifyPropertyChangedClass();
             ob.Property = "banaan";
             property.SetObject(ob);
-            property.Broadcast += (sender, e) => newValue = e.Argument;
+            property.Broadcast += (sender, e) => newValue = e.Payload;
 
             // Act
             property.TryHandleBroadcast(new object[] { "asdf" });

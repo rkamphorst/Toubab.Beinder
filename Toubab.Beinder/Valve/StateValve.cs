@@ -9,7 +9,7 @@ namespace Toubab.Beinder.Valve
     {
         static readonly object[] _secret = new[] { new object() };
        
-        object[] _value = _secret;
+        object[] _values = _secret;
 
         public bool Activate(object toActivate)
         {
@@ -18,9 +18,9 @@ namespace Toubab.Beinder.Valve
             var prop = this.FirstOrDefault(p => ReferenceEquals(toActivate, p.Object)) as IBindableState;
             if (prop != null)
             {
-                var value = prop.Value;
-                Push(prop, value);
-                OnValueChanged(prop, value);
+                var values = prop.Values;
+                Push(prop, values);
+                OnValuesChanged(prop, values);
                 return true;
             }
             return false;
@@ -29,31 +29,23 @@ namespace Toubab.Beinder.Valve
         public object[][] GetChildValveObjects() {
             return this
                 .Where(p => p is IBindableState)
-                .Select(p => ((IBindableState)p).Value)
+                .Select(p => ((IBindableState)p).Values)
                 .TransposeWithPadding()
                 .Select(enu => enu.ToArray())
                 .ToArray();
         }
             
-        public int GetIndexForObject(object ob) 
-        {
-            return this
-                .Where(p => p is IBindableState)
-                .Select((p, i) => ReferenceEquals(ob, p.Object) ? i : -1)
-                .Where(i => i >= 0).FirstOr(-1);
-        }
-
-        public object[] GetValueForObject(object ob) 
+        public object[] GetValuesForObject(object ob) 
         {
             return this
                 .Where(p => p is IBindableState && ReferenceEquals(ob, p.Object))
-                .Select(p => ((IBindableState)p).Value)
+                .Select(p => ((IBindableState)p).Values)
                 .FirstOr(new object[0]);
         }
 
         public event EventHandler<BindableBroadcastEventArgs> ValueChanged;
 
-        void OnValueChanged(IBindable property, object[] newValue)
+        void OnValuesChanged(IBindable property, object[] newValue)
         {
             var evt = ValueChanged;
             if (evt != null)
@@ -65,16 +57,16 @@ namespace Toubab.Beinder.Valve
         protected override void HandleBroadcast(object sender, BindableBroadcastEventArgs e)
         {
             base.HandleBroadcast(sender, e);
-            OnValueChanged(e.Source, e.Argument);
+            OnValuesChanged(e.Source, e.Payload);
         }
 
         protected override bool Push(object source, object[] payload)
         {
             lock (_secret)
             {
-                if (!Equals(_value, payload) && !Enumerable.SequenceEqual(_value, payload))
+                if (!Equals(_values, payload) && !Enumerable.SequenceEqual(_values, payload))
                 {
-                    _value = payload;
+                    _values = payload;
                 }
                 else
                 {
@@ -93,7 +85,7 @@ namespace Toubab.Beinder.Valve
             }
             else
             {
-                return "[Valve: Path=(none), Value=(none)]";
+                return "[Valve: Path=(none)";
             }
         }
     }

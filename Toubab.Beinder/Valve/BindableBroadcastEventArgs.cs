@@ -5,15 +5,15 @@ namespace Toubab.Beinder.Valve
 
     public class BindableBroadcastEventArgs : EventArgs
     {
-        public BindableBroadcastEventArgs(IBindable property, object[] argument)
+        public BindableBroadcastEventArgs(IBindable property, object[] payload)
         {
             Source = property;
-            Argument = argument;
+            Payload = payload;
         }
 
         public IBindable Source { get; private set; }
 
-        public object[] Argument { get; private set; }
+        public object[] Payload { get; private set; }
     }
 
 }
