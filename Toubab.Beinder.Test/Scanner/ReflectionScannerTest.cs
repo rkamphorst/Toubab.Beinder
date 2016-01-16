@@ -32,7 +32,7 @@ namespace Toubab.Beinder.Scanner
         }
 
         [Test]
-        public void PropertyValueIsSetAndEventIsRaised()
+        public void PropertyValueIsSetButEventIsNotRaisedWhileHandlingBroadcast()
         {
             // Arrange
             var scanner = new ReflectionScanner();
@@ -49,7 +49,7 @@ namespace Toubab.Beinder.Scanner
 
             // Assert
             Assert.AreEqual("fdsa", ob.Property);
-            Assert.AreEqual(new[] { "fdsa" }, newValue);
+            Assert.AreEqual(null, newValue);
         }
 
         [Test]

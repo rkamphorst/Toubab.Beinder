@@ -28,7 +28,7 @@ namespace Toubab.Beinder.Scanner
                         ((info.GetMethod != null && info.GetMethod.IsPublic) ||
                          (info.SetMethod != null && info.SetMethod.IsPublic))
                     )
-                    .Select(prop => (IBindable) new ReflectionTypeProperty(_pathParser, prop, type.GetRuntimeEvent(prop.Name + "Changed")))
+                    .Select(prop => (IBindable) new ReflectedProperty(_pathParser, prop, type.GetRuntimeEvent(prop.Name + "Changed")))
             .Concat(
                 type.GetRuntimeMethods()
                     .Where(info => !info.IsSpecialName && info.IsPublic && info.ReturnType == typeof(void))

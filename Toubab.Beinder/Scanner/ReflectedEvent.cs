@@ -28,7 +28,7 @@ namespace Toubab.Beinder.Scanner
         ReflectedEvent(ReflectedEvent toCopy) 
             : base(toCopy)
         {
-            _handleEventDelegate = toCopy._handleEventDelegate;
+            _handleEventDelegate = toCopy._handleEventDelegate.GetMethodInfo().CreateDelegate(Member.EventHandlerType, this);
         }
 
         public override Type[] ValueType

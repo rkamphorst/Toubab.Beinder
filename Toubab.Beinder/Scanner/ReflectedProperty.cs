@@ -9,19 +9,33 @@ namespace Toubab.Beinder.Scanner
     public class ReflectedProperty : ReflectedBindable<PropertyInfo>, IBindableState
     {
         readonly ReflectedEvent _rflEvent;
+        readonly Func<BindableBroadcastEventArgs, bool> _broadcastFilter;
 
-        public ReflectedProperty(IPathParser pathParser, PropertyInfo propertyInfo, EventInfo eventInfo)
+        public ReflectedProperty(
+            IPathParser pathParser, 
+            PropertyInfo propertyInfo, 
+            EventInfo eventInfo = null,
+            Func<BindableBroadcastEventArgs, bool> broadcastFilter = null
+        )
             : base(pathParser, propertyInfo)
         {
-            _rflEvent = new ReflectedEvent(pathParser, eventInfo);
-            _rflEvent.Broadcast += PropagateBroadcast;
+            if (eventInfo != null)
+            {
+                _rflEvent = new ReflectedEvent(pathParser, eventInfo);
+                _rflEvent.Broadcast += PropagateBroadcast;
+                _broadcastFilter = broadcastFilter;
+            }
         }
 
         ReflectedProperty(ReflectedProperty toCopy)
             : base(toCopy)
         {
-            _rflEvent = (ReflectedEvent)toCopy._rflEvent.CloneWithoutObject();
-            _rflEvent.Broadcast += PropagateBroadcast;
+            if (toCopy._rflEvent != null)
+            {
+                _rflEvent = (ReflectedEvent)toCopy._rflEvent.CloneWithoutObject();
+                _rflEvent.Broadcast += PropagateBroadcast;
+                _broadcastFilter = toCopy._broadcastFilter;
+            }
         }
 
         public override IBindable CloneWithoutObject()
@@ -39,24 +53,25 @@ namespace Toubab.Beinder.Scanner
 
         protected override void BeforeSetObject(object oldValue, object newValue)
         {
-            _rflEvent.SetObject(newValue);
+            if (_rflEvent != null)
+                _rflEvent.SetObject(newValue);
         }
 
         void PropagateBroadcast(object source, BindableBroadcastEventArgs args)
         {
             var evt = Broadcast;
-            if (evt != null)
-            {
-                var myArgs = new BindableBroadcastEventArgs(this, Values);
-                evt(this, myArgs);
-            }
+            if (evt == null || (_broadcastFilter != null && !_broadcastFilter(args)))
+                return;
+            var myArgs = new BindableBroadcastEventArgs(this, Values);
+            evt(this, myArgs);
         }
 
         public event EventHandler<BindableBroadcastEventArgs> Broadcast;
 
         public bool TryHandleBroadcast(object[] argument)
         {
-            if (argument.Length != 1)
+            var t = Object;
+            if (argument.Length != 1 || t == null || !Member.CanWrite)
                 return false;
             
             if (!Equals(argument[0], Values[0]))
@@ -65,27 +80,32 @@ namespace Toubab.Beinder.Scanner
                 {
                     // temporarily set object on reflected event to null,
                     // so event does not fire.
-                    _rflEvent.SetObject(null);
+                    if (_rflEvent != null)
+                        _rflEvent.SetObject(null);
 
                     // set new value
-                    if (argument.Length > 0)
-                        Member.SetValue(Object, argument[0]);
+                    Member.SetValue(t, argument[0]);
                 }
                 finally
                 {
                     // restore the object on reflected event
-                    _rflEvent.SetObject(Object);
+                    if (_rflEvent != null)
+                        _rflEvent.SetObject(Object);
                 }
                 return true;
             }
             return false;
         }
-            
+
         public object[] Values
         {
             get
             {
-                return new[] { Member.GetValue(Object) };
+                if (!Member.CanRead)
+                    return null;
+
+                var t = Object;
+                return t == null ? new object[]{ null } : new[] { Member.GetValue(t) };
             }
         }
     }
