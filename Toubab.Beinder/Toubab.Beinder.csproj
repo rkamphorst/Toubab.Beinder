@@ -80,6 +80,11 @@
     <Compile Include="Extend\ICustomMixin.cs" />
     <Compile Include="Extend\CustomMixin.cs" />
     <Compile Include="Extend\ICustomBindable.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="CommandCanExecuteArgs.cs" />
+    <Compile Include="Mixin\CommandMixin.cs" />
+    <Compile Include="CommandSource.cs" />
+    <Compile Include="ICommandSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
