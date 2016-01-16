@@ -8,7 +8,7 @@ using Toubab.Beinder.Util;
 namespace Toubab.Beinder
 {
     [TestFixture]
-    public class TypeExtensionsAdapteeArgumentTest
+    public class TypeUtilitiesAdapteeArgumentTest
     {
 
         [Test]

@@ -7,19 +7,19 @@ using System.Linq;
 namespace Toubab.Beinder
 {
     [TestFixture]
-    public class BinderWithCustomExtensionsScannerTest
+    public class BinderWithMixinScannerTest
     {
         IBindings _bindings;
 
         [Test]
-        public void BindSpecialPropertyOnExtensionsWithNotifyPropertyChanged()
+        public void BindSpecialPropertyOnMixinWithNotifyPropertyChanged()
         {
             // Arrange
             var bnd = new Binder();
-            var customExtensionsScanner = new TypeExtensionsScanner(bnd.Scanner);
-            customExtensionsScanner.AdapterRegistry.Register<MockViewExtensions>();
+            var mixinScanner = new MixinScanner(bnd.Scanner);
+            mixinScanner.AdapterRegistry.Register<MockViewMixin>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
-            bnd.Scanner.Add(customExtensionsScanner);
+            bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
             _bindings = bnd.Bind(new object[] { ob1, ob2 });
@@ -33,15 +33,15 @@ namespace Toubab.Beinder
         }
 
         [Test]
-        public void BindSpecialPropertyOnExtensionsWithReflection()
+        public void BindSpecialPropertyOnMixinWithReflection()
         {
             // Arrange
             var bnd = new Binder();
-            var customExtensionsScanner = new TypeExtensionsScanner(bnd.Scanner);
-            customExtensionsScanner.AdapterRegistry.Register<MockViewExtensions2>();
+            var mixinScanner = new MixinScanner(bnd.Scanner);
+            mixinScanner.AdapterRegistry.Register<MockViewMixin2>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
-            bnd.Scanner.Add(customExtensionsScanner);
+            bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
             _bindings = bnd.Bind(new object[] { ob1, ob2 });

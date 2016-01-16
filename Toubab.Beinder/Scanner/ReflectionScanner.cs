@@ -8,7 +8,7 @@ using Toubab.Beinder.Valve;
 namespace Toubab.Beinder.Scanner
 {
 
-    public class ReflectionScanner : TypePropertyScanner
+    public class ReflectionScanner : TypeScanner
     {
         IPathParser _pathParser = new CamelCasePathParser();
 

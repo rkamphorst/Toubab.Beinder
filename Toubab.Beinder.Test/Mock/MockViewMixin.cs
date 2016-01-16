@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace Toubab.Beinder.Mock
 {
 
-    public class MockViewExtensions : NotifyPropertyChanged, ITypeExtension<MockView>
+    public class MockViewMixin : NotifyPropertyChanged, IMixin<MockView>
     {
 
         MockView _mockView;
@@ -29,9 +29,9 @@ namespace Toubab.Beinder.Mock
             }
         }
 
-        public ITypeExtension CloneWithoutObject() 
+        public IMixin CloneWithoutObject() 
         {
-            return new MockViewExtensions();
+            return new MockViewMixin();
         }
 
     }

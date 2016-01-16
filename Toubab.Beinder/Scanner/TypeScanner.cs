@@ -8,7 +8,7 @@ namespace Toubab.Beinder.Scanner
     /// <summary>
     /// Abstract class for strongly typed scanners
     /// </summary>
-    public abstract class TypePropertyScanner : IScanner
+    public abstract class TypeScanner : IScanner
     {
         readonly Dictionary<Type, List<IBindable>> _typeCache = new Dictionary<Type, List<IBindable>>();
 

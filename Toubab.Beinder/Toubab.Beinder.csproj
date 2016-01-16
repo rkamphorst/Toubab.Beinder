@@ -40,8 +40,6 @@
     <Compile Include="NamespaceSpecializationComparer.cs" />
     <Compile Include="NamespacePreferenceComparer.cs" />
     <Compile Include="IBindings.cs" />
-    <Compile Include="TypeExtension.cs" />
-    <Compile Include="ITypeExtension.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Valve\BindableBroadcastEventArgs.cs" />
     <Compile Include="Valve\IBindable.cs" />
@@ -54,7 +52,6 @@
     <Compile Include="Valve\IBindableState.cs" />
     <Compile Include="Valve\StateValve.cs" />
     <Compile Include="Valve\BroadcastValve.cs" />
-    <Compile Include="Scanner\TypeExtensionsScanner.cs" />
     <Compile Include="Scanner\CustomBindableScanner.cs" />
     <Compile Include="Scanner\NotifyPropertyChangedScanner.cs" />
     <Compile Include="Scanner\ReflectionScanner.cs" />
@@ -63,7 +60,6 @@
     <Compile Include="Path.cs" />
     <Compile Include="PathParser\CamelCasePathParser.cs" />
     <Compile Include="PathParser\UnderscorePathParser.cs" />
-    <Compile Include="Scanner\TypePropertyScanner.cs" />
     <Compile Include="IScanner.cs" />
     <Compile Include="IPathParser.cs" />
     <Compile Include="Scanner\CombinedState.cs" />
@@ -73,6 +69,10 @@
     <Compile Include="Util\TypeUtilities.cs" />
     <Compile Include="Util\EnumerableUtilities.cs" />
     <Compile Include="Scanner\ReflectedProperty.cs" />
+    <Compile Include="Scanner\TypeScanner.cs" />
+    <Compile Include="Scanner\MixinScanner.cs" />
+    <Compile Include="IMixin.cs" />
+    <Compile Include="Mixin.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

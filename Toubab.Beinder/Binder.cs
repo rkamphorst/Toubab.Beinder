@@ -35,7 +35,7 @@ namespace Toubab.Beinder
             result.Add(new ReflectionScanner());
             result.Add(new NotifyPropertyChangedScanner());
             result.Add(new DictionaryScanner());
-            result.Add(new TypeExtensionsScanner(result));
+            result.Add(new MixinScanner(result));
             result.Add(new CustomBindableScanner());
             return result;
         }

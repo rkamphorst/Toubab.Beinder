@@ -4,18 +4,18 @@ using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.Scanner
 {
-    public class TypeExtensionsScanner : IScanner
+    public class MixinScanner : IScanner
     {
-        readonly IScanner _extensionsScanner;
-        readonly TypeAdapterFactory<ITypeExtension> _adapterFactory;
+        readonly IScanner _scanner;
+        readonly TypeAdapterFactory<IMixin> _adapterFactory;
 
-        public TypeExtensionsScanner(IScanner extensionsScanner)
+        public MixinScanner(IScanner scanner)
         {
-            _adapterFactory = new TypeAdapterFactory<ITypeExtension>();
-            _extensionsScanner = extensionsScanner;
+            _adapterFactory = new TypeAdapterFactory<IMixin>();
+            _scanner = scanner;
         }
 
-        public TypeAdapterRegistry<ITypeExtension> AdapterRegistry { get { return _adapterFactory.Registry; } }
+        public TypeAdapterRegistry<IMixin> AdapterRegistry { get { return _adapterFactory.Registry; } }
 
         public IEnumerable<IBindable> Scan(object ob)
         {
@@ -23,24 +23,24 @@ namespace Toubab.Beinder.Scanner
 
             foreach (var ext in _adapterFactory.GetAdaptersFor(objectType))
             {
-                foreach (IBindable prop in _extensionsScanner.Scan(ext))
+                foreach (IBindable prop in _scanner.Scan(ext))
                 {
                     var sprop = prop as IBindableState;
                     if (sprop != null)
                     {
                         sprop.SetObject(ext);
-                        yield return new ExtensionProperty(objectType, sprop);
+                        yield return new MixinProperty(objectType, sprop);
                     }
                 }
             }
         }
 
-        class ExtensionProperty : IBindableState
+        class MixinProperty : IBindableState
         {
             readonly Type _objectType;
             readonly IBindableState _property;
 
-            public ExtensionProperty(Type objectType, IBindableState property)
+            public MixinProperty(Type objectType, IBindableState property)
             {
                 _property = property;
                 _objectType = objectType;
@@ -56,7 +56,7 @@ namespace Toubab.Beinder.Scanner
 
             public void SetObject(object newObject)
             {
-                var ext = _property.Object as ITypeExtension;
+                var ext = _property.Object as IMixin;
                 ext.SetObject(newObject);
                 _object = newObject;
             }
@@ -69,8 +69,8 @@ namespace Toubab.Beinder.Scanner
             public IBindable CloneWithoutObject()
             {
                 var prop = (IBindableState)_property.CloneWithoutObject();
-                prop.SetObject(((ITypeExtension)_property.Object).CloneWithoutObject());
-                return new ExtensionProperty(_objectType, prop);
+                prop.SetObject(((IMixin)_property.Object).CloneWithoutObject());
+                return new MixinProperty(_objectType, prop);
             }
 
             object _object;

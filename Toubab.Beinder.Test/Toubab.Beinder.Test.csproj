@@ -39,9 +39,7 @@
   <ItemGroup>
     <Compile Include="ValveTest.cs" />
     <Compile Include="PropertyTest.cs" />
-    <Compile Include="TypeExtensionsAdapteeArgumentTest.cs" />
     <Compile Include="TypeAdapterRegistryTest.cs" />
-    <Compile Include="BinderWithCustomExtensionsScannerTest.cs" />
     <Compile Include="BinderWithReflectionScannersTest.cs" />
     <Compile Include="ReadmeTests.cs" />
     <Compile Include="Mock\ClassWithPropertyAndEvents.cs" />
@@ -52,8 +50,6 @@
     <Compile Include="Mock\MockControlViewModel.cs" />
     <Compile Include="Mock\MockViewModel2.cs" />
     <Compile Include="Mock\MockProperty.cs" />
-    <Compile Include="Mock\MockViewExtensions.cs" />
-    <Compile Include="Mock\MockViewExtensions2.cs" />
     <Compile Include="Mock\Abcd\Abcd1.cs" />
     <Compile Include="Mock\Abcd\Abcd2.cs" />
     <Compile Include="Mock\Abcd\Abcd3.cs" />
@@ -75,6 +71,10 @@
     <Compile Include="PathParser\UnderscorePathParserTest.cs" />
     <Compile Include="PathParser\CamelCasePathParserTest.cs" />
     <Compile Include="PathTest.cs" />
+    <Compile Include="TypeUtilitiesAdapteeArgumentTest.cs" />
+    <Compile Include="BinderWithMixinScannerTest.cs" />
+    <Compile Include="Mock\MockViewMixin.cs" />
+    <Compile Include="Mock\MockViewMixin2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -205,7 +205,7 @@ view.MyControl = new TextControlClass { Text = "ddd" };
 
 #### Properties: `ICustomProperty<T>`
 
-#### Type extensions: `ITypeExtensions<T>`
+#### Mixins: `IMixin<T>`
 
 #### Namespace preference: affinity and specialization
 

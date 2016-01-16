@@ -3,7 +3,7 @@ using System;
 namespace Toubab.Beinder
 {
 
-    public abstract class TypeExtension<T> : ITypeExtension<T> {
+    public abstract class Mixin<T> : IMixin<T> {
 
         T _object;
 
@@ -25,6 +25,6 @@ namespace Toubab.Beinder
 
         protected abstract void AttachObject(object newObject);
 
-        public abstract ITypeExtension CloneWithoutObject();
+        public abstract IMixin CloneWithoutObject();
     }
 }
