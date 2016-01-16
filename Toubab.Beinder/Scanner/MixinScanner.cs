@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Toubab.Beinder.Valve;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder.Scanner
 {
@@ -52,7 +52,7 @@ namespace Toubab.Beinder.Scanner
                 };
             }
 
-            public event EventHandler<BindableBroadcastEventArgs> Broadcast;
+            public event EventHandler<BroadcastEventArgs> Broadcast;
 
             public void SetObject(object newObject)
             {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Toubab.Beinder.PathParser;
 using System.Collections.Specialized;
-using Toubab.Beinder.Valve;
+using System.Linq;
+using Toubab.Beinder.Bindable;
+using Toubab.Beinder.PathParser;
 
 namespace Toubab.Beinder.Scanner
 {
@@ -70,10 +70,10 @@ namespace Toubab.Beinder.Scanner
             {
                 var e = Broadcast;
                 if (e != null)
-                    e(this, new BindableBroadcastEventArgs(this, argument));
+                    e(this, new BroadcastEventArgs(this, argument));
             }
 
-            public event EventHandler<BindableBroadcastEventArgs> Broadcast;
+            public event EventHandler<BroadcastEventArgs> Broadcast;
 
             public Type[] ValueType { get { return new[] { typeof(object) }; } }
 

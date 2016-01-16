@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder.Valve
 {
@@ -17,13 +18,13 @@ namespace Toubab.Beinder.Valve
             lock (_bindables)
             {             
                 _bindables.AddLast(new WeakReference<IBindable>(prop));
-                var prod = prop as IBindableBroadcastProducer;
+                var prod = prop as IBindableProducer;
                 if (prod != null)
                     prod.Broadcast += HandleBroadcast;
             }
         }
 
-        protected virtual void HandleBroadcast(object sender, BindableBroadcastEventArgs e)
+        protected virtual void HandleBroadcast(object sender, BroadcastEventArgs e)
         {
             Push(sender, e.Payload);
         }
@@ -47,7 +48,7 @@ namespace Toubab.Beinder.Valve
 
             foreach (var bindable in EnumerateLiveRefsAndRemoveDefuncts(_bindables))
             {
-                var prod = bindable as IBindableBroadcastProducer;
+                var prod = bindable as IBindableProducer;
                 if (prod != null)
                 {
                     prod.Broadcast -= HandleBroadcast;
@@ -104,7 +105,7 @@ namespace Toubab.Beinder.Valve
                 bool valueWasBroadcast = false;
                 foreach (var prop in EnumerateLiveRefsAndRemoveDefuncts(_bindables))
                 {
-                    var cons = prop as IBindableBroadcastConsumer;
+                    var cons = prop as IBindableConsumer;
                     if (cons != null && !ReferenceEquals(source, cons))
                     {
                         var propValueType = cons.ValueType.Select(t => t.GetTypeInfo()).ToArray();

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Toubab.Beinder.Valve;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder.Scanner
 {

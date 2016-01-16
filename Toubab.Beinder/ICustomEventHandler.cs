@@ -1,10 +1,9 @@
-
-using Toubab.Beinder.Valve;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder
 {
 
-    public interface ICustomEventHandler<T> : ICustomBindable<T>, IBindableBroadcastConsumer
+    public interface ICustomEventHandler<T> : ICustomBindable<T>, IBindableConsumer
     {
     }
 }

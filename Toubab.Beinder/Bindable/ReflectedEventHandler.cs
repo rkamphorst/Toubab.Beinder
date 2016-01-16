@@ -3,10 +3,10 @@ using System.Reflection;
 using Toubab.Beinder.Valve;
 using System.Linq;
 
-namespace Toubab.Beinder.Scanner
+namespace Toubab.Beinder.Bindable
 {
         
-    public class ReflectedEventHandler : ReflectedBindable<MethodInfo>, IBindableBroadcastConsumer
+    public class ReflectedEventHandler : ReflectedBindable<MethodInfo>, IBindableConsumer
     {
         readonly Type[] _parameterTypes;
 

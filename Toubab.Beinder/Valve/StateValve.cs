@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Toubab.Beinder.Valve;
 using Toubab.Beinder.Util;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder.Valve
 {
@@ -43,18 +44,18 @@ namespace Toubab.Beinder.Valve
                 .FirstOr(new object[0]);
         }
 
-        public event EventHandler<BindableBroadcastEventArgs> ValueChanged;
+        public event EventHandler<BroadcastEventArgs> ValueChanged;
 
         void OnValuesChanged(IBindable property, object[] newValue)
         {
             var evt = ValueChanged;
             if (evt != null)
             {
-                evt(this, new BindableBroadcastEventArgs(property, newValue));
+                evt(this, new BroadcastEventArgs(property, newValue));
             }
         }
 
-        protected override void HandleBroadcast(object sender, BindableBroadcastEventArgs e)
+        protected override void HandleBroadcast(object sender, BroadcastEventArgs e)
         {
             base.HandleBroadcast(sender, e);
             OnValuesChanged(e.Source, e.Payload);

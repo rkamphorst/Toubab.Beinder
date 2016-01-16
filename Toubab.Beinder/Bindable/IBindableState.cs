@@ -1,6 +1,6 @@
 using System;
 
-namespace Toubab.Beinder.Valve
+namespace Toubab.Beinder.Bindable
 {
     /// <summary>
     /// Property adapter interface.
@@ -23,7 +23,7 @@ namespace Toubab.Beinder.Valve
     /// The property has a <see cref="Value"/> that is 
     /// propagated when the property is bound to other properties.
     /// </remarks>
-    public interface IBindableState : IBindableBroadcastProducer, IBindableBroadcastConsumer
+    public interface IBindableState : IBindableProducer, IBindableConsumer
     {
         /// <summary>
         /// Value of the property.

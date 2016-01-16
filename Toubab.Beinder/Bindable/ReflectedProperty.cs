@@ -3,19 +3,19 @@ using System.Reflection;
 using Toubab.Beinder.Valve;
 using System.Linq;
 
-namespace Toubab.Beinder.Scanner
+namespace Toubab.Beinder.Bindable
 {
 
     public class ReflectedProperty : ReflectedBindable<PropertyInfo>, IBindableState
     {
         readonly ReflectedEvent _rflEvent;
-        readonly Func<BindableBroadcastEventArgs, bool> _broadcastFilter;
+        readonly Func<BroadcastEventArgs, bool> _broadcastFilter;
 
         public ReflectedProperty(
             IPathParser pathParser, 
             PropertyInfo propertyInfo, 
             EventInfo eventInfo = null,
-            Func<BindableBroadcastEventArgs, bool> broadcastFilter = null
+            Func<BroadcastEventArgs, bool> broadcastFilter = null
         )
             : base(pathParser, propertyInfo)
         {
@@ -57,16 +57,16 @@ namespace Toubab.Beinder.Scanner
                 _rflEvent.SetObject(newValue);
         }
 
-        void PropagateBroadcast(object source, BindableBroadcastEventArgs args)
+        void PropagateBroadcast(object source, BroadcastEventArgs args)
         {
             var evt = Broadcast;
             if (evt == null || (_broadcastFilter != null && !_broadcastFilter(args)))
                 return;
-            var myArgs = new BindableBroadcastEventArgs(this, Values);
+            var myArgs = new BroadcastEventArgs(this, Values);
             evt(this, myArgs);
         }
 
-        public event EventHandler<BindableBroadcastEventArgs> Broadcast;
+        public event EventHandler<BroadcastEventArgs> Broadcast;
 
         public bool TryHandleBroadcast(object[] argument)
         {

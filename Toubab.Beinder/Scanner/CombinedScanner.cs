@@ -1,8 +1,7 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
-using Toubab.Beinder.Valve;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder.Scanner
 {
@@ -34,8 +33,8 @@ namespace Toubab.Beinder.Scanner
                             { 
                                 Path = prop.Path, 
                                 IsState = (prop is IBindableState),
-                                IsProducer = (prop is IBindableBroadcastProducer),
-                                IsConsumer = (prop is IBindableBroadcastConsumer)
+                                IsProducer = (prop is IBindableProducer),
+                                IsConsumer = (prop is IBindableConsumer)
                             });
             foreach (var propgroup in propgroups)
             {

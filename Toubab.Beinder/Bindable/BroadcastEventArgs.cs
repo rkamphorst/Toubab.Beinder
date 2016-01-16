@@ -1,11 +1,11 @@
 using System;
 
-namespace Toubab.Beinder.Valve
+namespace Toubab.Beinder.Bindable
 {
 
-    public class BindableBroadcastEventArgs : EventArgs
+    public class BroadcastEventArgs : EventArgs
     {
-        public BindableBroadcastEventArgs(IBindable property, object[] payload)
+        public BroadcastEventArgs(IBindable property, object[] payload)
         {
             Source = property;
             Payload = payload;

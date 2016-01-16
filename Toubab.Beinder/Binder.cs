@@ -1,8 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-using Toubab.Beinder.Scanner;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Toubab.Beinder.Bindable;
+using Toubab.Beinder.Scanner;
 using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder
@@ -388,9 +389,9 @@ namespace Toubab.Beinder
                 while (first != null && first.Value.RelativePath.CompareTo(firstPath) == 0)
                 {
                     _list.RemoveFirst();
-                    if (first.Value.Bindable is IBindableBroadcastConsumer)
+                    if (first.Value.Bindable is IBindableConsumer)
                         numConsumers++;
-                    if (first.Value.Bindable is IBindableBroadcastProducer)
+                    if (first.Value.Bindable is IBindableProducer)
                         numProducers++;
                     if (first.Value.Bindable is IBindableState)
                         numStates++;

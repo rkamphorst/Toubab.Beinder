@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Toubab.Beinder.Mock;
 using System.Linq;
-using Toubab.Beinder.Valve;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder.Scanner
 {
@@ -23,12 +23,12 @@ namespace Toubab.Beinder.Scanner
             Assert.AreEqual(8, result.Length);
             Assert.IsTrue(result.Any(p => p is IBindableState && p.Path.Equals((Path)"property")));
             Assert.IsTrue(result.Any(p => p is IBindableState && p.Path.Equals((Path)new[] { "second", "property" })));
-            Assert.IsTrue(result.Any(p => p is IBindableBroadcastProducer && p.Path.Equals((Path)new[] { "property", "changed" })));
-            Assert.IsTrue(result.Any(p => p is IBindableBroadcastProducer && p.Path.Equals((Path)new[] { "second", "property", "changed" })));
-            Assert.IsTrue(result.Any(p => p is IBindableBroadcastProducer && p.Path.Equals((Path)new[] { "simple", "event" })));
-            Assert.IsTrue(result.Any(p => p is IBindableBroadcastProducer && p.Path.Equals((Path)new[] { "complex", "event" })));
-            Assert.IsTrue(result.Any(p => p is IBindableBroadcastConsumer && p.Path.Equals((Path)new[] { "on", "simple", "event" })));
-            Assert.IsTrue(result.Any(p => p is IBindableBroadcastConsumer && p.Path.Equals((Path)new[] { "on", "complex", "event" })));
+            Assert.IsTrue(result.Any(p => p is IBindableProducer && p.Path.Equals((Path)new[] { "property", "changed" })));
+            Assert.IsTrue(result.Any(p => p is IBindableProducer && p.Path.Equals((Path)new[] { "second", "property", "changed" })));
+            Assert.IsTrue(result.Any(p => p is IBindableProducer && p.Path.Equals((Path)new[] { "simple", "event" })));
+            Assert.IsTrue(result.Any(p => p is IBindableProducer && p.Path.Equals((Path)new[] { "complex", "event" })));
+            Assert.IsTrue(result.Any(p => p is IBindableConsumer && p.Path.Equals((Path)new[] { "on", "simple", "event" })));
+            Assert.IsTrue(result.Any(p => p is IBindableConsumer && p.Path.Equals((Path)new[] { "on", "complex", "event" })));
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Toubab.Beinder.Scanner
             var scanner = new ReflectionScanner();
             object[] eventArgs = null;
             int eventHappened = 0;
-            var evt = (IBindableBroadcastProducer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
+            var evt = (IBindableProducer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "simple", "event" }));
             var ob = new ClassWithPropertyAndEvents();
             evt.SetObject(ob);
@@ -86,7 +86,7 @@ namespace Toubab.Beinder.Scanner
             var scanner = new ReflectionScanner();
             object[] eventArgs = null;
             int eventHappened = 0;
-            var evt = (IBindableBroadcastProducer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
+            var evt = (IBindableProducer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "simple", "event" }));
             var ob = new ClassWithPropertyAndEvents();
             evt.SetObject(ob);
@@ -116,7 +116,7 @@ namespace Toubab.Beinder.Scanner
             var scanner = new ReflectionScanner();
             object[] eventArgs = null;
             int eventHappened = 0;
-            var evt = (IBindableBroadcastProducer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
+            var evt = (IBindableProducer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "complex", "event" }));
             var ob = new ClassWithPropertyAndEvents();
 
@@ -156,7 +156,7 @@ namespace Toubab.Beinder.Scanner
             var scanner = new ReflectionScanner();
             object[] eventArgs = null;
             int eventHappened = 0;
-            var evt = (IBindableBroadcastProducer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
+            var evt = (IBindableProducer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "complex", "event" }));
             var ob = new ClassWithPropertyAndEvents();
 
@@ -199,7 +199,7 @@ namespace Toubab.Beinder.Scanner
             // Arrange
             var scanner = new ReflectionScanner();
             int eventHappened = 0;
-            var method = (IBindableBroadcastConsumer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
+            var method = (IBindableConsumer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "on", "simple", "event" }));
             var ob = new ClassWithPropertyAndEvents();
             ob.SimpleEvent += (sender, e) => eventHappened++;
@@ -218,7 +218,7 @@ namespace Toubab.Beinder.Scanner
             // Arrange
             var scanner = new ReflectionScanner();
             int eventHappened = 0;
-            var method = (IBindableBroadcastConsumer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
+            var method = (IBindableConsumer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "on", "simple", "event" }));
             var ob = new ClassWithPropertyAndEvents();
             ob.SimpleEvent += (sender, e) => eventHappened++;
@@ -241,7 +241,7 @@ namespace Toubab.Beinder.Scanner
             var scanner = new ReflectionScanner();
             int eventHappened = 0;
             object[] eventArgs = null;
-            var method = (IBindableBroadcastConsumer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
+            var method = (IBindableConsumer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "on", "complex", "event" }));
             var ob = new ClassWithPropertyAndEvents();
 
@@ -277,7 +277,7 @@ namespace Toubab.Beinder.Scanner
             var scanner = new ReflectionScanner();
             int eventHappened = 0;
             object[] eventArgs = null;
-            var method = (IBindableBroadcastConsumer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
+            var method = (IBindableConsumer)scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "on", "complex", "event" }));
             var ob = new ClassWithPropertyAndEvents();
 

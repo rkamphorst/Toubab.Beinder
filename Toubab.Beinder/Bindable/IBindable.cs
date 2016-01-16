@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Toubab.Beinder.Valve
+namespace Toubab.Beinder.Bindable
 {
     public interface IBindable 
     {

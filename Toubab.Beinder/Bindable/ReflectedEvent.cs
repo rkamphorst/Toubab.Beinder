@@ -3,10 +3,10 @@ using System.Reflection;
 using Toubab.Beinder.Valve;
 using System.Linq;
 
-namespace Toubab.Beinder.Scanner
+namespace Toubab.Beinder.Bindable
 {
 
-    public class ReflectedEvent : ReflectedBindable<EventInfo>, IBindableBroadcastProducer
+    public class ReflectedEvent : ReflectedBindable<EventInfo>, IBindableProducer
     {
         readonly Delegate _handleEventDelegate;
         readonly Type[] _parameterTypes;
@@ -39,7 +39,7 @@ namespace Toubab.Beinder.Scanner
             }
         }
 
-        public event EventHandler<BindableBroadcastEventArgs> Broadcast;
+        public event EventHandler<BroadcastEventArgs> Broadcast;
 
         protected override void BeforeSetObject(object oldValue, object newValue)
         {
@@ -226,7 +226,7 @@ namespace Toubab.Beinder.Scanner
         {
             var evt = Broadcast;
             if (evt != null)
-                evt(this, new BindableBroadcastEventArgs(this, value));
+                evt(this, new BroadcastEventArgs(this, value));
         }
     }
 

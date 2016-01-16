@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder.Scanner
+namespace Toubab.Beinder.Bindable
 {
     public class CombinedState : IBindableState
     {
@@ -18,7 +18,7 @@ namespace Toubab.Beinder.Scanner
             }
         }
 
-        void HandleContainedBroadcast(object sender, BindableBroadcastEventArgs e)
+        void HandleContainedBroadcast(object sender, BroadcastEventArgs e)
         {
             if (!Equals(_values, e.Payload))
             {
@@ -30,10 +30,10 @@ namespace Toubab.Beinder.Scanner
         void OnBroadcast(object[] argument)
         {
             if (Broadcast != null)
-                Broadcast(this, new BindableBroadcastEventArgs(this, argument));
+                Broadcast(this, new BroadcastEventArgs(this, argument));
         }
 
-        public event EventHandler<BindableBroadcastEventArgs> Broadcast;
+        public event EventHandler<BroadcastEventArgs> Broadcast;
 
 
         public Type[] ValueType { get { return _states[0].ValueType; } }
@@ -105,10 +105,6 @@ namespace Toubab.Beinder.Scanner
             return new CombinedState(_states.Select(p => (IBindableState)p.CloneWithoutObject()).ToArray());
         }
 
-        public override string ToString()
-        {
-            return string.Format("[AggregateProperty: Path={0}]", Path);
-        }
     }
 
 }

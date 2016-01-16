@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Toubab.Beinder.Scanner;
 using Toubab.Beinder.Mock;
-using Toubab.Beinder.Valve;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder
 {

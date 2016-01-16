@@ -41,15 +41,10 @@
     <Compile Include="NamespacePreferenceComparer.cs" />
     <Compile Include="IBindings.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
-    <Compile Include="Valve\BindableBroadcastEventArgs.cs" />
-    <Compile Include="Valve\IBindable.cs" />
-    <Compile Include="Valve\IBindableBroadcastConsumer.cs" />
-    <Compile Include="Valve\IBindableBroadcastProducer.cs" />
     <Compile Include="ICustomEventHandler.cs" />
     <Compile Include="ICustomEvent.cs" />
     <Compile Include="ICustomBindable.cs" />
     <Compile Include="ICustomProperty.cs" />
-    <Compile Include="Valve\IBindableState.cs" />
     <Compile Include="Valve\StateValve.cs" />
     <Compile Include="Valve\BroadcastValve.cs" />
     <Compile Include="Scanner\CustomBindableScanner.cs" />
@@ -62,17 +57,26 @@
     <Compile Include="PathParser\UnderscorePathParser.cs" />
     <Compile Include="IScanner.cs" />
     <Compile Include="IPathParser.cs" />
-    <Compile Include="Scanner\CombinedState.cs" />
-    <Compile Include="Scanner\ReflectedBindable.cs" />
-    <Compile Include="Scanner\ReflectedEvent.cs" />
-    <Compile Include="Scanner\ReflectedEventHandler.cs" />
     <Compile Include="Util\TypeUtilities.cs" />
     <Compile Include="Util\EnumerableUtilities.cs" />
-    <Compile Include="Scanner\ReflectedProperty.cs" />
     <Compile Include="Scanner\TypeScanner.cs" />
     <Compile Include="Scanner\MixinScanner.cs" />
     <Compile Include="IMixin.cs" />
     <Compile Include="Mixin.cs" />
+    <Compile Include="Bindable\Bindable.cs" />
+    <Compile Include="Bindable\ReflectedBindable.cs" />
+    <Compile Include="Bindable\ReflectedEvent.cs" />
+    <Compile Include="Bindable\ReflectedEventHandler.cs" />
+    <Compile Include="Bindable\ReflectedProperty.cs" />
+    <Compile Include="Bindable\CombinedState.cs" />
+    <Compile Include="Bindable\IBindableConsumer.cs" />
+    <Compile Include="Bindable\IBindableProducer.cs" />
+    <Compile Include="Bindable\IBindable.cs" />
+    <Compile Include="Bindable\IBindableState.cs" />
+    <Compile Include="Bindable\BroadcastEventArgs.cs" />
+    <Compile Include="CustomEvent.cs" />
+    <Compile Include="CustomEventHandler.cs" />
+    <Compile Include="CustomProperty.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
@@ -80,6 +84,7 @@
     <Folder Include="Scanner\" />
     <Folder Include="PathParser\" />
     <Folder Include="Util\" />
+    <Folder Include="Bindable\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime" />

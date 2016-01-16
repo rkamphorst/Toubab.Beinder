@@ -1,5 +1,5 @@
 ﻿using System;
-using Toubab.Beinder.Valve;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder.Mock
 {
@@ -9,7 +9,7 @@ namespace Toubab.Beinder.Mock
 
         public string Name { get; set; }
 
-        public event EventHandler<BindableBroadcastEventArgs> Broadcast;
+        public event EventHandler<BroadcastEventArgs> Broadcast;
 
         public Type[] ValueType
         { 
@@ -28,7 +28,7 @@ namespace Toubab.Beinder.Mock
             _values = values;
             Changed++;
             if (Broadcast != null)
-                Broadcast(this, new BindableBroadcastEventArgs(this, values));
+                Broadcast(this, new BroadcastEventArgs(this, values));
             return true;
         }
 

@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Linq;
 using System.ComponentModel;
 using Toubab.Beinder.PathParser;
-using Toubab.Beinder.Valve;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder.Scanner
 {
@@ -42,7 +42,7 @@ namespace Toubab.Beinder.Scanner
                     .Select(prop => new ReflectedProperty(_pathParser, prop, evt, CreateBroadcastFilter(prop.Name)));
         }
 
-        Func<BindableBroadcastEventArgs, bool> CreateBroadcastFilter(string propertyName)
+        Func<BroadcastEventArgs, bool> CreateBroadcastFilter(string propertyName)
         {
             return (bcArgs) =>
             {
