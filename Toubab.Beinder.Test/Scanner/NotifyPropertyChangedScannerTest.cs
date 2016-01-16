@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Toubab.Beinder.Mock;
 using System.Linq;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.Scanner
 {
@@ -28,7 +29,7 @@ namespace Toubab.Beinder.Scanner
             // Arrange
             var scanner = new NotifyPropertyChangedScanner();
             object newValue = null;
-            var property = scanner.Scan(typeof(NotifyPropertyChangedClass))
+            var property = (IBindableState) scanner.Scan(typeof(NotifyPropertyChangedClass))
                 .FirstOrDefault(p => Equals(p.Path, (Path) "property"));
             var ob = new NotifyPropertyChangedClass();
             ob.Property = "banaan";

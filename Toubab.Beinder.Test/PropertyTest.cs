@@ -22,17 +22,17 @@ namespace Toubab.Beinder
             Assert.IsNull(clone.Object);
         }
 
-        static void ClonedPropertyCanChangeObjectIndependently(IBindable property, object o1, object o2)
+        static void ClonedPropertyCanChangeObjectIndependently(IBindable bindable, object o1, object o2)
         {
             // Arrange
-            property.SetObject(o1);
+            bindable.SetObject(o1);
 
             // Act
-            IBindableState clone = (IBindableState)property.CloneWithoutObject();
+            IBindable clone = bindable.CloneWithoutObject();
             clone.SetObject(o2);
 
             // Assert
-            Assert.AreSame(o1, property.Object);
+            Assert.AreSame(o1, bindable.Object);
             Assert.AreSame(o2, clone.Object);
         }
 

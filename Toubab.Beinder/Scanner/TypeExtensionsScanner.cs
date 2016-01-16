@@ -23,10 +23,14 @@ namespace Toubab.Beinder.Scanner
 
             foreach (var ext in _adapterFactory.GetAdaptersFor(objectType))
             {
-                foreach (IBindableState prop in _extensionsScanner.Scan(ext))
+                foreach (IBindable prop in _extensionsScanner.Scan(ext))
                 {
-                    prop.SetObject(ext);
-                    yield return new ExtensionProperty(objectType, prop);
+                    var sprop = prop as IBindableState;
+                    if (sprop != null)
+                    {
+                        sprop.SetObject(ext);
+                        yield return new ExtensionProperty(objectType, sprop);
+                    }
                 }
             }
         }
@@ -65,7 +69,7 @@ namespace Toubab.Beinder.Scanner
             public IBindable CloneWithoutObject()
             {
                 var prop = (IBindableState)_property.CloneWithoutObject();
-                prop.SetObject(((ITypeExtension) _property.Object).CloneWithoutObject());
+                prop.SetObject(((ITypeExtension)_property.Object).CloneWithoutObject());
                 return new ExtensionProperty(_objectType, prop);
             }
 

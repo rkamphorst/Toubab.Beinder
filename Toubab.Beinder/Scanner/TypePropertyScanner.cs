@@ -10,12 +10,12 @@ namespace Toubab.Beinder.Scanner
     /// </summary>
     public abstract class TypePropertyScanner : IScanner
     {
-        readonly Dictionary<Type, List<IBindableState>> _typeCache = new Dictionary<Type, List<IBindableState>>();
+        readonly Dictionary<Type, List<IBindable>> _typeCache = new Dictionary<Type, List<IBindable>>();
 
         public IEnumerable<IBindable> Scan(object obj)
         {
             var type = obj.GetType();
-            List<IBindableState> result;
+            List<IBindable> result;
             if (!_typeCache.TryGetValue(type, out result))
             {
                 result = Scan(type).ToList();
@@ -26,10 +26,10 @@ namespace Toubab.Beinder.Scanner
 
 
         /// <summary>
-        /// Scan the specified type and enumerate the properties
+        /// Scan the specified type and enumerate the bindable members.
         /// </summary>
         /// <param name="type">Type to scan.</param>
-        public abstract IEnumerable<IBindableState> Scan(Type type);
+        public abstract IEnumerable<IBindable> Scan(Type type);
     }
         
 }

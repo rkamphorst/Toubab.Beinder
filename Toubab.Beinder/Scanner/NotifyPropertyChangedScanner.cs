@@ -20,7 +20,7 @@ namespace Toubab.Beinder.Scanner
             set { _pathParser = value; }
         }
 
-        public override IEnumerable<IBindableState> Scan(Type type)
+        public override IEnumerable<IBindable> Scan(Type type)
         {
             var isNotifyPropertyChanged =
                 typeof(INotifyPropertyChanged).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());

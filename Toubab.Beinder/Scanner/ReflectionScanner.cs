@@ -18,7 +18,7 @@ namespace Toubab.Beinder.Scanner
             set { _pathParser = value; }
         }
 
-        public override IEnumerable<IBindableState> Scan(Type type)
+        public override IEnumerable<IBindable> Scan(Type type)
         {
             return
                 type.GetRuntimeProperties()
@@ -27,8 +27,17 @@ namespace Toubab.Beinder.Scanner
                         info.GetIndexParameters().Length == 0 &&
                         ((info.GetMethod != null && info.GetMethod.IsPublic) ||
                          (info.SetMethod != null && info.SetMethod.IsPublic))
+                    )
+                    .Select(prop => (IBindable) new ReflectionTypeProperty(_pathParser, prop, type.GetRuntimeEvent(prop.Name + "Changed")))
+            .Concat(
+                type.GetRuntimeMethods()
+                    .Where(info => !info.IsSpecialName && info.IsPublic && info.ReturnType == typeof(void))
+                    .Select(method => (IBindable) new ReflectedEventHandler(_pathParser, method))
             )
-                    .Select(prop => new ReflectionTypeProperty(_pathParser, prop, type.GetRuntimeEvent(prop.Name + "Changed"))
+            .Concat(
+                type.GetRuntimeEvents()
+                    .Where(info => !info.IsSpecialName && info.AddMethod.IsPublic)
+                    .Select(evt => (IBindable) new ReflectedEvent(_pathParser, evt))
             );
         }
 

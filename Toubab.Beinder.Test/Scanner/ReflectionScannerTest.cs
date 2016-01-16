@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Toubab.Beinder.Mock;
 using System.Linq;
+using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.Scanner
 {
@@ -18,18 +19,18 @@ namespace Toubab.Beinder.Scanner
             var result = scanner.Scan(typeof(ClassWithPropertyAndEvents)).ToArray();
 
             // Assert
-            Assert.AreEqual(2, result.Length);
+            Assert.AreEqual(4, result.Length);
             Assert.IsTrue(result.Any(p => p.Path.Equals((Path) "property")));
             Assert.IsTrue(result.Any(p => p.Path.Equals((Path) new[] { "second", "property" })));
         }
 
         [Test]
-        public void ValueIsSetAndEventIsRaised() 
+        public void PropertyValueIsSetAndEventIsRaised() 
         {
             // Arrange
             var scanner = new ReflectionScanner();
             object newValue = null;
-            var property = scanner.Scan(typeof(ClassWithPropertyAndEvents))
+            var property = (IBindableState) scanner.Scan(typeof(ClassWithPropertyAndEvents))
                 .FirstOrDefault(p => Equals(p.Path, (Path) "property"));
             var ob = new ClassWithPropertyAndEvents();
             ob.Property = "banaan";
