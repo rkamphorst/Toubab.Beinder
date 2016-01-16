@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System;
 using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder.Scanner
+namespace Toubab.Beinder
 {
 
     /// <summary>

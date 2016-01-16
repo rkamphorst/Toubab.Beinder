@@ -7,6 +7,12 @@ using Toubab.Beinder.Valve;
 
 namespace Toubab.Beinder.Scanner
 {
+    /// <summary>
+    /// Scans a dictionary for properties
+    /// </summary>
+    /// <remarks>
+    /// The keys are the property names, and the values are the property values.
+    /// </remarks>
     public class DictionaryScanner : IScanner
     {
         IPathParser _pathParser = new CamelCasePathParser();

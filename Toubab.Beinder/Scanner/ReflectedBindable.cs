@@ -5,7 +5,13 @@ using System.Linq;
 
 namespace Toubab.Beinder.Scanner
 {
-
+    /// <summary>
+    /// Base class for bindables that were harvested through reflection
+    /// </summary>
+    /// <remarks>
+    /// Used by <see cref="NotifyPropertyChangedScanner"/> and 
+    /// <see cref="ReflectionScanner"/>.
+    /// </remarks>
     public abstract class ReflectedBindable<T> : IBindable
         where T : MemberInfo
     {
