@@ -24,7 +24,7 @@ namespace Toubab.Beinder.Scanner
         }
 
         [Test]
-        public void ValueIsSetAndEventIsRaised() 
+        public void ValueIsSetAndEventIsNotRaisedWhenHandlingBroadcast() 
         {
             // Arrange
             var scanner = new NotifyPropertyChangedScanner();
@@ -41,7 +41,7 @@ namespace Toubab.Beinder.Scanner
 
             // Assert
             Assert.AreEqual("asdf", ob.Property);
-            Assert.AreEqual(new object[] {"asdf"}, newValue);
+            Assert.AreEqual(null, newValue);
         }
     }
 

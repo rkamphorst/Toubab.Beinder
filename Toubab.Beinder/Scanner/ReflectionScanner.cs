@@ -41,37 +41,6 @@ namespace Toubab.Beinder.Scanner
             );
         }
 
-        class ReflectionTypeProperty : TypeProperty
-        {
-            readonly EventInfo _event;
-            readonly EventHandler _onValueChanged;
-
-            public ReflectionTypeProperty(IPathParser pathParser, PropertyInfo property, EventInfo evt)
-                : base(pathParser, property)
-            {
-                if (evt != null && evt.EventHandlerType == typeof(EventHandler))
-                    _event = evt;
-                _onValueChanged = new EventHandler(OnBroadcast);
-            }
-
-            protected override void DetachObjectPropertyChangeEvent(object obj)
-            {
-                if (_event != null && obj != null)
-                    _event.RemoveEventHandler(obj, _onValueChanged);
-            }
-
-            protected override void AttachObjectPropertyChangeEvent(object obj)
-            {
-                if (_event != null && obj != null)
-                    _event.AddEventHandler(obj, _onValueChanged);
-            }
-
-            public override IBindable CloneWithoutObject()
-            {
-                return new ReflectionTypeProperty(_pathParser, _propertyInfo, _event);
-            }
-
-        }
     }
 
 

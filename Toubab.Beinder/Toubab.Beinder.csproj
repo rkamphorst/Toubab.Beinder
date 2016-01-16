@@ -70,7 +70,6 @@
     <Compile Include="Scanner\ReflectedBindable.cs" />
     <Compile Include="Scanner\ReflectedEvent.cs" />
     <Compile Include="Scanner\ReflectedEventHandler.cs" />
-    <Compile Include="Scanner\TypeProperty.cs" />
     <Compile Include="Util\TypeUtilities.cs" />
     <Compile Include="Util\EnumerableUtilities.cs" />
     <Compile Include="Scanner\ReflectedProperty.cs" />

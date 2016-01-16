@@ -27,54 +27,30 @@ namespace Toubab.Beinder.Scanner
 
             if (!isNotifyPropertyChanged)
                 return Enumerable.Empty<IBindableState>();
-            
 
+            var evt =
+                type.GetRuntimeEvent("PropertyChanged");
+            
             return
                 type.GetRuntimeProperties()
                     .Where(info => 
                         !info.IsSpecialName &&
                         info.GetIndexParameters().Length == 0 &&
                         ((info.GetMethod != null && info.GetMethod.IsPublic) ||
-                         (info.SetMethod != null && info.SetMethod.IsPublic))
-                    )
-                    .Select(prop => new NotifyPropertyChangedTypeProperty(_pathParser, prop)
-                );
+                        (info.SetMethod != null && info.SetMethod.IsPublic))
+            )
+                    .Select(prop => new ReflectedProperty(_pathParser, prop, evt, CreateBroadcastFilter(prop.Name)));
         }
 
-        class NotifyPropertyChangedTypeProperty : TypeProperty
+        Func<BindableBroadcastEventArgs, bool> CreateBroadcastFilter(string propertyName)
         {
-            public NotifyPropertyChangedTypeProperty(IPathParser pathParser, PropertyInfo property)
-                : base(pathParser, property)
+            return (bcArgs) =>
             {
-            }
-
-            void HandlePropertyChanged(object source, PropertyChangedEventArgs args)
-            {
-                if (Equals(args.PropertyName, _propertyInfo.Name))
-                {
-                    OnBroadcast(this, EventArgs.Empty);
-                }
-            }
-
-            protected override void DetachObjectPropertyChangeEvent(object obj)
-            {
-                var inpc = Object as INotifyPropertyChanged;
-                if (inpc != null)
-                    inpc.PropertyChanged -= HandlePropertyChanged;
-            }
-
-            protected override void AttachObjectPropertyChangeEvent(object obj)
-            {
-                var inpc = Object as INotifyPropertyChanged;
-                if (inpc != null)
-                    inpc.PropertyChanged += HandlePropertyChanged;
-            }
-
-            public override IBindable CloneWithoutObject()
-            {
-                return new NotifyPropertyChangedTypeProperty(_pathParser, _propertyInfo);
-            }
-                
+                var pcArgs = bcArgs.Payload.Length > 1 ? bcArgs.Payload[1] as PropertyChangedEventArgs : null;
+                return pcArgs != null && (
+                    string.IsNullOrEmpty(pcArgs.PropertyName) || Equals(pcArgs.PropertyName, propertyName)
+                );
+            };
         }
 
     }
