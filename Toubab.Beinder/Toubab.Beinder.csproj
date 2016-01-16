@@ -73,6 +73,7 @@
     <Compile Include="Scanner\TypeProperty.cs" />
     <Compile Include="Util\TypeUtilities.cs" />
     <Compile Include="Util\EnumerableUtilities.cs" />
+    <Compile Include="Scanner\ReflectedProperty.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
