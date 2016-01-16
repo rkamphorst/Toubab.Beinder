@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Linq;
+using Toubab.Beinder.Extend;
 
 namespace Toubab.Beinder.PathParser
 {

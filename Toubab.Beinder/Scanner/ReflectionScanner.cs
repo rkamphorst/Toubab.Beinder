@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Toubab.Beinder.Bindable;
 using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Extend;
 
 namespace Toubab.Beinder.Scanner
 {

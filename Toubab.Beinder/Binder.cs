@@ -5,6 +5,7 @@ using System.Linq;
 using Toubab.Beinder.Bindable;
 using Toubab.Beinder.Scanner;
 using Toubab.Beinder.Valve;
+using Toubab.Beinder.Extend;
 
 namespace Toubab.Beinder
 {

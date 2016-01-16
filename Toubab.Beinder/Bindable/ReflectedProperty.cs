@@ -2,6 +2,9 @@ using System;
 using System.Reflection;
 using Toubab.Beinder.Valve;
 using System.Linq;
+using Toubab.Beinder.Extend;
+using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Bindable;
 
 namespace Toubab.Beinder.Bindable
 {

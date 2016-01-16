@@ -2,7 +2,7 @@ using System;
 using Toubab.Beinder.Bindable;
 using Toubab.Beinder.PathParser;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Extend
 {
 
     public abstract class CustomProperty<T> : Bindable.Bindable, ICustomProperty<T>

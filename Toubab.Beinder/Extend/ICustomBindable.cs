@@ -1,6 +1,6 @@
 ﻿using Toubab.Beinder.Bindable;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Bindable
 {
     public interface ICustomBindable : IBindable
     {

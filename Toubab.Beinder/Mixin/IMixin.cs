@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Mixin
 {
     public interface IMixin
     {

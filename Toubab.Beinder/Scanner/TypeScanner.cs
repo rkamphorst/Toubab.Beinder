@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Toubab.Beinder.Bindable;
+using Toubab.Beinder.Extend;
 
 namespace Toubab.Beinder.Scanner
 {

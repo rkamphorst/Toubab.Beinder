@@ -2,7 +2,7 @@
 using Toubab.Beinder.Bindable;
 using Toubab.Beinder.PathParser;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Extend
 {
     public abstract class CustomEvent<T> : Bindable.Bindable, ICustomEvent<T>
     {

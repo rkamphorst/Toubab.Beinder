@@ -1,6 +1,6 @@
 using System;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Mixin
 {
 
     public abstract class Mixin<T> : IMixin<T> {
@@ -15,15 +15,19 @@ namespace Toubab.Beinder
         public void SetObject(object newObject)
         {
             if (!ReferenceEquals(_object, null))
-                DetachObject(_object);
+                BeforeSetObject(_object);
             _object = (T)newObject;
             if (!ReferenceEquals(_object, null)) 
-                AttachObject(_object);
+                AfterSetObject(_object);
         }
 
-        protected abstract void DetachObject(object oldObject);
+        protected virtual void BeforeSetObject(object oldObject) 
+        {
+        }
 
-        protected abstract void AttachObject(object newObject);
+        protected virtual void AfterSetObject(object newObject) 
+        {
+        }
 
         public abstract IMixin CloneWithoutObject();
     }

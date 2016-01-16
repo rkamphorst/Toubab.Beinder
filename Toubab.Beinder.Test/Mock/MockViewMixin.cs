@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using Toubab.Beinder.Mixin;
 
 namespace Toubab.Beinder.Mock
 {
