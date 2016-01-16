@@ -108,7 +108,7 @@ namespace Toubab.Beinder.Valve
                     if (cons != null && !ReferenceEquals(source, cons))
                     {
                         var propValueType = cons.ValueType.Select(t => t.GetTypeInfo()).ToArray();
-                        if (propValueType.Select((t,i) => t.IsAssignableFrom(payloadType[i])).All(b => b))
+                        if (propValueType.Select((t, i) => t.IsAssignableFrom(payloadType[i])).All(b => b))
                         {
                             var broadcastParams = new object[propValueType.Length];
                             Array.Copy(payload, broadcastParams, broadcastParams.Length);
@@ -131,8 +131,16 @@ namespace Toubab.Beinder.Valve
                 T target;
                 while (!node.Value.TryGetTarget(out target))
                 {
-                    node = node.Next;
-                    list.Remove(node.Previous);
+                    if (node.Next == null)
+                    {
+                        list.Remove(node);
+                        node = null;
+                    }
+                    else
+                    {
+                        node = node.Next;
+                        list.Remove(node.Previous);
+                    }
                     if (node == null)
                         yield break;
                 }
