@@ -66,6 +66,16 @@ namespace Toubab.Beinder.Scanner
 
         public abstract IBindable CloneWithoutObject();
 
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}->{2} ({3})", 
+                GetType().Name,
+                Object == null ? "[?]" : Object.GetType().Name, 
+                Path, 
+                string.Join(",", ValueType.Select(vt => vt.Name))
+            );
+        }
+
     }
 
 }
