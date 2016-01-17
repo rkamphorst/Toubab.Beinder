@@ -48,7 +48,6 @@ namespace Toubab.Beinder.Mock
 
         public event EventHandler SizeChanged;
 
-
         public override string ToString()
         {
             return string.Format("[MockControl: Name={0}]", Name);

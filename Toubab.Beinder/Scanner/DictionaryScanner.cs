@@ -76,7 +76,7 @@ namespace Toubab.Beinder.Scanner
 
             public event EventHandler<BroadcastEventArgs> Broadcast;
 
-            public Type[] ValueType { get { return new[] { typeof(object) }; } }
+            public Type[] ValueTypes { get { return new[] { typeof(object) }; } }
 
             public object[] Values
             {

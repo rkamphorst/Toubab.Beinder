@@ -95,25 +95,25 @@ namespace Toubab.Beinder.Valve
 
         protected virtual bool Push(object source, object[] payload)
         {
-            var srcProp = source as IBindableState;
-            var payloadType = srcProp != null 
-                ? srcProp.ValueType.Select(t => t.GetTypeInfo()).ToArray()
+            var srcBindable = source as IBindableState;
+            var payloadTypes = srcBindable != null 
+                ? srcBindable.ValueTypes.Select(t => t.GetTypeInfo()).ToArray()
                 : payload.Select(p => p == null ? null : p.GetType().GetTypeInfo()).ToArray();
 
             lock (_bindables)
             {
                 bool valueWasBroadcast = false;
-                foreach (var prop in EnumerateLiveRefsAndRemoveDefuncts(_bindables))
+                foreach (var bnd in EnumerateLiveRefsAndRemoveDefuncts(_bindables))
                 {
-                    var cons = prop as IBindableConsumer;
+                    var cons = bnd as IBindableConsumer;
                     if (cons != null && !ReferenceEquals(source, cons))
                     {
-                        var propValueType = cons.ValueType.Select(t => t.GetTypeInfo()).ToArray();
-                        if (propValueType.Select((t, i) => t.IsAssignableFrom(payloadType[i])).All(b => b))
+                        var consValueTypes = cons.ValueTypes.Select(t => t.GetTypeInfo()).ToArray();
+                        if (consValueTypes.Select((t, i) => t.IsAssignableFrom(payloadTypes[i])).All(b => b))
                         {
-                            var broadcastParams = new object[propValueType.Length];
+                            var broadcastParams = new object[consValueTypes.Length];
                             Array.Copy(payload, broadcastParams, broadcastParams.Length);
-                            valueWasBroadcast |= cons.TryHandleBroadcast(payload);
+                            valueWasBroadcast |= cons.TryHandleBroadcast(broadcastParams);
                         }
                     }
                 }

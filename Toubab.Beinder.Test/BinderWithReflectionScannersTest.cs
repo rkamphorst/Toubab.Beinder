@@ -89,7 +89,7 @@ namespace Toubab.Beinder
                 Assert.AreEqual("a", ob3.Property);
             }
         }
-            
+
         [Test]
         public void BindReflectedObjects()
         {
@@ -349,8 +349,25 @@ namespace Toubab.Beinder
             Assert.AreEqual("Peer", vmCtl.Text);
             Assert.AreEqual(200, vmCtl.Size);
         }
-    }
 
+        [Test]
+        public void BindEventToMethd()
+        {
+            // Arrange
+            var bnd = new Binder();
+            bnd.Scanner.Add(new ReflectionScanner());
+            var view = new MockView();
+            var vm = new MockViewModel();
+            _bindings = bnd.Bind(new object[] { vm, view });
+
+            // Act
+            view.OnClick(); // raises the Click event
+
+            // Assert: click should have propagated to vm.Click(), which increments ClickCount
+            Assert.AreEqual(1, vm.ClickCount);
+        }
+
+    }
 
 }
 

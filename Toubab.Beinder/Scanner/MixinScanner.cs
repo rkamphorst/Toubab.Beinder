@@ -90,7 +90,7 @@ namespace Toubab.Beinder.Scanner
                 }
             }
 
-            public Type[] ValueType { get { return _property.ValueType; } }
+            public Type[] ValueTypes { get { return _property.ValueTypes; } }
 
             public object[] Values
             {

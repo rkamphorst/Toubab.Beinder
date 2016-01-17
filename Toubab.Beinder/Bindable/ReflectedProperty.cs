@@ -46,7 +46,7 @@ namespace Toubab.Beinder.Bindable
             return new ReflectedProperty(this);
         }
 
-        public override Type[] ValueType
+        public override Type[] ValueTypes
         {
             get
             {

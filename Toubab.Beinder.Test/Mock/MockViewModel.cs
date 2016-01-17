@@ -37,5 +37,12 @@ namespace Toubab.Beinder.Mock
             get { return _specialProperty2; }
             set { SetProperty(ref _specialProperty2, value); }
         }
+
+        public int ClickCount = 0;
+
+        public void Click()
+        {
+            ClickCount++;
+        }
     }
 }

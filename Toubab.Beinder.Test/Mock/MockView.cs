@@ -45,6 +45,17 @@ namespace Toubab.Beinder.Mock
         {
             return _specialProperty2;
         }
+
+        public void OnClick()
+        {
+            var evt = Click;
+            if (evt != null)
+            {
+                evt(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler Click;
     }
 
 }

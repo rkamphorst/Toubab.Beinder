@@ -11,7 +11,7 @@ namespace Toubab.Beinder.Mock
 
         public event EventHandler<BroadcastEventArgs> Broadcast;
 
-        public Type[] ValueType
+        public Type[] ValueTypes
         { 
             get { return new[] { typeof(object) }; }
         }

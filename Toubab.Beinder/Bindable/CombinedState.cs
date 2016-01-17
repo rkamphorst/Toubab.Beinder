@@ -36,7 +36,7 @@ namespace Toubab.Beinder.Bindable
         public event EventHandler<BroadcastEventArgs> Broadcast;
 
 
-        public Type[] ValueType { get { return _states[0].ValueType; } }
+        public Type[] ValueTypes { get { return _states[0].ValueTypes; } }
 
         object[] _values;
 

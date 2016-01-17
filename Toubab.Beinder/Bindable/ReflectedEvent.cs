@@ -33,7 +33,7 @@ namespace Toubab.Beinder.Bindable
             _handleEventDelegate = toCopy._handleEventDelegate.GetMethodInfo().CreateDelegate(Member.EventHandlerType, this);
         }
 
-        public override Type[] ValueType
+        public override Type[] ValueTypes
         {
             get
             {

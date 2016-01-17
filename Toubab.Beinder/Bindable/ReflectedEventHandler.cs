@@ -24,7 +24,7 @@ namespace Toubab.Beinder.Bindable
             _parameterTypes = toCopy._parameterTypes;
         }
 
-        public override Type[] ValueType
+        public override Type[] ValueTypes
         {
             get
             {

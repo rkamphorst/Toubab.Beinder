@@ -58,7 +58,7 @@ namespace Toubab.Beinder.Bindable
                 GetType().Name,
                 Object == null ? "[?]" : Object.GetType().Name, 
                 Path, 
-                string.Join(",", ValueType.Select(vt => vt.Name))
+                string.Join(",", ValueTypes.Select(vt => vt.Name))
             );
         }
 
@@ -72,7 +72,7 @@ namespace Toubab.Beinder.Bindable
 
         protected abstract string GetName();
 
-        public abstract Type[] ValueType { get; }
+        public abstract Type[] ValueTypes { get; }
 
         public abstract IBindable CloneWithoutObject();
     }
