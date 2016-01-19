@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Toubab.Beinder.Util
 {
@@ -87,6 +88,29 @@ namespace Toubab.Beinder.Util
             
         }
 
+
+        public static bool AreAssignableFromTypes(this IEnumerable<Type> types, IEnumerable<Type> otherTypes) 
+        {
+            using (var enu = types.GetEnumerator()) 
+            using (var otherEnu = otherTypes.GetEnumerator()) 
+            {
+                while (enu.MoveNext()) {
+                    if (enu.Current == null) return false;
+
+                    if (!otherEnu.MoveNext() || !(
+                        (otherEnu.Current == null && !enu.Current.GetTypeInfo().IsValueType) ||
+                        enu.Current.GetTypeInfo().IsAssignableFrom(otherEnu.Current.GetTypeInfo() 
+                        )))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool AreAssignableFromObjects(this IEnumerable<Type> types, IEnumerable<object> objects) 
+        {
+            return types.AreAssignableFromTypes(objects.Select(o => o == null ? null : o.GetType()));
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Toubab.Beinder.Tools;
 
 namespace Toubab.Beinder.Mock
 {
@@ -56,6 +57,36 @@ namespace Toubab.Beinder.Mock
         }
 
         public event EventHandler Click;
+
+        public void OnBogus()
+        {
+            var evt = Bogus;
+            if (evt != null)
+            {
+                evt(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler Bogus;
+
+
+        CommandSource _bogusCommand;
+
+        public CommandSource BogusCommand
+        {
+            get
+            {
+                if (_bogusCommand == null)
+                {
+                    _bogusCommand = new CommandSource(enabled => BogusEnabled = enabled);
+                    Bogus += (s, e) => _bogusCommand.OnExecute(null);
+                }
+                return _bogusCommand;
+            }
+        }
+
+        public bool BogusEnabled { get; private set; }
+
     }
 
 }

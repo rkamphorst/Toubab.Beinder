@@ -1,6 +1,6 @@
 using System.Reflection;
 using Toubab.Beinder.Extend;
-using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Path;
 
 namespace Toubab.Beinder.Bindable
 {
@@ -8,16 +8,16 @@ namespace Toubab.Beinder.Bindable
     /// Base class for bindables that were harvested through reflection
     /// </summary>
     /// <remarks>
-    /// Used by <see cref="NotifyPropertyChangedScanner"/> and 
-    /// <see cref="ReflectionScanner"/>.
+    /// Used by <see cref="Scanner.NotifyPropertyChangedScanner"/> and 
+    /// <see cref="Scanner.ReflectionScanner"/>.
     /// </remarks>
-    public abstract class ReflectedBindable<T> : Bindable, IBindable
+    public abstract class ReflectedBindable<T> : Bindable
         where T : MemberInfo
     {
         protected readonly T _memberInfo;
 
-        protected ReflectedBindable(IPathParser pathParser, T memberInfo)
-            : base(pathParser)
+        protected ReflectedBindable(Path.Path path, T memberInfo)
+            : base(path)
         {
             _memberInfo = memberInfo;
         }
@@ -30,10 +30,6 @@ namespace Toubab.Beinder.Bindable
 
         protected T Member { get { return _memberInfo; } }
 
-        protected override string GetName()
-        {
-            return Member.Name;
-        }
     }
 
 

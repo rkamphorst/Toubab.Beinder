@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Util
 {
     public class TypeAdapterFactory<IAdapter>
         where IAdapter : class

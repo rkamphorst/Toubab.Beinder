@@ -1,4 +1,5 @@
 ﻿using System;
+using Toubab.Beinder.Annex;
 
 namespace Toubab.Beinder.Mixin
 {
@@ -19,17 +20,9 @@ namespace Toubab.Beinder.Mixin
     /// objects into bindables that "pretend" to live on the type the mix-ins are
     /// for.
     /// </remarks>
-    public interface IMixin
+    public interface IMixin : IAnnex
     {
-        /// <summary>
-        /// Set the object this is a mix-in for.
-        /// </summary>
-        void SetObject(object newObject);
 
-        /// <summary>
-        /// Clone this mix-in, but leave out the object ("detached").
-        /// </summary>
-        IMixin CloneWithoutObject();
     }
 
     /// <summary>

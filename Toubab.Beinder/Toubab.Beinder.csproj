@@ -33,14 +33,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeAdapterRegistry.cs" />
     <Compile Include="Binder.cs" />
-    <Compile Include="TypeAdapterFactory.cs" />
-    <Compile Include="NamespaceAffinityComparer.cs" />
-    <Compile Include="NamespaceSpecializationComparer.cs" />
-    <Compile Include="NamespacePreferenceComparer.cs" />
     <Compile Include="IBindings.cs" />
-    <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Valve\StateValve.cs" />
     <Compile Include="Valve\BroadcastValve.cs" />
     <Compile Include="Scanner\CustomBindableScanner.cs" />
@@ -48,9 +42,6 @@
     <Compile Include="Scanner\ReflectionScanner.cs" />
     <Compile Include="Scanner\DictionaryScanner.cs" />
     <Compile Include="Scanner\CombinedScanner.cs" />
-    <Compile Include="Path.cs" />
-    <Compile Include="PathParser\CamelCasePathParser.cs" />
-    <Compile Include="PathParser\UnderscorePathParser.cs" />
     <Compile Include="Util\TypeUtilities.cs" />
     <Compile Include="Util\EnumerableUtilities.cs" />
     <Compile Include="Scanner\TypeScanner.cs" />
@@ -60,11 +51,7 @@
     <Compile Include="Bindable\ReflectedEvent.cs" />
     <Compile Include="Bindable\ReflectedEventHandler.cs" />
     <Compile Include="Bindable\ReflectedProperty.cs" />
-    <Compile Include="Bindable\CombinedState.cs" />
-    <Compile Include="Bindable\IBindableConsumer.cs" />
-    <Compile Include="Bindable\IBindableProducer.cs" />
     <Compile Include="Bindable\IBindable.cs" />
-    <Compile Include="Bindable\IBindableState.cs" />
     <Compile Include="Bindable\BroadcastEventArgs.cs" />
     <Compile Include="Extend\CustomEvent.cs" />
     <Compile Include="Extend\CustomEventHandler.cs" />
@@ -74,27 +61,51 @@
     <Compile Include="Extend\ICustomProperty.cs" />
     <Compile Include="Mixin\Mixin.cs" />
     <Compile Include="Mixin\IMixin.cs" />
-    <Compile Include="PathParser\IPathParser.cs" />
     <Compile Include="Scanner\IScanner.cs" />
     <Compile Include="Extend\ICustomScanner.cs" />
     <Compile Include="Extend\ICustomMixin.cs" />
     <Compile Include="Extend\CustomMixin.cs" />
     <Compile Include="Extend\ICustomBindable.cs" />
-    <Compile Include="Command.cs" />
-    <Compile Include="CommandCanExecuteArgs.cs" />
+    <Compile Include="Scanner\AdapterScanner.cs" />
+    <Compile Include="Bindable\DelegatedBindable.cs" />
+    <Compile Include="Bindable\DelegatedEvent.cs" />
+    <Compile Include="Bindable\DelegatedEventHandler.cs" />
+    <Compile Include="Bindable\DelegatedProperty.cs" />
+    <Compile Include="Annex\IAnnex.cs" />
+    <Compile Include="Annex\Annex.cs" />
+    <Compile Include="Util\NamespaceAffinityComparer.cs" />
+    <Compile Include="Util\NamespacePreferenceComparer.cs" />
+    <Compile Include="Util\NamespaceSpecializationComparer.cs" />
+    <Compile Include="Bindable\IEventHandler.cs" />
+    <Compile Include="Bindable\IEvent.cs" />
+    <Compile Include="Bindable\IProperty.cs" />
+    <Compile Include="Tools\ICommandSource.cs" />
+    <Compile Include="Tools\Command.cs" />
+    <Compile Include="Tools\CommandCanExecuteArgs.cs" />
+    <Compile Include="Tools\CommandSource.cs" />
+    <Compile Include="Tools\NotifyPropertyChanged.cs" />
     <Compile Include="Mixin\CommandMixin.cs" />
-    <Compile Include="CommandSource.cs" />
-    <Compile Include="ICommandSource.cs" />
+    <Compile Include="Util\TypeAdapterFactory.cs" />
+    <Compile Include="Util\TypeAdapterRegistry.cs" />
+    <Compile Include="Path\CamelCasePathParser.cs" />
+    <Compile Include="Path\UnderscorePathParser.cs" />
+    <Compile Include="Path\IPathParser.cs" />
+    <Compile Include="Path\Path.cs" />
+    <Compile Include="Bindable\CombinedProperty.cs" />
+    <Compile Include="Bindable\CombinedEventHandler.cs" />
+    <Compile Include="Bindable\CombinedBindable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Valve\" />
     <Folder Include="Scanner\" />
-    <Folder Include="PathParser\" />
     <Folder Include="Util\" />
     <Folder Include="Bindable\" />
     <Folder Include="Extend\" />
     <Folder Include="Mixin\" />
+    <Folder Include="Annex\" />
+    <Folder Include="Tools\" />
+    <Folder Include="Path\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime" />

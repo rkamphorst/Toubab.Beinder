@@ -1,57 +1,55 @@
 using System;
-using System.Reflection;
-using Toubab.Beinder.Valve;
 using System.Linq;
-using Toubab.Beinder.Extend;
-using Toubab.Beinder.PathParser;
 
 namespace Toubab.Beinder.Bindable
 {
-
-    public abstract class Bindable : IBindable
+    /// <summary>
+    /// Base class for classes that implement <see cref="IBindable"/>
+    /// </summary>
+    public abstract class Bindable : Annex.Annex, IBindable
     {
-        IPathParser _pathParser;
-        Path _path;
+        readonly Path.Path _path;
 
-        protected Bindable(IPathParser pathParser)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="path">Set the <see cref="Path"/> of the bindable to this value</param>
+        protected Bindable(Path.Path path)
         {
-            _pathParser = pathParser;
+            _path = path;
         }
 
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="toCopy">To copy.</param>
         protected Bindable(Bindable toCopy)
         {
-            _pathParser = toCopy._pathParser;
             _path = toCopy._path;
         }
 
-        object _object;
-
-        public object Object
+        /// <inheritdoc/>
+        public object Object 
         { 
-            get { return _object; }
+            get 
+            { 
+                return GetObject(); 
+            } 
         }
 
-        public void SetObject(object value)
-        {
-            var oldValue = _object;
-            BeforeSetObject(oldValue, value);
-            _object = value;
-            AfterSetObject(oldValue, value);
-        }
-
-        public Path Path
+        /// <inheritdoc/>
+        public Path.Path Path
         {
             get
             { 
-                if (_path == null)
-                {
-                    _path = _pathParser.Parse(GetName());
-                    _pathParser = null;
-                }
                 return _path;
             }
         }
 
+        /// <inheritdoc/>
+        public abstract Type[] ValueTypes { get; }
+
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("{0}: {1}->{2} ({3})", 
@@ -62,18 +60,5 @@ namespace Toubab.Beinder.Bindable
             );
         }
 
-        protected virtual void BeforeSetObject(object oldValue, object newValue)
-        {
-        }
-
-        protected virtual void AfterSetObject(object oldValue, object newValue)
-        {
-        }
-
-        protected abstract string GetName();
-
-        public abstract Type[] ValueTypes { get; }
-
-        public abstract IBindable CloneWithoutObject();
     }
 }

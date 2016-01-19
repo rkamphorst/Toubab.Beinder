@@ -3,28 +3,29 @@ using System.Reflection;
 using Toubab.Beinder.Valve;
 using System.Linq;
 using Toubab.Beinder.Extend;
-using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Path;
 using Toubab.Beinder.Bindable;
+using Toubab.Beinder.Annex;
 
 namespace Toubab.Beinder.Bindable
 {
 
-    public class ReflectedProperty : ReflectedBindable<PropertyInfo>, IBindableState
+    public class ReflectedProperty : ReflectedBindable<PropertyInfo>, IProperty
     {
         readonly ReflectedEvent _rflEvent;
         readonly Func<BroadcastEventArgs, bool> _broadcastFilter;
 
         public ReflectedProperty(
-            IPathParser pathParser, 
+            Path.Path path, 
             PropertyInfo propertyInfo, 
             EventInfo eventInfo = null,
             Func<BroadcastEventArgs, bool> broadcastFilter = null
         )
-            : base(pathParser, propertyInfo)
+            : base(path, propertyInfo)
         {
             if (eventInfo != null)
             {
-                _rflEvent = new ReflectedEvent(pathParser, eventInfo);
+                _rflEvent = new ReflectedEvent(path, eventInfo);
                 _rflEvent.Broadcast += PropagateBroadcast;
                 _broadcastFilter = broadcastFilter;
             }
@@ -41,7 +42,7 @@ namespace Toubab.Beinder.Bindable
             }
         }
 
-        public override IBindable CloneWithoutObject()
+        public override IAnnex CloneWithoutObject()
         {
             return new ReflectedProperty(this);
         }
@@ -54,10 +55,11 @@ namespace Toubab.Beinder.Bindable
             }
         }
 
-        protected override void BeforeSetObject(object oldValue, object newValue)
+        public override void SetObject(object value)
         {
             if (_rflEvent != null)
-                _rflEvent.SetObject(newValue);
+                _rflEvent.SetObject(value);
+            base.SetObject(value);
         }
 
         void PropagateBroadcast(object source, BroadcastEventArgs args)
@@ -65,7 +67,7 @@ namespace Toubab.Beinder.Bindable
             var evt = Broadcast;
             if (evt == null || (_broadcastFilter != null && !_broadcastFilter(args)))
                 return;
-            var myArgs = new BroadcastEventArgs(this, Values);
+            var myArgs = new BroadcastEventArgs(Object, Values);
             evt(this, myArgs);
         }
 

@@ -1,28 +1,30 @@
 using System;
 using System.Reflection;
-using Toubab.Beinder.Valve;
 using System.Linq;
-using Toubab.Beinder.Extend;
-using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Path;
+using Toubab.Beinder.Annex;
 
 namespace Toubab.Beinder.Bindable
 {
 
-    public class ReflectedEvent : ReflectedBindable<EventInfo>, IBindableProducer
+    public class ReflectedEvent : ReflectedBindable<EventInfo>, IEvent
     {
+        const string HandleEventMethod = "HandleEvent";
+        const string DelegateInvokeMethod = "Invoke";
+
         readonly Delegate _handleEventDelegate;
         readonly Type[] _parameterTypes;
 
-        public ReflectedEvent(IPathParser pathParser, EventInfo eventInfo)
-            : base(pathParser, eventInfo)
+        public ReflectedEvent(Path.Path path, EventInfo eventInfo)
+            : base(path, eventInfo)
         {
             var invokeMethod = Member.EventHandlerType
-                .GetRuntimeMethods().First(m => Equals(m.Name, "Invoke"));
+                .GetRuntimeMethods().First(m => Equals(m.Name, DelegateInvokeMethod));
             _parameterTypes = invokeMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
             var handlerMethodInfo =
                 typeof(ReflectedEvent).GetRuntimeMethods().Single(
-                    m => Equals(m.Name, "HandleEvent") && m.GetParameters().Length == _parameterTypes.Length
+                    m => Equals(m.Name, HandleEventMethod) && m.GetParameters().Length == _parameterTypes.Length
                 ).MakeGenericMethod(_parameterTypes);
             _handleEventDelegate = handlerMethodInfo.CreateDelegate(eventInfo.EventHandlerType, this);
         }
@@ -30,6 +32,7 @@ namespace Toubab.Beinder.Bindable
         ReflectedEvent(ReflectedEvent toCopy) 
             : base(toCopy)
         {
+            _parameterTypes = toCopy._parameterTypes;
             _handleEventDelegate = toCopy._handleEventDelegate.GetMethodInfo().CreateDelegate(Member.EventHandlerType, this);
         }
 
@@ -43,19 +46,21 @@ namespace Toubab.Beinder.Bindable
 
         public event EventHandler<BroadcastEventArgs> Broadcast;
 
-        protected override void BeforeSetObject(object oldValue, object newValue)
+
+        public override void SetObject(object value)
         {
+            var oldValue = Object;
+
             if (oldValue != null)
                 Member.RemoveEventHandler(oldValue, _handleEventDelegate);
+
+            base.SetObject(value);
+
+            if (value != null)
+                Member.AddEventHandler(value, _handleEventDelegate);
         }
 
-        protected override void AfterSetObject(object oldValue, object newValue)
-        {
-            if (newValue != null)
-                Member.AddEventHandler(newValue, _handleEventDelegate);
-        }
-
-        public override IBindable CloneWithoutObject()
+        public override IAnnex CloneWithoutObject()
         {
             return new ReflectedEvent(this);
         }
@@ -228,7 +233,7 @@ namespace Toubab.Beinder.Bindable
         {
             var evt = Broadcast;
             if (evt != null)
-                evt(this, new BroadcastEventArgs(this, value));
+                evt(this, new BroadcastEventArgs(Object, value));
         }
     }
 

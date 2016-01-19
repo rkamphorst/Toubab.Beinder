@@ -1,9 +1,10 @@
 ﻿using System;
 using Toubab.Beinder.Bindable;
+using Toubab.Beinder.Annex;
 
 namespace Toubab.Beinder.Mock
 {
-    class MockProperty : IBindableState
+    class MockProperty : IProperty
     {
         public int Changed { get; set; }
 
@@ -43,12 +44,12 @@ namespace Toubab.Beinder.Mock
             Object = value;
         }
 
-        public Path Path
+        public Path.Path Path
         {
             get { return "abc"; }
         }
 
-        public IBindable CloneWithoutObject()
+        public IAnnex CloneWithoutObject()
         {
             return new MockProperty
             {

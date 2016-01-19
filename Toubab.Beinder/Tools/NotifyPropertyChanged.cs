@@ -1,9 +1,8 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Tools
 {
-
     public abstract class NotifyPropertyChanged : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

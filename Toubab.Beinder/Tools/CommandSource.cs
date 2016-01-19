@@ -2,7 +2,7 @@ using System;
 using System.Windows.Input;
 using System.Collections.Generic;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Tools
 {
     /// <summary>
     /// Easy-to-use implementation of ICommandSource

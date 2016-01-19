@@ -15,7 +15,7 @@ namespace Toubab.Beinder
         public void BindTwoNotifyPropertyChangedObjects()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new NotifyPropertyChangedClass();
             var ob2 = new NotifyPropertyChangedClass();
@@ -34,7 +34,7 @@ namespace Toubab.Beinder
         {
             {
                 // Arrange
-                var bnd = new Binder();
+                var bnd = new Binder(new CombinedScanner());
                 bnd.Scanner.Add(new NotifyPropertyChangedScanner());
                 var ob1 = new NotifyPropertyChangedClass();
                 var ob2 = new NotifyPropertyChangedClass();
@@ -72,7 +72,7 @@ namespace Toubab.Beinder
 
             {
                 // Arrange
-                var bnd = new Binder();
+                var bnd = new Binder(new CombinedScanner());
                 bnd.Scanner.Add(new NotifyPropertyChangedScanner());
                 var ob1 = new NotifyPropertyChangedClass();
                 var ob2 = new NotifyPropertyChangedClass();
@@ -94,7 +94,7 @@ namespace Toubab.Beinder
         public void BindReflectedObjects()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new ClassWithPropertyAndEvents();
@@ -113,7 +113,7 @@ namespace Toubab.Beinder
         public void BindObjectsOfDifferentTypesNotpropToReflected()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new ClassWithPropertyAndEvents();
@@ -132,7 +132,7 @@ namespace Toubab.Beinder
         public void BindObjectsOfDifferentTypesReflectedToNotprop()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new NotifyPropertyChangedClass();
@@ -173,7 +173,7 @@ namespace Toubab.Beinder
         public void BindDifferentlyDistributedObjectHierarchiesChangeParent()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new Abcd1();
@@ -205,7 +205,7 @@ namespace Toubab.Beinder
         {
             // Arrange
             int ob1cnt = 0, ob2cnt = 0;
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new NotifyPropertyChangedClass();
@@ -235,7 +235,7 @@ namespace Toubab.Beinder
         public void BindViewmodelToView()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
@@ -256,7 +256,7 @@ namespace Toubab.Beinder
         public void BindViewToViewmodel()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
@@ -277,7 +277,7 @@ namespace Toubab.Beinder
         public void BindViewToViewmodelReplaceParent()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
@@ -301,7 +301,7 @@ namespace Toubab.Beinder
         public void ReplaceParentChangesChildrenIfParentDifferentTypes()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
@@ -325,7 +325,7 @@ namespace Toubab.Beinder
         public void ReplaceParentWithSameTypeChangesParentAndLeavesChildrenAlone()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") { Text = "Appel", Size = 100 } };
@@ -354,7 +354,7 @@ namespace Toubab.Beinder
         public void BindEventToMethd()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             var view = new MockView();
             var vm = new MockViewModel();
@@ -362,9 +362,30 @@ namespace Toubab.Beinder
 
             // Act
             view.OnClick(); // raises the Click event
+            view.OnClick(); // raises the Click event
+            view.OnClick(); // raises the Click event
 
             // Assert: click should have propagated to vm.Click(), which increments ClickCount
-            Assert.AreEqual(1, vm.ClickCount);
+            Assert.AreEqual(3, vm.ClickCount);
+        }
+
+        [Test]
+        public void BindCommandToCommandSource() 
+        {
+            // Arrange
+            var bnd = new Binder();
+            var view = new MockView();
+            var vm = new MockViewModel();
+            _bindings = bnd.Bind(new object[] { vm, view });
+
+
+            // Act
+            view.OnBogus();
+            view.OnBogus();
+            view.OnBogus();
+
+            // Assert
+            Assert.AreEqual(3, vm.BogusCount);
         }
 
     }

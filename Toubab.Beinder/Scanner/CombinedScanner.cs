@@ -33,18 +33,18 @@ namespace Toubab.Beinder.Scanner
                             group prop by new 
                             { 
                                 Path = prop.Path, 
-                                IsState = (prop is IBindableState),
-                                IsProducer = (prop is IBindableProducer),
-                                IsConsumer = (prop is IBindableConsumer)
+                                IsState = (prop is IProperty),
+                                IsProducer = (prop is IEvent),
+                                IsConsumer = (prop is IEventHandler)
                             });
             foreach (var propgroup in propgroups)
             {
                 IBindable prop;
                 if (propgroup.Key.IsState)
                 {
-                    var proparray = propgroup.Cast<IBindableState>().ToArray();
+                    var proparray = propgroup.Cast<IProperty>().ToArray();
                     prop = proparray.Length > 1 
-                        ? new CombinedState(proparray) 
+                        ? new CombinedProperty(proparray) 
                         : proparray[0];
                 }
                 else 

@@ -3,109 +3,52 @@ using System.Collections.Generic;
 using Toubab.Beinder.Bindable;
 using Toubab.Beinder.Extend;
 using Toubab.Beinder.Mixin;
+using Toubab.Beinder.Annex;
 
 namespace Toubab.Beinder.Scanner
 {
-    public class MixinScanner : IScanner
+    public class MixinScanner : AdapterScanner<IMixin>
     {
         readonly IScanner _scanner;
-        readonly TypeAdapterFactory<IMixin> _adapterFactory;
 
         public MixinScanner(IScanner scanner)
         {
-            _adapterFactory = new TypeAdapterFactory<IMixin>();
             _scanner = scanner;
         }
 
-        public TypeAdapterRegistry<IMixin> AdapterRegistry { get { return _adapterFactory.Registry; } }
-
-        public IEnumerable<IBindable> Scan(object ob)
+        public override IEnumerable<IBindable> Scan(Type type)
         {
-            Type objectType = ob.GetType();
-
-            foreach (var ext in _adapterFactory.GetAdaptersFor(objectType))
+            foreach (var ext in AdapterFactory.GetAdaptersFor(type))
             {
                 foreach (IBindable prop in _scanner.Scan(ext))
                 {
-                    var sprop = prop as IBindableState;
+                    prop.SetObject(ext);
+
+                    var sprop = prop as IProperty;
                     if (sprop != null)
                     {
-                        sprop.SetObject(ext);
-                        yield return new MixinProperty(objectType, sprop);
+                        yield return new DelegatedProperty(sprop);
+                        continue;
                     }
+
+                    var pprop = prop as IEvent;
+                    if (pprop != null)
+                    {
+                        yield return new DelegatedEvent(pprop);
+                        continue;
+                    }
+
+                    var cprop = prop as IEventHandler;
+                    if (cprop != null)
+                    {
+                        yield return new DelegatedEventHandler(cprop);
+                        continue;
+                    }
+
                 }
             }
         }
 
-        class MixinProperty : IBindableState
-        {
-            readonly Type _objectType;
-            readonly IBindableState _property;
-
-            public MixinProperty(Type objectType, IBindableState property)
-            {
-                _property = property;
-                _objectType = objectType;
-                _property.Broadcast += (sender, e) =>
-                {
-                    var evt = Broadcast;
-                    if (evt != null)
-                        evt(sender, e);
-                };
-            }
-
-            public event EventHandler<BroadcastEventArgs> Broadcast;
-
-            public void SetObject(object newObject)
-            {
-                var ext = _property.Object as IMixin;
-                ext.SetObject(newObject);
-                _object = newObject;
-            }
-
-            public bool TryHandleBroadcast(object[] newValue)
-            {
-                return _property.TryHandleBroadcast(newValue);
-            }
-
-            public IBindable CloneWithoutObject()
-            {
-                var prop = (IBindableState)_property.CloneWithoutObject();
-                prop.SetObject(((IMixin)_property.Object).CloneWithoutObject());
-                return new MixinProperty(_objectType, prop);
-            }
-
-            object _object;
-
-            public object Object
-            { 
-                get { return _object; }
-            }
-
-            public Path Path
-            {
-                get
-                {
-                    return _property.Path;
-                }
-            }
-
-            public Type[] ValueTypes { get { return _property.ValueTypes; } }
-
-            public object[] Values
-            {
-                get
-                {
-                    var t = Object;
-                    return t == null ? new object[] { null } : _property.Values;
-                }
-            }
-
-            public override string ToString()
-            {
-                return string.Format("[ExtProp: Path={0}]", Path);
-            }
-        }
     }
 }
 

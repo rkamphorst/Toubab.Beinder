@@ -1,22 +1,30 @@
 ﻿using System;
+using Toubab.Beinder.Annex;
 
 namespace Toubab.Beinder.Bindable
 {
-    public interface IBindable 
+    /// <summary>
+    /// Represents a bindable property, event or method
+    /// </summary>
+    /// A bindable can be a C# property, event or method; but it can also be
+    /// anything else that has a name and is associated to an object, and can
+    /// *act* as a property, event or method. For example, it can be a
+    /// dictionary entry or a named child view. 
+    /// 
+    /// The object that holds the property can be retrieved through 
+    /// <see cref="Object"/>, and can be set with <see cref="SetObject"/>. 
+    /// 
+    /// The bindable has a name, which is represented by the <see cref="Path"/>. 
+    /// 
+    /// The bindable has zero or more <see cref="ValueTypes"/> that it can 
+    /// produce (if it is an event), consume (event handler / method) or
+    /// store (property). These three kinds of bindables have corresponding
+    /// interface that inherit from this one: <see cref="IEvent"/>, 
+    /// <see cref="IEventHandler"/> and <see cref="IProperty"/>.
+    public interface IBindable : IAnnex
     {
         /// <summary>
-        /// Object: holder of the bindable
-        /// </summary>
-        object Object { get; }
-
-        /// <summary>
-        /// Set the object that holds the property
-        /// </summary>
-        /// <param name="newObject">The new object to set.</param>
-        void SetObject(object newObject);
-
-        /// <summary>
-        /// Type of values this bindable can bind to
+        /// Types of values this bindable can bind to
         /// </summary>
         Type[] ValueTypes { get; } 
 
@@ -24,25 +32,17 @@ namespace Toubab.Beinder.Bindable
         /// Property path
         /// </summary>
         /// <remarks>
-        /// Identifies the bindable, given an object (<see cref="Object"/>).
-        /// 
-        /// It also is a path, i.e., starting at <see cref="Object"/>, follow
+        /// Gives the "path" of this bindable, i.e., starting at <see cref="Object"/>, follow
         /// this path to get access to the bindable property, event or event handler.
         /// </remarks>
-        /// <seealso cref="Path"/>
-        Path Path { get; }
+        /// <seealso cref="Path.Path"/>
+        Path.Path Path { get; }
 
         /// <summary>
-        /// Makes an independent copy of this property, without attaching an 
-        /// <see cref="Object"/>.
+        /// Object this bindable is associated with.
         /// </summary>
-        /// <remarks>
-        /// The returned <see cref="IProperty"/> is a copy of this property,
-        /// except that it has no <see cref="Object"/> attached. An 
-        /// <see cref="Object"/> has to be separately attached with 
-        /// <see cref="SetObject"/>.
-        /// </remarks>
-        IBindable CloneWithoutObject();
+        object Object { get; }
+
     }
 
 }

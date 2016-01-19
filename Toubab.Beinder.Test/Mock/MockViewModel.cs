@@ -1,4 +1,6 @@
 using System;
+using System.Windows.Input;
+using Toubab.Beinder.Tools;
 
 namespace Toubab.Beinder.Mock
 {
@@ -44,5 +46,24 @@ namespace Toubab.Beinder.Mock
         {
             ClickCount++;
         }
+
+        public ICommand _bogusCommand;
+
+        public ICommand BogusCommand
+        { 
+            get
+            {
+                if (_bogusCommand == null)
+                {
+                    _bogusCommand = new Command(
+                        execute: _ => BogusCount++, 
+                        canExecute: _ => string.IsNullOrEmpty(SpecialProperty2)
+                    );
+                }
+                return _bogusCommand;
+            }
+        }
+
+        public int BogusCount = 0;
     }
 }

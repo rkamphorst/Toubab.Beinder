@@ -1,18 +1,13 @@
 using System;
 using Toubab.Beinder.Bindable;
-using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Path;
 
 namespace Toubab.Beinder.Extend
 {
     public abstract class CustomEventHandler<T> : Bindable.Bindable, ICustomEventHandler<T>
     {
-        protected CustomEventHandler()
-            : base(new CamelCasePathParser())
-        {
-        }
-
-        protected CustomEventHandler(IPathParser pathParser)
-            : base(pathParser)
+        protected CustomEventHandler(Path.Path path)
+            : base(path)
         {
         }
 

@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using Toubab.Beinder.Util;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Util
 {
     public class TypeAdapterRegistry<IAdapter>
         where IAdapter : class

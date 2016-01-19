@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Tools
 {
     /// <summary>
     /// Easy-to-use implementation of ICommand
@@ -37,13 +37,6 @@ namespace Toubab.Beinder
         Func<object, bool> _canExecute;
         object[] _notify;
 
-
-        /// <seealso cref="Command(Action{object}, Func{object,bool}, object[])"/>
-        public Command(Action<object> execute, Func<object,bool> canExecute, object notify)
-            : this(o => Task.Run(() => execute(o)), canExecute, new[] { notify })
-        {
-        }
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -55,17 +48,11 @@ namespace Toubab.Beinder
         /// <param name="execute">Execute callback</param>
         /// <param name="canExecute">CanExecute callback</param>
         /// <param name="notify">Notify object(s)</param>
-        public Command(Action<object> execute, Func<object,bool> canExecute = null, object[] notify = null)
-            : this(o => Task.Run(() => execute(o)), canExecute, notify)
+        public Command(Action<object> execute, Func<object,bool> canExecute = null, params object[] notify)
+            : this(o => { execute(o); return Task.FromResult(0); }, canExecute, notify)
         {
         }
             
-        /// <seealso cref="Command(Func{object,Task}, Func{object,bool}, object[])"/>
-        public Command(Func<object,Task> execute, Func<object,bool> canExecute, object notify)
-            : this(execute, canExecute, new[] { notify })
-        {
-        }
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -84,7 +71,7 @@ namespace Toubab.Beinder
             _canExecute = canExecute;
             _notify = notify.Length > 0 
                 ? notify 
-                : canExecute != null 
+                : canExecute != null && canExecute.Target != null
                     ? new[] { canExecute.Target }
                     : new object[0];
 

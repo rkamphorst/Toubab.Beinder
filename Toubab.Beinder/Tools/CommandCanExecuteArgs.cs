@@ -1,5 +1,4 @@
-
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Tools
 {
     /// <summary>
     /// Arguments used to capture the result of <see cref="System.Windows.Input.ICommand.CanExecute()"/>.

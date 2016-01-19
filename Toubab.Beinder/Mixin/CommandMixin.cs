@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
 using Toubab.Beinder.Mixin;
+using Toubab.Beinder.Annex;
+using Toubab.Beinder.Tools;
 
 namespace Toubab.Beinder.Mixin
 {
@@ -11,7 +13,7 @@ namespace Toubab.Beinder.Mixin
     public class CommandMixin : Mixin<ICommand>
     {
         /// <inheritdoc/> 
-        public override IMixin CloneWithoutObject()
+        public override IAnnex CloneWithoutObject()
         {
             return new CommandMixin();
         }

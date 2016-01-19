@@ -5,7 +5,8 @@ using System.Linq;
 using Toubab.Beinder.Bindable;
 using Toubab.Beinder.Scanner;
 using Toubab.Beinder.Valve;
-using Toubab.Beinder.Extend;
+using Toubab.Beinder.Mixin;
+using Toubab.Beinder.Path;
 
 namespace Toubab.Beinder
 {
@@ -37,7 +38,11 @@ namespace Toubab.Beinder
             result.Add(new ReflectionScanner());
             result.Add(new NotifyPropertyChangedScanner());
             result.Add(new DictionaryScanner());
-            result.Add(new MixinScanner(result));
+
+            var mixinScanner = new MixinScanner(result);
+            mixinScanner.AdapterRegistry.Register<CommandMixin>();
+            result.Add(mixinScanner);
+            
             result.Add(new CustomBindableScanner());
             return result;
         }
@@ -183,7 +188,7 @@ namespace Toubab.Beinder
                 var bs = new List<IBindable>();
                 foreach (var c in valveParams.Bindables)
                 {
-                    var b = c.Bindable.CloneWithoutObject();
+                    var b = (IBindable) c.Bindable.CloneWithoutObject();
                     b.SetObject(c.Object);
                     bs.Add(b);
                 }
@@ -252,7 +257,7 @@ namespace Toubab.Beinder
             parentValve.ValueChanged += (s, e) =>
             {
                 disposeChildValve();
-                childValves = recursiveBind(e.Source.Object);
+                childValves = recursiveBind(e.SourceObject);
             };
             parentValve.Disposing += (s, e) => disposeChildValve();
         }
@@ -390,11 +395,11 @@ namespace Toubab.Beinder
                 while (first != null && first.Value.RelativePath.CompareTo(firstPath) == 0)
                 {
                     _list.RemoveFirst();
-                    if (first.Value.Bindable is IBindableConsumer)
+                    if (first.Value.Bindable is IEventHandler)
                         numConsumers++;
-                    if (first.Value.Bindable is IBindableProducer)
+                    if (first.Value.Bindable is IEvent)
                         numProducers++;
-                    if (first.Value.Bindable is IBindableState)
+                    if (first.Value.Bindable is IProperty)
                         numStates++;
                     bindables.AddLast(first);
                     first = _list.First;
@@ -476,11 +481,11 @@ namespace Toubab.Beinder
         struct CandidateBindable
         {
             public CandidateBindable(object obj, IBindable property)
-                : this(obj, property, new Path(property.Path))
+                : this(obj, property, new Path.Path(property.Path))
             {
             }
 
-            CandidateBindable(object obj, IBindable bindable, Path path)
+            CandidateBindable(object obj, IBindable bindable, Path.Path path)
             {
                 Object = obj;
                 Bindable = bindable;
@@ -500,7 +505,7 @@ namespace Toubab.Beinder
             /// parameter, this path is relative to the objects in the <c>objects</c>
             /// parameter.
             /// </remarks>
-            public Path RelativePath { get; private set; }
+            public Path.Path RelativePath { get; private set; }
 
             /// <summary>
             /// The object to be attached to <see cref="Bindable"/>.
@@ -514,7 +519,7 @@ namespace Toubab.Beinder
             /// Returns <c>null</c> (empty nullable) if <see cref="RelativePath"/>
             /// does not start with <paramref name="basePath"/>.
             /// </remarks>
-            public CandidateBindable? RelativeTo(Path basePath)
+            public CandidateBindable? RelativeTo(Path.Path basePath)
             {
                 var newPath = RelativePath.RelativeTo(basePath);
                 return newPath != null ? (CandidateBindable?)new CandidateBindable(Object, Bindable, newPath) : null;

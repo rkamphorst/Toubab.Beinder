@@ -5,27 +5,15 @@ using Toubab.Beinder.Extend;
 
 namespace Toubab.Beinder.Scanner
 {
-    public class CustomBindableScanner : IScanner
+    public class CustomBindableScanner : AdapterScanner<ICustomBindable>
     {
-        readonly TypeAdapterFactory<ICustomBindable> _adapterFactory;
-
-        public CustomBindableScanner()
+        public override IEnumerable<IBindable> Scan(Type type)
         {
-            _adapterFactory = new TypeAdapterFactory<ICustomBindable>();
-        }
-
-        public TypeAdapterRegistry<ICustomBindable> AdapterRegistry { get { return _adapterFactory.Registry; } }
-
-        public IEnumerable<IBindable> Scan(object ob)
-        {
-            Type objectType = ob.GetType();
-
-            foreach (var prop in _adapterFactory.GetAdaptersFor(objectType))
+            foreach (var prop in AdapterFactory.GetAdaptersFor(type))
             {
                 yield return prop;
             }
         }
-
     }
 }
 

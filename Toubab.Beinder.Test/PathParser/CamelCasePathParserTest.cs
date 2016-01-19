@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Toubab.Beinder.Path;
 
 namespace Toubab.Beinder.PathParser
 {
@@ -19,7 +20,7 @@ namespace Toubab.Beinder.PathParser
         {
             {
                 // Act
-                Path result = _parser.Parse("Property");
+                Path.Path result = _parser.Parse("Property");
 
                 // Assert
                 Assert.AreEqual("property", result.ToString());
@@ -27,7 +28,7 @@ namespace Toubab.Beinder.PathParser
 
             {
                 // Act
-                Path result = _parser.Parse("property");
+                Path.Path result = _parser.Parse("property");
 
                 // Assert
                 Assert.AreEqual("property", result.ToString());
@@ -38,7 +39,7 @@ namespace Toubab.Beinder.PathParser
         public void ParsePropertyCamelCased()
         {
             // Act
-            Path result = _parser.Parse("PropertyPropertyProperty");
+            Path.Path result = _parser.Parse("PropertyPropertyProperty");
 
             // Assert
             Assert.AreEqual("property/property/property", result.ToString());
@@ -48,7 +49,7 @@ namespace Toubab.Beinder.PathParser
         public void ParsePropertyUpperAndCamelCased()
         {
             // Act
-            Path result = _parser.Parse("XYZPropertyPropertyProperty");
+            Path.Path result = _parser.Parse("XYZPropertyPropertyProperty");
 
             // Assert
             Assert.AreEqual("xyzproperty/property/property", result.ToString());

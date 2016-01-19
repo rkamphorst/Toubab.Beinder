@@ -19,8 +19,8 @@ namespace Toubab.Beinder.Scanner
 
             // Assert
             Assert.AreEqual(2, result.Length);
-            Assert.IsTrue(result.Any(p => p.Path.Equals((Path) "property")));
-            Assert.IsTrue(result.Any(p => p.Path.Equals((Path) new[] { "second", "property" })));
+            Assert.IsTrue(result.Any(p => p.Path.Equals((Path.Path) "property")));
+            Assert.IsTrue(result.Any(p => p.Path.Equals((Path.Path) new[] { "second", "property" })));
         }
 
         [Test]
@@ -29,8 +29,8 @@ namespace Toubab.Beinder.Scanner
             // Arrange
             var scanner = new NotifyPropertyChangedScanner();
             object newValue = null;
-            var property = (IBindableState) scanner.Scan(typeof(NotifyPropertyChangedClass))
-                .FirstOrDefault(p => Equals(p.Path, (Path) "property"));
+            var property = (IProperty) scanner.Scan(typeof(NotifyPropertyChangedClass))
+                .FirstOrDefault(p => Equals(p.Path, (Path.Path) "property"));
             var ob = new NotifyPropertyChangedClass();
             ob.Property = "banaan";
             property.SetObject(ob);

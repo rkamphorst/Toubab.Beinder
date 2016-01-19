@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.ComponentModel;
-using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Path;
 using Toubab.Beinder.Bindable;
 using Toubab.Beinder.Extend;
 
@@ -27,7 +27,7 @@ namespace Toubab.Beinder.Scanner
                 typeof(INotifyPropertyChanged).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
 
             if (!isNotifyPropertyChanged)
-                return Enumerable.Empty<IBindableState>();
+                return Enumerable.Empty<IProperty>();
 
             var evt =
                 type.GetRuntimeEvent("PropertyChanged");
@@ -40,7 +40,12 @@ namespace Toubab.Beinder.Scanner
                         ((info.GetMethod != null && info.GetMethod.IsPublic) ||
                         (info.SetMethod != null && info.SetMethod.IsPublic))
             )
-                    .Select(prop => new ReflectedProperty(_pathParser, prop, evt, CreateBroadcastFilter(prop.Name)));
+                    .Select(prop => new ReflectedProperty(
+                        _pathParser.Parse(prop.Name), 
+                        prop, 
+                        evt, 
+                        CreateBroadcastFilter(prop.Name))
+                    );
         }
 
         Func<BroadcastEventArgs, bool> CreateBroadcastFilter(string propertyName)

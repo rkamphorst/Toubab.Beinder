@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Toubab.Beinder.Bindable;
-using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Path;
 using Toubab.Beinder.Extend;
 
 namespace Toubab.Beinder.Scanner
@@ -29,16 +29,21 @@ namespace Toubab.Beinder.Scanner
                         ((info.GetMethod != null && info.GetMethod.IsPublic) ||
                          (info.SetMethod != null && info.SetMethod.IsPublic))
                     )
-                    .Select(prop => (IBindable) new ReflectedProperty(_pathParser, prop, type.GetRuntimeEvent(prop.Name + "Changed")))
+                    .Select(prop => (IBindable) new ReflectedProperty(
+                            _pathParser.Parse(prop.Name), 
+                            prop, 
+                            type.GetRuntimeEvent(prop.Name + "Changed")
+                        )
+                    )
             .Concat(
                 type.GetRuntimeMethods()
                     .Where(info => !info.IsSpecialName && info.IsPublic && info.ReturnType == typeof(void))
-                    .Select(method => (IBindable) new ReflectedEventHandler(_pathParser, method))
+                    .Select(method => (IBindable) new ReflectedEventHandler(_pathParser.Parse(method.Name), method))
             )
             .Concat(
                 type.GetRuntimeEvents()
                     .Where(info => !info.IsSpecialName && info.AddMethod.IsPublic)
-                    .Select(evt => (IBindable) new ReflectedEvent(_pathParser, evt))
+                    .Select(evt => (IBindable) new ReflectedEvent(_pathParser.Parse(evt.Name), evt))
             );
         }
 

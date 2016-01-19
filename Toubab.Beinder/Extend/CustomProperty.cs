@@ -1,19 +1,14 @@
 using System;
 using Toubab.Beinder.Bindable;
-using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Path;
 
 namespace Toubab.Beinder.Extend
 {
 
     public abstract class CustomProperty<T> : Bindable.Bindable, ICustomProperty<T>
     {
-        protected CustomProperty() 
-            : base(new CamelCasePathParser())
-        {
-        }
-
-        protected CustomProperty(IPathParser pathParser)
-            : base(pathParser)
+        protected CustomProperty(Path.Path path) 
+            : base(path)
         {
         }
 
@@ -29,7 +24,7 @@ namespace Toubab.Beinder.Extend
             var evt = Broadcast;
             if (evt != null)
             {
-                var args = new BroadcastEventArgs(this, payload);
+                var args = new BroadcastEventArgs(Object, payload);
                 evt(this, args);
             }
         }

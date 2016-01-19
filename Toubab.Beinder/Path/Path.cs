@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Path
 {
     public class Path : IComparable<Path>
     {

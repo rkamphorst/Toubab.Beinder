@@ -15,7 +15,7 @@ namespace Toubab.Beinder
         public void BindSpecialPropertyOnMixinWithNotifyPropertyChanged()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             var mixinScanner = new MixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<MockViewMixin>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
@@ -36,7 +36,7 @@ namespace Toubab.Beinder
         public void BindSpecialPropertyOnMixinWithReflection()
         {
             // Arrange
-            var bnd = new Binder();
+            var bnd = new Binder(new CombinedScanner());
             var mixinScanner = new MixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<MockViewMixin2>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());

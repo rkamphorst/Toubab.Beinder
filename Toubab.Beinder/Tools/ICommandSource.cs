@@ -1,6 +1,6 @@
 using System;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Tools
 {
     /// <summary>
     /// Interface for objects to bind <see cref="System.Windows.Input.ICommand"/> instances to.

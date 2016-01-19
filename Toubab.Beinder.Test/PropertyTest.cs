@@ -28,7 +28,7 @@ namespace Toubab.Beinder
             bindable.SetObject(o1);
 
             // Act
-            IBindable clone = bindable.CloneWithoutObject();
+            IBindable clone = (IBindable) bindable.CloneWithoutObject();
             clone.SetObject(o2);
 
             // Assert

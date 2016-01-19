@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Toubab.Beinder.Mock;
 using System.Linq;
 using Toubab.Beinder.Mock.Fruit;
+using Toubab.Beinder.Util;
 
 namespace Toubab.Beinder
 {

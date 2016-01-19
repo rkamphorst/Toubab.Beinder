@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Toubab.Beinder.Bindable;
+using Toubab.Beinder.Util;
 
 namespace Toubab.Beinder.Valve
 {
@@ -18,7 +19,7 @@ namespace Toubab.Beinder.Valve
             lock (_bindables)
             {             
                 _bindables.AddLast(new WeakReference<IBindable>(prop));
-                var prod = prop as IBindableProducer;
+                var prod = prop as IEvent;
                 if (prod != null)
                     prod.Broadcast += HandleBroadcast;
             }
@@ -48,7 +49,7 @@ namespace Toubab.Beinder.Valve
 
             foreach (var bindable in EnumerateLiveRefsAndRemoveDefuncts(_bindables))
             {
-                var prod = bindable as IBindableProducer;
+                var prod = bindable as IEvent;
                 if (prod != null)
                 {
                     prod.Broadcast -= HandleBroadcast;
@@ -95,30 +96,39 @@ namespace Toubab.Beinder.Valve
 
         protected virtual bool Push(object source, object[] payload)
         {
-            var srcBindable = source as IBindableState;
-            var payloadTypes = srcBindable != null 
-                ? srcBindable.ValueTypes.Select(t => t.GetTypeInfo()).ToArray()
-                : payload.Select(p => p == null ? null : p.GetType().GetTypeInfo()).ToArray();
-
+            var srcBindable = source as IBindable;
             lock (_bindables)
             {
                 bool valueWasBroadcast = false;
                 foreach (var bnd in EnumerateLiveRefsAndRemoveDefuncts(_bindables))
                 {
-                    var cons = bnd as IBindableConsumer;
+                    var cons = bnd as IEventHandler;
                     if (cons != null && !ReferenceEquals(source, cons))
                     {
-                        var consValueTypes = cons.ValueTypes.Select(t => t.GetTypeInfo()).ToArray();
-                        if (consValueTypes.Select((t, i) => t.IsAssignableFrom(payloadTypes[i])).All(b => b))
+                        bool areParamsCompatible =
+                            srcBindable != null
+                            ? cons.ValueTypes.AreAssignableFromTypes(srcBindable.ValueTypes)
+                                : cons.ValueTypes.AreAssignableFromObjects(payload);
+                        if (areParamsCompatible)
                         {
-                            var broadcastParams = new object[consValueTypes.Length];
-                            Array.Copy(payload, broadcastParams, broadcastParams.Length);
-                            valueWasBroadcast |= cons.TryHandleBroadcast(broadcastParams);
+                            valueWasBroadcast |= cons.TryHandleBroadcast(payload);
                         }
                     }
                 }
                 return valueWasBroadcast;
             }
+        }
+
+        public override string ToString()
+        {
+            var first = this.FirstOrDefault();
+
+            return string.Format("{0}: {1}->{2} ({3})", 
+                GetType().Name,
+                first == null || first.Object == null ? "[?]" : first.Object.GetType().Name, 
+                first == null ? "?" : first.Path, 
+                first == null ? "(?)" : string.Join(",", first.ValueTypes.Select(vt => vt.Name))
+            );
         }
 
         protected static IEnumerable<T> EnumerateLiveRefsAndRemoveDefuncts<T>(LinkedList<WeakReference<T>> list) 
@@ -148,6 +158,8 @@ namespace Toubab.Beinder.Valve
                 yield return target;
                 node = node.Next;
             }
+
+
         }
     }
     

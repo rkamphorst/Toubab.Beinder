@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using Toubab.Beinder.Bindable;
-using Toubab.Beinder.PathParser;
+using Toubab.Beinder.Path;
 using Toubab.Beinder.Extend;
+using Toubab.Beinder.Annex;
 
 namespace Toubab.Beinder.Scanner
 {
@@ -29,29 +30,27 @@ namespace Toubab.Beinder.Scanner
             var dict = obj as Dictionary<string,object>;
 
             if (dict == null)
-                return Enumerable.Empty<IBindableState>();
+                return Enumerable.Empty<IProperty>();
             
             return dict.Select(
                 kvp => new DictionaryEntryProperty(kvp.Key, _pathParser)
             );
         }
 
-        class DictionaryEntryProperty : IBindableState
+        class DictionaryEntryProperty : Bindable.Bindable
         {
             readonly string _key;
-            readonly Path _propertyPath;
-            Dictionary<string,object> _object;
 
             public DictionaryEntryProperty(string key, IPathParser pathParser)
+                : base(pathParser.Parse(key))
             {
-                _propertyPath = pathParser.Parse(key);
                 _key = key;
             }
 
-            DictionaryEntryProperty(string key, Path path)
+            DictionaryEntryProperty(DictionaryEntryProperty toCopy)
+                : base(toCopy)
             {
-                _propertyPath = path;
-                _key = key;
+                _key = toCopy._key;
             }
 
             void HandleDictionaryChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -71,57 +70,52 @@ namespace Toubab.Beinder.Scanner
             {
                 var e = Broadcast;
                 if (e != null)
-                    e(this, new BroadcastEventArgs(this, argument));
+                    e(this, new BroadcastEventArgs(Object, argument));
             }
 
             public event EventHandler<BroadcastEventArgs> Broadcast;
 
-            public Type[] ValueTypes { get { return new[] { typeof(object) }; } }
+            public override Type[] ValueTypes { get { return new[] { typeof(object) }; } }
 
             public object[] Values
             {
                 get
                 {
                     object result;
-                    return _object.TryGetValue(_key, out result) ? new object[] { result } : new object[] { null };
+                    return ((Dictionary<string,object>)GetObject()).TryGetValue(_key, out result) 
+                        ? new [] { result } 
+                        : new object[] { null };
                 }
             }
 
             public bool TryHandleBroadcast(object[] argument)
             { 
+                var dict = (Dictionary<string,object>)GetObject();
                 var value = argument[0];
                 if (value == null)
-                    _object.Remove(_key);
+                    dict.Remove(_key);
                 else
-                    _object[_key] = value;
+                    dict[_key] = value;
                 
                 return true;
             }
 
-            public object Object
-            { 
-                get
-                {
-                    return _object;
-                } 
-            }
-
-            public void SetObject(object value)
+            public override void SetObject(object value)
             {
                 var newdict = (Dictionary<string,object>)value;
 
                 {
-                    var incc = _object as INotifyCollectionChanged;
+                    var incc = GetObject() as INotifyCollectionChanged;
                     if (incc != null)
                     {
                         incc.CollectionChanged -= HandleDictionaryChanged;
                     }
                 }
 
-                _object = newdict;
+                base.SetObject(newdict);
 
                 {
-                    var incc = _object as INotifyCollectionChanged;
+                    var incc = newdict as INotifyCollectionChanged;
                     if (incc != null)
                     {
                         incc.CollectionChanged += HandleDictionaryChanged;
@@ -130,17 +124,9 @@ namespace Toubab.Beinder.Scanner
 
             }
 
-            public Path Path
+            public override IAnnex CloneWithoutObject()
             {
-                get
-                {
-                    return _propertyPath;
-                }
-            }
-
-            public IBindable CloneWithoutObject()
-            {
-                return new DictionaryEntryProperty(_key, _propertyPath);
+                return new DictionaryEntryProperty(this);
             }
 
         }

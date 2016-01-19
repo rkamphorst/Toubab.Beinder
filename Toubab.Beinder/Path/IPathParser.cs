@@ -1,4 +1,4 @@
-namespace Toubab.Beinder.PathParser
+namespace Toubab.Beinder.Path
 {
     public interface IPathParser 
     {
