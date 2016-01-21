@@ -1,5 +1,6 @@
 ﻿namespace Toubab.Beinder.Tools
 {
+    using System;
     using System.Threading.Tasks;
     using NUnit.Framework;
     using Mock;
@@ -7,6 +8,31 @@
     [TestFixture]
     public class CommandTest
     {
+        [Test, ExpectedException(typeof(ArgumentNullException))]
+        public void ArgumentExceptionWhenSyncNoExecuteCallback() 
+        {
+            var cmd = new Command(
+                (Action<object>) null,
+                (o) => true, 
+                new object[0]
+            );
+
+            cmd.Dispose();
+        }
+
+        [Test, ExpectedException(typeof(ArgumentNullException))]
+        public void ArgumentExceptionWhenAsyncNoExecuteCallback() 
+        {
+            var cmd = new Command(
+                (Func<object,Task>) null,
+                (o) => true, 
+                new object[0]
+            );
+
+            cmd.Dispose();
+        }
+
+
         [Test]
         public void CanExecuteCallsBack()
         {
@@ -117,7 +143,7 @@
                     await procTcs.Task; // wait for signal that new count has been processed
                     procTcs = new TaskCompletionSource<int>(); // create a new task completion source
                 },
-                (o) => true, 
+                null,
                 new object[0]
             );
 
@@ -188,6 +214,8 @@
             Assert.IsFalse(didCallBack);
 
         }
+
+
 
     }
 }

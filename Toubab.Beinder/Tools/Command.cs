@@ -49,11 +49,14 @@
         /// <param name="canExecute">CanExecute callback</param>
         /// <param name="notify">Notify object(s)</param>
         public Command(Action<object> execute, Func<object,bool> canExecute = null, params object[] notify)
-            : this(o =>
-                {
-                    execute(o);
-                    return Task.FromResult(0);
-                }, canExecute, notify)
+            : this(
+                execute == null 
+                    ? (Func<object,Task>) null
+                    : o =>
+                      {
+                        execute(o);
+                        return Task.FromResult(0);
+                      }, canExecute, notify)
         {
         }
 
