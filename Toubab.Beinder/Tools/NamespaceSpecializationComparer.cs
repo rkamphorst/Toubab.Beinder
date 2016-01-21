@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Toubab.Beinder.Util
+namespace Toubab.Beinder.Tools
 {
 
     public class NamespaceSpecializationComparer : Comparer<string>

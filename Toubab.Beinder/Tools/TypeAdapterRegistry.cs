@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 
-namespace Toubab.Beinder.Util
+namespace Toubab.Beinder.Tools
 {
     public class TypeAdapterRegistry<IAdapter>
         where IAdapter : class

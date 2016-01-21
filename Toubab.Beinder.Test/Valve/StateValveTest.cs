@@ -1,12 +1,11 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 using Toubab.Beinder.Mock;
-using System.Linq;
-using Toubab.Beinder.Valve;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Valve
 {
     [TestFixture]
-    public class ValveTest
+    public class StateValveTest
     {
         [Test]
         public void ValuesArePropagated()

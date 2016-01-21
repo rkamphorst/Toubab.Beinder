@@ -30,28 +30,40 @@ namespace Toubab.Beinder.Scanner
         {
             var propgroups =
                 (from prop in _scanners.SelectMany(s => s.Scan(obj))
-                            group prop by new 
+                             group prop by new 
                             { 
                                 Path = prop.Path, 
-                                IsState = (prop is IProperty),
-                                IsProducer = (prop is IEvent),
-                                IsConsumer = (prop is IEventHandler)
+                                IsProperty = (prop is IProperty),
+                                IsEvent = (prop is IEvent),
+                                IsEventHandler = (prop is IEventHandler)
                             });
             foreach (var propgroup in propgroups)
             {
-                IBindable prop;
-                if (propgroup.Key.IsState)
+                IBindable prop = null;
+                if (propgroup.Key.IsProperty)
                 {
                     var proparray = propgroup.Cast<IProperty>().ToArray();
                     prop = proparray.Length > 1 
                         ? new CombinedProperty(proparray) 
                         : proparray[0];
                 }
-                else 
+                else if (propgroup.Key.IsEvent)
                 {
-                    prop = propgroup.First();
+                    var proparray = propgroup.Cast<IEvent>().ToArray();
+                    prop = proparray.Length > 1 
+                        ? new CombinedEvent(proparray) 
+                        : proparray[0];
                 }
-                yield return prop;
+                else if (propgroup.Key.IsEventHandler)
+                {
+                    var proparray = propgroup.Cast<IEventHandler>().ToArray();
+                    prop = proparray.Length > 1 
+                        ? new CombinedEventHandler(proparray) 
+                        : proparray[0];
+                }
+
+                if (prop != null)
+                    yield return prop;
             }
         }
 

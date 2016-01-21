@@ -6,6 +6,9 @@ namespace Toubab.Beinder.Bindable
     /// <summary>
     /// Base class for classes that implement <see cref="IBindable"/>
     /// </summary>
+    /// <seealso cref="CombinedBindable{T}"/>
+    /// <seealso cref="DelegatedBindable{T}"/>
+    /// <seealso cref="ReflectedBindable{T}"/>
     public abstract class Bindable : Annex.Annex, IBindable
     {
         readonly Path.Path _path;

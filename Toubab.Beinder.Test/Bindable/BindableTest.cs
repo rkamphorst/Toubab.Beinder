@@ -1,14 +1,13 @@
 ﻿using NUnit.Framework;
 using Toubab.Beinder.Scanner;
 using Toubab.Beinder.Mock;
-using Toubab.Beinder.Bindable;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Bindable
 {
     [TestFixture]
-    public class PropertyTest
+    public class BindableTest
     {
-        static void CloneYieldsIndependentPropertiesWithSameObject(IBindable property, object o)
+        static void CloneYieldsIndependentBindablesWithSameObject(IBindable property, object o)
         {
             // Arrange
             property.SetObject(o);
@@ -22,7 +21,7 @@ namespace Toubab.Beinder
             Assert.IsNull(clone.Object);
         }
 
-        static void ClonedPropertyCanChangeObjectIndependently(IBindable bindable, object o1, object o2)
+        static void ClonedBindableCanChangeObjectIndependently(IBindable bindable, object o1, object o2)
         {
             // Arrange
             bindable.SetObject(o1);
@@ -45,9 +44,9 @@ namespace Toubab.Beinder
             {
                 object o1 = new NotifyPropertyChangedClass();
                 object o2 = new NotifyPropertyChangedClass();
-                CloneYieldsIndependentPropertiesWithSameObject(prop, o1);
-                ClonedPropertyCanChangeObjectIndependently(prop, o1, o2);
-                ClonedPropertyCanChangeObjectIndependently(prop, o2, null);
+                CloneYieldsIndependentBindablesWithSameObject(prop, o1);
+                ClonedBindableCanChangeObjectIndependently(prop, o1, o2);
+                ClonedBindableCanChangeObjectIndependently(prop, o2, null);
                 cnt++;
             }
             Assert.IsTrue(cnt > 0);
@@ -62,9 +61,9 @@ namespace Toubab.Beinder
             {
                 object o1 = new MockView();
                 object o2 = new MockView();
-                CloneYieldsIndependentPropertiesWithSameObject(prop, o1);
-                ClonedPropertyCanChangeObjectIndependently(prop, o1, o2);
-                ClonedPropertyCanChangeObjectIndependently(prop, o2, null);
+                CloneYieldsIndependentBindablesWithSameObject(prop, o1);
+                ClonedBindableCanChangeObjectIndependently(prop, o1, o2);
+                ClonedBindableCanChangeObjectIndependently(prop, o2, null);
                 cnt++;
             }
             Assert.IsTrue(cnt > 0);
@@ -82,9 +81,9 @@ namespace Toubab.Beinder
             {
                 object o1 = new MockView();
                 object o2 = new MockView();
-                CloneYieldsIndependentPropertiesWithSameObject(prop, o1);
-                ClonedPropertyCanChangeObjectIndependently(prop, o1, o2);
-                ClonedPropertyCanChangeObjectIndependently(prop, o2, null);
+                CloneYieldsIndependentBindablesWithSameObject(prop, o1);
+                ClonedBindableCanChangeObjectIndependently(prop, o1, o2);
+                ClonedBindableCanChangeObjectIndependently(prop, o2, null);
                 cnt++;
             } 
             Assert.IsTrue(cnt > 0);

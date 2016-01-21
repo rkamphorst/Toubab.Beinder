@@ -3,9 +3,8 @@ using System.Reflection;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using System.Collections;
 
-namespace Toubab.Beinder.Util
+namespace Toubab.Beinder.Tools
 {
     public static class TypeUtilities
     {

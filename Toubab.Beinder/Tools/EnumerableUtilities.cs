@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Toubab.Beinder.Util
+namespace Toubab.Beinder.Tools
 {
     
     public static class EnumerableUtilities
@@ -27,9 +27,10 @@ namespace Toubab.Beinder.Util
         /// P, P, l, P
         /// P, P, m, P
         /// 
-        /// Every enumerable 'r' in the result contains the elements of the original enumerables
-        /// at position x, where x is the position of r in the result. If any of the original 
-        /// enumerables does not have a position x (i.e., it has 
+        /// Every enumerable *r* in the result contains the elements of the original enumerables
+        /// at position *x*, where *x* is the position of *r* in the result. If any of the original 
+        /// enumerables does not have a position *x* (i.e., it has a <c>Count()</c> less than *x + 1*),
+        /// the <paramref name="padding"/> is inserted at that position in *r*.
         /// </remarks>
         public static IEnumerable<IEnumerable<T>> TransposeWithPadding<T>(this IEnumerable<IEnumerable<T>> source, T padding = default(T))
         {

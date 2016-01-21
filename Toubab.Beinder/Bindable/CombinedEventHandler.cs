@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Toubab.Beinder.Valve;
 using Toubab.Beinder.Annex;
+using Toubab.Beinder.Tools;
 
 namespace Toubab.Beinder.Bindable
 {
@@ -23,11 +24,8 @@ namespace Toubab.Beinder.Bindable
     /// with the arguments supplied to <see cref="TryHandleBroadcast"/>, that method is not 
     /// called on that instance.
     /// 
-    /// **Set Object**: <see cref="SetObject"/> results in the object being set for all
-    /// contained properties.
-    /// 
-    /// <see cref="ValueTypes"/> and <see cref="Path"/> are all taken from the first event handler
-    /// in the list. 
+    /// See <see cref="CombinedBindable{T}"/> documentation for more information on how 
+    /// <see cref="IBindable"/> properties and methods on instances are are combined. 
     /// </remarks>
     public class CombinedEventHandler : CombinedBindable<IEventHandler>, IEventHandler
     {
@@ -46,7 +44,7 @@ namespace Toubab.Beinder.Bindable
         /// </summary>
         /// <param name="toCopy">The object to copy into a new instance.</param>
         protected CombinedEventHandler(CombinedEventHandler toCopy)
-            : base(toCopy) 
+            : this(toCopy.Bindables.Select(b => (IEventHandler)b.CloneWithoutObject()).ToArray())
         {
         }
 
@@ -70,5 +68,6 @@ namespace Toubab.Beinder.Bindable
         }
 
     }
+
 
 }

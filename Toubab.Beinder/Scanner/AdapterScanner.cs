@@ -1,5 +1,5 @@
 ﻿using System;
-using Toubab.Beinder.Util;
+using Toubab.Beinder.Tools;
 
 namespace Toubab.Beinder.Scanner
 {

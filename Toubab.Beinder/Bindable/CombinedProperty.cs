@@ -23,11 +23,8 @@ namespace Toubab.Beinder.Bindable
     /// <see cref="TryHandleBroadcast"/> on all contained properties (in order), until 
     /// one signals that the broadcast has been handled (by returning <c>true</c>).
     /// 
-    /// **Set Object**: <see cref="SetObject"/> results in the object being set for all
-    /// contained properties.
-    /// 
-    /// <see cref="Values"/>, <see cref="ValueTypes"/> and <see cref="Path"/> are
-    /// all taken from the first property in the list.
+    /// See <see cref="CombinedBindable{T}"/> documentation for more information on how 
+    /// <see cref="IBindable"/> properties and methods on instances are are combined. 
     /// </remarks>
     public class CombinedProperty : CombinedBindable<IProperty>, IProperty
     {
@@ -77,7 +74,8 @@ namespace Toubab.Beinder.Bindable
         {
             get
             {
-                return Bindables[0].Values;
+                _values = Bindables[0].Values;
+                return _values;
             }
         }
 
@@ -94,7 +92,8 @@ namespace Toubab.Beinder.Bindable
             // prevent lots of events from propagating
             // by setting _value first.
             // That way, HandleContainedPropertyValueChanged won't call 
-            // OnValueChanged
+            // OnValueChanged (if TryHandleBroadcast further down raises
+            // an event -- which it shouldn't btw)
             _values = argument;
 
             // write the property, try each one until one accepts

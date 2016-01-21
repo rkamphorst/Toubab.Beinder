@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Path
 {
     [TestFixture]
     public class PathTest
@@ -12,8 +12,8 @@ namespace Toubab.Beinder
         public void CompareSameStartFragments()
         {
             // Arrange
-            var path1 = (Path.Path)new[] { "banaan", "appel", "meloen" };
-            var path2 = (Path.Path)new[] { "banaan", "appel" };
+            var path1 = (Path)new[] { "banaan", "appel", "meloen" };
+            var path2 = (Path)new[] { "banaan", "appel" };
 
             {
                 // Act
@@ -37,10 +37,10 @@ namespace Toubab.Beinder
         public void OrderSameStartFragments()
         {
             // Arrange
-            var path1 = (Path.Path)new[] { "banaan", "appel", "peer" };
-            var path2 = (Path.Path)new[] { "banaan", "appel" };
-            var path3 = (Path.Path)new[] { "banaan", "appel", "meloen" };
-            var lst = new List<Path.Path> { path1, path2, path3 };
+            var path1 = (Path)new[] { "banaan", "appel", "peer" };
+            var path2 = (Path)new[] { "banaan", "appel" };
+            var path3 = (Path)new[] { "banaan", "appel", "meloen" };
+            var lst = new List<Path> { path1, path2, path3 };
 
             // Act
             var ar = lst.OrderBy(p => p).ToArray();

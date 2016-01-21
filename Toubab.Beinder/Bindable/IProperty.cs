@@ -1,5 +1,3 @@
-using System;
-
 namespace Toubab.Beinder.Bindable
 {
     /// <summary>

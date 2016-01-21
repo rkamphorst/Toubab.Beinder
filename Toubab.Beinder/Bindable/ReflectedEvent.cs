@@ -1,12 +1,33 @@
 using System;
-using System.Reflection;
 using System.Linq;
-using Toubab.Beinder.Path;
+using System.Reflection;
 using Toubab.Beinder.Annex;
 
 namespace Toubab.Beinder.Bindable
 {
-
+    /// <summary>
+    /// Reflected event bindable
+    /// </summary>
+    /// <remarks>
+    /// Adapts a reflected event (<see cref="EventInfo"/>) to the <see cref="IEvent"/>
+    /// interface.
+    /// 
+    /// This class raises <see cref="Broadcast"/> every time the actual event is raised.
+    /// The <see cref="BroadcastEventArgs.Payload"/> will contain the parameters that were 
+    /// passed to the event delegate.
+    /// 
+    /// An event handler that raises the <see cref="Broadcast"/> event is attached to the
+    /// original event when <see cref="SetObject"/> is called (with a non-null parameter). 
+    /// If a non-null object was already attached (<see cref="Object"/> was not null), 
+    /// the event handlers are first detached from that object.
+    /// 
+    /// When <see cref="SetObject"/> is called with a <c>null</c> parameter, event handlers 
+    /// are detached from the <see cref="Object"/> if it was non-<c>null</c>.
+    /// 
+    /// Note that only events with a <c>void</c> return type, and with up to 32 parameters
+    /// are supported. If you attempt to construct this type with events that don't meet
+    /// these requirements, an <see cref="ArgumentException"/> is thrown.
+    /// </remarks>
     public class ReflectedEvent : ReflectedBindable<EventInfo>, IEvent
     {
         const string HandleEventMethod = "HandleEvent";
@@ -15,6 +36,15 @@ namespace Toubab.Beinder.Bindable
         readonly Delegate _handleEventDelegate;
         readonly Type[] _parameterTypes;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if <paramref name="eventInfo"/> has more than 32 parameters or a 
+        ///     non-void return type.
+        /// </exception>
+        /// <param name="path">Set the <see cref="Path"/> of the bindable to this value</param>
+        /// <param name="eventInfo">The reflected evet.</param>
         public ReflectedEvent(Path.Path path, EventInfo eventInfo)
             : base(path, eventInfo)
         {
@@ -22,13 +52,25 @@ namespace Toubab.Beinder.Bindable
                 .GetRuntimeMethods().First(m => Equals(m.Name, DelegateInvokeMethod));
             _parameterTypes = invokeMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
+            if (_parameterTypes.Length > 32) 
+                throw new ArgumentException("Not supported: Event delegate has more than 32 parameters", "eventInfo");
+            if (invokeMethod.ReturnType != typeof(void))
+                throw new ArgumentException("Not supported: Event delegate has a non-void return type", "eventInfo");
+
             var handlerMethodInfo =
                 typeof(ReflectedEvent).GetRuntimeMethods().Single(
                     m => Equals(m.Name, HandleEventMethod) && m.GetParameters().Length == _parameterTypes.Length
-                ).MakeGenericMethod(_parameterTypes);
+                );
+            if (_parameterTypes.Length > 0)
+                handlerMethodInfo = handlerMethodInfo.MakeGenericMethod(_parameterTypes);
             _handleEventDelegate = handlerMethodInfo.CreateDelegate(eventInfo.EventHandlerType, this);
         }
 
+        /// <summary>
+        /// Copy constructor (used by <see cref="CloneWithoutObject"/>).
+        /// The object this bindable belongs to is not copied.
+        /// </summary>
+        /// <param name="toCopy">The object to copy into a new instance.</param>
         ReflectedEvent(ReflectedEvent toCopy) 
             : base(toCopy)
         {
@@ -36,6 +78,7 @@ namespace Toubab.Beinder.Bindable
             _handleEventDelegate = toCopy._handleEventDelegate.GetMethodInfo().CreateDelegate(Member.EventHandlerType, this);
         }
 
+        /// <inheritdoc/>
         public override Type[] ValueTypes
         {
             get
@@ -44,9 +87,10 @@ namespace Toubab.Beinder.Bindable
             }
         }
 
+        /// <inheritdoc/>
         public event EventHandler<BroadcastEventArgs> Broadcast;
 
-
+        /// <inheritdoc/>
         public override void SetObject(object value)
         {
             var oldValue = Object;
@@ -60,12 +104,28 @@ namespace Toubab.Beinder.Bindable
                 Member.AddEventHandler(value, _handleEventDelegate);
         }
 
+        /// <inheritdoc/>
         public override IAnnex CloneWithoutObject()
         {
             return new ReflectedEvent(this);
         }
 
         #region event handlers
+
+        /*
+         * HandleEvent() has 33 overloads (to support 0 to 32 parameters).
+         * 
+         * One of them is used to create a delegate in the constructor. Which one depends on how
+         * many parameters the actual event has.
+         * 
+         * Every overload ov HandleEvent() calls OnBroadcast() with all the parameters
+         * that were passed to HandleEvent();
+         */
+
+        void HandleEvent() 
+        {
+            OnBroadcast();
+        }
 
         void HandleEvent<T1>(T1 p1)
         { 

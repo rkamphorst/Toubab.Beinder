@@ -6,8 +6,21 @@ namespace Toubab.Beinder.Bindable
     /// <summary>
     /// Base class for combined bindables.
     /// </summary>
-    /// <seealso cref="CombinedProperty"/>
+    /// <remarks>
+    /// Multiple <see cref="IBindable"/> instances are combined as follows.
+    /// 
+    /// **Set Object**: <see cref="SetObject"/> results in the object being set for all
+    /// contained properties.
+    /// 
+    /// <see cref="ValueTypes"/> and <see cref="Path"/> are all taken from the first event handler
+    /// in the list. 
+    /// 
+    /// For more information on how other properties / methods are combined, see the
+    /// more specific implementations.
+    /// </remarks>
+    /// <seealso cref="CombinedEvent"/>
     /// <seealso cref="CombinedEventHandler"/>
+    /// <seealso cref="CombinedProperty"/>
     public abstract class CombinedBindable<TBindable> : Bindable
         where TBindable : IBindable
     {
@@ -24,16 +37,6 @@ namespace Toubab.Beinder.Bindable
             : base(bindables[0].Path)
         {
             Bindables = bindables;
-        }
-
-        /// <summary>
-        /// Copy constructor (to be used by <see cref="CloneWithoutObject"/>).
-        /// The object this bindable belongs to is not copied.
-        /// </summary>
-        /// <param name="toCopy">The object to copy into a new instance.</param>
-        protected CombinedBindable(CombinedBindable<TBindable> toCopy)
-            : this(toCopy.Bindables.Select(b => (TBindable)b.CloneWithoutObject()).ToArray())
-        {
         }
 
         /// <inheritdoc/>

@@ -12,12 +12,6 @@ namespace Toubab.Beinder.Mixin
     /// </summary>
     public class CommandMixin : Mixin<ICommand>
     {
-        /// <inheritdoc/> 
-        public override IAnnex CloneWithoutObject()
-        {
-            return new CommandMixin();
-        }
-
         /// <summary>
         /// Method to be bound to the <see cref="ICommandSource.CanExecuteQuery"/> event.
         /// </summary>
@@ -44,6 +38,12 @@ namespace Toubab.Beinder.Mixin
             {
                 o.Execute(parameter);
             }
+        }
+
+        /// <inheritdoc/> 
+        public override IAnnex CloneWithoutObject()
+        {
+            return new CommandMixin();
         }
     }
 

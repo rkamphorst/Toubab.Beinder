@@ -1,11 +1,9 @@
 ﻿using System;
-using NUnit.Framework;
-using Toubab.Beinder.Mock;
 using System.Linq;
+using NUnit.Framework;
 using Toubab.Beinder.Mock.Fruit;
-using Toubab.Beinder.Util;
 
-namespace Toubab.Beinder
+namespace Toubab.Beinder.Tools
 {
     [TestFixture]
     public class TypeAdapterRegistryTest

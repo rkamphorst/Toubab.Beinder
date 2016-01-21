@@ -3,16 +3,26 @@ using Toubab.Beinder.Annex;
 
 namespace Toubab.Beinder.Bindable
 {
-
+    /// <summary>
+    /// Property bindable that delegates to another property bindable.
+    /// </summary>
     public class DelegatedProperty : DelegatedBindable<IProperty>, IProperty
     {
-        
-        public DelegatedProperty(IProperty delegateState)
-            : base(delegateState)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="delegateProperty">Property to delegate to</param>
+        public DelegatedProperty(IProperty delegateProperty)
+            : base(delegateProperty)
         {
-            delegateState.Broadcast += DelegateBroadcast;
+            delegateProperty.Broadcast += DelegateBroadcast;
         }
 
+        /// <summary>
+        /// Copy constructor (used by <see cref="CloneWithoutObject"/>).
+        /// The object this bindable belongs to is not copied.
+        /// </summary>
+        /// <param name="toCopy">The object to copy into a new instance.</param>
         protected DelegatedProperty(DelegatedProperty toCopy)
             : base((DelegatedBindable<IProperty>) toCopy)
         {
@@ -26,13 +36,16 @@ namespace Toubab.Beinder.Bindable
                 evt(this, new BroadcastEventArgs(Object, args.Payload));
         }
 
+        /// <inheritdoc/>
         public event EventHandler<BroadcastEventArgs> Broadcast;
 
+        /// <inheritdoc/>
         public bool TryHandleBroadcast(object[] argument)
         {
             return Delegate.TryHandleBroadcast(argument);
         }
 
+        /// <inheritdoc/>
         public object[] Values
         {
             get
@@ -41,6 +54,7 @@ namespace Toubab.Beinder.Bindable
             }
         }
 
+        /// <inheritdoc/>
         public override IAnnex CloneWithoutObject()
         {
             return new DelegatedProperty(this);

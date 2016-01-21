@@ -37,9 +37,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ValveTest.cs" />
-    <Compile Include="PropertyTest.cs" />
-    <Compile Include="TypeAdapterRegistryTest.cs" />
     <Compile Include="BinderWithReflectionScannersTest.cs" />
     <Compile Include="ReadmeTests.cs" />
     <Compile Include="Mock\ClassWithPropertyAndEvents.cs" />
@@ -68,13 +65,16 @@
     <Compile Include="Mock\Fruit\DisguisePearAndOrangeAsApple.cs" />
     <Compile Include="Scanner\NotifyPropertyChangedScannerTest.cs" />
     <Compile Include="Scanner\ReflectionScannerTest.cs" />
-    <Compile Include="PathParser\UnderscorePathParserTest.cs" />
-    <Compile Include="PathParser\CamelCasePathParserTest.cs" />
-    <Compile Include="PathTest.cs" />
-    <Compile Include="TypeUtilitiesAdapteeArgumentTest.cs" />
     <Compile Include="BinderWithMixinScannerTest.cs" />
     <Compile Include="Mock\MockViewMixin.cs" />
     <Compile Include="Mock\MockViewMixin2.cs" />
+    <Compile Include="Path\UnderscorePathParserTest.cs" />
+    <Compile Include="Path\CamelCasePathParserTest.cs" />
+    <Compile Include="Path\PathTest.cs" />
+    <Compile Include="Tools\TypeAdapterRegistryTest.cs" />
+    <Compile Include="Tools\TypeUtilitiesAdapteeArgumentTest.cs" />
+    <Compile Include="Bindable\BindableTest.cs" />
+    <Compile Include="Valve\StateValveTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -82,10 +82,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scanner\" />
-    <Folder Include="PathParser\" />
     <Folder Include="Mock\" />
     <Folder Include="Mock\Abcd\" />
     <Folder Include="Mock\Fruit\" />
+    <Folder Include="Path\" />
+    <Folder Include="Tools\" />
+    <Folder Include="Bindable\" />
+    <Folder Include="Valve\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toubab.Beinder\Toubab.Beinder.csproj">

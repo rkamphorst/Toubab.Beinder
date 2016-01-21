@@ -42,8 +42,6 @@
     <Compile Include="Scanner\ReflectionScanner.cs" />
     <Compile Include="Scanner\DictionaryScanner.cs" />
     <Compile Include="Scanner\CombinedScanner.cs" />
-    <Compile Include="Util\TypeUtilities.cs" />
-    <Compile Include="Util\EnumerableUtilities.cs" />
     <Compile Include="Scanner\TypeScanner.cs" />
     <Compile Include="Scanner\MixinScanner.cs" />
     <Compile Include="Bindable\Bindable.cs" />
@@ -73,9 +71,6 @@
     <Compile Include="Bindable\DelegatedProperty.cs" />
     <Compile Include="Annex\IAnnex.cs" />
     <Compile Include="Annex\Annex.cs" />
-    <Compile Include="Util\NamespaceAffinityComparer.cs" />
-    <Compile Include="Util\NamespacePreferenceComparer.cs" />
-    <Compile Include="Util\NamespaceSpecializationComparer.cs" />
     <Compile Include="Bindable\IEventHandler.cs" />
     <Compile Include="Bindable\IEvent.cs" />
     <Compile Include="Bindable\IProperty.cs" />
@@ -85,8 +80,6 @@
     <Compile Include="Tools\CommandSource.cs" />
     <Compile Include="Tools\NotifyPropertyChanged.cs" />
     <Compile Include="Mixin\CommandMixin.cs" />
-    <Compile Include="Util\TypeAdapterFactory.cs" />
-    <Compile Include="Util\TypeAdapterRegistry.cs" />
     <Compile Include="Path\CamelCasePathParser.cs" />
     <Compile Include="Path\UnderscorePathParser.cs" />
     <Compile Include="Path\IPathParser.cs" />
@@ -94,12 +87,19 @@
     <Compile Include="Bindable\CombinedProperty.cs" />
     <Compile Include="Bindable\CombinedEventHandler.cs" />
     <Compile Include="Bindable\CombinedBindable.cs" />
+    <Compile Include="Bindable\CombinedEvent.cs" />
+    <Compile Include="Tools\EnumerableUtilities.cs" />
+    <Compile Include="Tools\NamespaceAffinityComparer.cs" />
+    <Compile Include="Tools\NamespacePreferenceComparer.cs" />
+    <Compile Include="Tools\NamespaceSpecializationComparer.cs" />
+    <Compile Include="Tools\TypeAdapterFactory.cs" />
+    <Compile Include="Tools\TypeAdapterRegistry.cs" />
+    <Compile Include="Tools\TypeUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Valve\" />
     <Folder Include="Scanner\" />
-    <Folder Include="Util\" />
     <Folder Include="Bindable\" />
     <Folder Include="Extend\" />
     <Folder Include="Mixin\" />
