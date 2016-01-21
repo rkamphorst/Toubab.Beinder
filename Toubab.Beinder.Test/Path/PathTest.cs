@@ -1,10 +1,10 @@
-﻿using System;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Toubab.Beinder.Path
+﻿namespace Toubab.Beinder.Path
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PathTest
     {

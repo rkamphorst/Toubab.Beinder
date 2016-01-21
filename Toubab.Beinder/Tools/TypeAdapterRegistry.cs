@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-
 namespace Toubab.Beinder.Tools
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
     public class TypeAdapterRegistry<IAdapter>
         where IAdapter : class
     {

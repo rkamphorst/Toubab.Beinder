@@ -1,11 +1,9 @@
-using System;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Path;
-
 namespace Toubab.Beinder.Extend
 {
+    using System;
+    using Bindable;
 
-    public abstract class CustomProperty<T> : Bindable.Bindable, ICustomProperty<T>
+    public abstract class CustomProperty<T> : Bindable, ICustomProperty<T>
     {
         protected CustomProperty(Path.Path path) 
             : base(path)

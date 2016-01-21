@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using Toubab.Beinder.Scanner;
-using Toubab.Beinder.Mock;
-
-namespace Toubab.Beinder.Bindable
+﻿namespace Toubab.Beinder.Bindable
 {
+    using NUnit.Framework;
+    using Scanner;
+    using Mock;
+
     [TestFixture]
     public class BindableTest
     {

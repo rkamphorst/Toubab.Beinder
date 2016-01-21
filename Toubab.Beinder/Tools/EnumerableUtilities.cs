@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Toubab.Beinder.Tools
+﻿namespace Toubab.Beinder.Tools
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     
     public static class EnumerableUtilities
     {

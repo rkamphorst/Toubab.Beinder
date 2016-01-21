@@ -1,8 +1,8 @@
-﻿using System;
-using Toubab.Beinder.Tools;
-
-namespace Toubab.Beinder.Mock
+﻿namespace Toubab.Beinder.Mock
 {
+    using System;
+    using Tools;
+
     public class MockView
     {
         MockControl _control;

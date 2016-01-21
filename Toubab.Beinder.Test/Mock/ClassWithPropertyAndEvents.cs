@@ -1,7 +1,7 @@
-using System;
-
 namespace Toubab.Beinder.Mock
 {
+    using System;
+
     public class ClassWithPropertyAndEvents
     {
         public struct ValueTypeForComplexEvent

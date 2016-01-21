@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-
 namespace Toubab.Beinder.Tools
 {
+    using System.Collections.Generic;
 
     public class NamespaceSpecializationComparer : Comparer<string>
     {

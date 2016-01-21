@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using System.ComponentModel;
-using Toubab.Beinder.Path;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Extend;
-
 namespace Toubab.Beinder.Scanner
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Reflection;
+    using Bindable;
+    using Path;
 
     public class NotifyPropertyChangedScanner : TypeScanner
     {

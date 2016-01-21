@@ -1,8 +1,7 @@
-﻿using System;
-using Toubab.Beinder.Scanner;
-
-namespace Toubab.Beinder.Extend
+﻿namespace Toubab.Beinder.Extend
 {
+    using Scanner;
+
     public interface ICustomScanner : IScanner
     {
     }

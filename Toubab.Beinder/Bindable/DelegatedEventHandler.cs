@@ -1,7 +1,7 @@
-using Toubab.Beinder.Annex;
-
 namespace Toubab.Beinder.Bindable
 {
+    using Annex;
+
     /// <summary>
     /// Event handler (method) bindable that delegates to another event handler (method) bindable.
     /// </summary>

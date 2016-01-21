@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Extend;
-using Toubab.Beinder.Mixin;
-using Toubab.Beinder.Annex;
-
-namespace Toubab.Beinder.Scanner
+﻿namespace Toubab.Beinder.Scanner
 {
+    using System;
+    using System.Collections.Generic;
+    using Bindable;
+    using Mixin;
+
     public class MixinScanner : AdapterScanner<IMixin>
     {
         readonly IScanner _scanner;

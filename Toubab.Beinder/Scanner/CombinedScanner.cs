@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Extend;
-
-namespace Toubab.Beinder.Scanner
+﻿namespace Toubab.Beinder.Scanner
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Bindable;
 
     public class CombinedScanner : IScanner, IEnumerable<IScanner>
     {

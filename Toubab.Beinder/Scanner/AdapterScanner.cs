@@ -1,8 +1,7 @@
-﻿using System;
-using Toubab.Beinder.Tools;
-
-namespace Toubab.Beinder.Scanner
+﻿namespace Toubab.Beinder.Scanner
 {
+    using Tools;
+
     public abstract class AdapterScanner<IAdapter> : TypeScanner
         where IAdapter : class
     {

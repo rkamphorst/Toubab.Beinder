@@ -1,8 +1,8 @@
-using System;
-using System.Linq;
-
 namespace Toubab.Beinder.Path
 {
+    using System;
+    using System.Linq;
+
     public class Path : IComparable<Path>
     {
         readonly string[] _fragments;

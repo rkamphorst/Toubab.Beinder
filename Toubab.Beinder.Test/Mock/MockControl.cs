@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Toubab.Beinder.Mock
+﻿namespace Toubab.Beinder.Mock
 {
+    using System;
+
     public class MockControl
     {
 

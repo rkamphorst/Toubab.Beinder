@@ -1,8 +1,8 @@
-using System;
-using System.Linq;
-
 namespace Toubab.Beinder.Bindable
 {
+    using System;
+    using System.Linq;
+
     /// <summary>
     /// Base class for classes that implement <see cref="IBindable"/>
     /// </summary>

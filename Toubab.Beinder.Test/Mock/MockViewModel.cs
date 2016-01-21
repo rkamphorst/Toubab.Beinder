@@ -1,9 +1,7 @@
-using System;
-using System.Windows.Input;
-using Toubab.Beinder.Tools;
-
 namespace Toubab.Beinder.Mock
 {
+    using System.Windows.Input;
+    using Tools;
 
     public class MockViewModel : NotifyPropertyChanged
     {

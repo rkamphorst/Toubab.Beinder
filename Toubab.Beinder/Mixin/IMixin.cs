@@ -1,8 +1,7 @@
-﻿using System;
-using Toubab.Beinder.Annex;
-
-namespace Toubab.Beinder.Mixin
+﻿namespace Toubab.Beinder.Mixin
 {
+    using Annex;
+
     /// <summary>
     /// Interface for a mix-in
     /// </summary>

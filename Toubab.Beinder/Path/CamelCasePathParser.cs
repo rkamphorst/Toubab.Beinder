@@ -1,10 +1,9 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using System.Linq;
-using Toubab.Beinder.Extend;
-
-namespace Toubab.Beinder.Path
+﻿namespace Toubab.Beinder.Path
 {
+    using System;
+    using System.Text.RegularExpressions;
+    using System.Linq;
+
     public class CamelCasePathParser : IPathParser
     {
         readonly Regex _re = new Regex(@"(^[^A-Z]+|\G[A-Z]+[^A-Z]*)", RegexOptions.CultureInvariant);

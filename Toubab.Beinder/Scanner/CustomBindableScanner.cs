@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Extend;
-
-namespace Toubab.Beinder.Scanner
+﻿namespace Toubab.Beinder.Scanner
 {
+    using System;
+    using System.Collections.Generic;
+    using Bindable;
+    using Extend;
+
     public class CustomBindableScanner : AdapterScanner<ICustomBindable>
     {
         public override IEnumerable<IBindable> Scan(Type type)

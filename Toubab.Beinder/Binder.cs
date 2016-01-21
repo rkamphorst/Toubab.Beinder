@@ -1,15 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Scanner;
-using Toubab.Beinder.Valve;
-using Toubab.Beinder.Mixin;
-using Toubab.Beinder.Path;
-
 namespace Toubab.Beinder
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Bindable;
+    using Scanner;
+    using Valve;
+    using Mixin;
+
     /// <summary>
     /// Binder: binds properties, events and methods of different objects
     /// </summary>

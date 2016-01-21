@@ -1,7 +1,7 @@
-using System;
-
 namespace Toubab.Beinder.Tools
 {
+    using System;
+
     /// <summary>
     /// Interface for objects to bind <see cref="System.Windows.Input.ICommand"/> instances to.
     /// </summary>

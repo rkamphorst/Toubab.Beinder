@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace Toubab.Beinder.Bindable
+﻿namespace Toubab.Beinder.Bindable
 {
+    using System;
+
     /// <summary>
     /// Base class for combined bindables.
     /// </summary>

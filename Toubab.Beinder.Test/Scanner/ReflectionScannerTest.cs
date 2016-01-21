@@ -1,11 +1,10 @@
-using System;
-using NUnit.Framework;
-using Toubab.Beinder.Mock;
-using System.Linq;
-using Toubab.Beinder.Bindable;
-
 namespace Toubab.Beinder.Scanner
 {
+    using System;
+    using System.Linq;
+    using NUnit.Framework;
+    using Bindable;
+    using Mock;
 
     [TestFixture]
     public class ReflectionScannerTest

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Toubab.Beinder.Tools
+﻿namespace Toubab.Beinder.Tools
 {
+    using System;
+    using System.Collections.Generic;
+
     public class TypeAdapterFactory<IAdapter>
         where IAdapter : class
     {

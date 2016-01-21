@@ -1,11 +1,7 @@
-using System;
-using System.Linq;
-using Toubab.Beinder.Valve;
-using Toubab.Beinder.Annex;
-using Toubab.Beinder.Tools;
-
 namespace Toubab.Beinder.Bindable
 {
+    using System.Linq;
+    using Annex;
 
     /// <summary>
     /// Combines multiple <see cref="IEventHandler"/> instances into one

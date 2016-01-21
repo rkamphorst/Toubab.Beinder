@@ -1,8 +1,6 @@
-using System;
-using Toubab.Beinder.Tools;
-
 namespace Toubab.Beinder.Mock.Abcd
 {
+    using Tools;
 
     public class Abcd2 : NotifyPropertyChanged
     {

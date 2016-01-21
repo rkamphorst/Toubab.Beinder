@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Tools;
-
 namespace Toubab.Beinder.Valve
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Bindable;
+    using Tools;
 
     public class BroadcastValve : IDisposable, IEnumerable<IBindable>
     {
@@ -29,8 +28,6 @@ namespace Toubab.Beinder.Valve
         {
             Push(sender, e.Payload);
         }
-
-        #region IDisposable implementation
 
         public event EventHandler Disposing;
 
@@ -78,21 +75,15 @@ namespace Toubab.Beinder.Valve
                 throw new ObjectDisposedException(GetType().Name);
         }
 
-        #endregion
-
-        #region IEnumerable implementation
-
         public IEnumerator<IBindable> GetEnumerator()
         {
             return EnumerateLiveRefsAndRemoveDefuncts(_bindables).GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-
-        #endregion
 
         protected virtual bool Push(object source, object[] payload)
         {

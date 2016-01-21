@@ -1,9 +1,8 @@
-using System;
-using System.Windows.Input;
-using System.Collections.Generic;
-
 namespace Toubab.Beinder.Tools
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Easy-to-use implementation of ICommandSource
     /// </summary>

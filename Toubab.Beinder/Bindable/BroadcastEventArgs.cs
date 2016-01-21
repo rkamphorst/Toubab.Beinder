@@ -1,7 +1,7 @@
-using System;
-
 namespace Toubab.Beinder.Bindable
 {
+    using System;
+
     /// <summary>
     /// Event arguments for the <see cref="IEvent.Broadcast"/> event.
     /// </summary>

@@ -1,10 +1,8 @@
-using System;
-using System.Reflection;
-using Toubab.Beinder.Annex;
-using Toubab.Beinder.Bindable;
-
 namespace Toubab.Beinder.Bindable
 {
+    using System;
+    using System.Reflection;
+    using Annex;
 
     /// <summary>
     /// Reflected property bindable

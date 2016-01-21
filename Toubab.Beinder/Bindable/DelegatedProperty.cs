@@ -1,8 +1,8 @@
-using System;
-using Toubab.Beinder.Annex;
-
 namespace Toubab.Beinder.Bindable
 {
+    using System;
+    using Annex;
+
     /// <summary>
     /// Property bindable that delegates to another property bindable.
     /// </summary>

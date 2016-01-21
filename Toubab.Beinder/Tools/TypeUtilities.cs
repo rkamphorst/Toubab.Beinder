@@ -1,11 +1,11 @@
-﻿using System;
-using System.Reflection;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
-
-namespace Toubab.Beinder.Tools
+﻿namespace Toubab.Beinder.Tools
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+
     public static class TypeUtilities
     {
         public static Regex BaseClassNameRegex = new Regex(@"^[^\s\.\+`]+");

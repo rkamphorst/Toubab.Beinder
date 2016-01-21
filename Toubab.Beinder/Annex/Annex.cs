@@ -1,6 +1,5 @@
 namespace Toubab.Beinder.Annex
 {
-
     /// <summary>
     /// Annex implementation
     /// </summary>

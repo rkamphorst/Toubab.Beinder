@@ -1,7 +1,7 @@
-using System;
-
 namespace Toubab.Beinder.Bindable
 {
+    using System;
+
     /// <summary>
     /// Bindable event
     /// </summary>

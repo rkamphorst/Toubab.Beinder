@@ -1,11 +1,10 @@
-using System;
-using System.Linq;
-using Toubab.Beinder.Valve;
-using Toubab.Beinder.Tools;
-using Toubab.Beinder.Bindable;
-
 namespace Toubab.Beinder.Valve
 {
+    using System;
+    using System.Linq;
+    using Tools;
+    using Bindable;
+
     public class StateValve : BroadcastValve
     {
         static readonly object[] _secret = new[] { new object() };

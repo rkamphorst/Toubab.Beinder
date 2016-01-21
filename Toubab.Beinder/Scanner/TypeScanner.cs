@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using System;
-using System.Linq;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Extend;
-
 namespace Toubab.Beinder.Scanner
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Bindable;
+
     /// <summary>
     /// Abstract class for strongly typed scanners
     /// </summary>

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using NUnit.Framework;
-using Toubab.Beinder.Mock.Fruit;
-
-namespace Toubab.Beinder.Tools
+﻿namespace Toubab.Beinder.Tools
 {
+    using System;
+    using System.Linq;
+    using NUnit.Framework;
+    using Mock.Fruit;
+
     [TestFixture]
     public class TypeUtilitiesAdapteeArgumentTest
     {

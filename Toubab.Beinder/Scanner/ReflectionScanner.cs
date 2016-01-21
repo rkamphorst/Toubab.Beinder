@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Path;
-using Toubab.Beinder.Extend;
-
 namespace Toubab.Beinder.Scanner
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using Bindable;
+    using Path;
 
     public class ReflectionScanner : TypeScanner
     {

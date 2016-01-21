@@ -1,11 +1,8 @@
-using System;
-using System.ComponentModel;
-using Toubab.Beinder.Mixin;
-using Toubab.Beinder.Annex;
-using Toubab.Beinder.Tools;
-
 namespace Toubab.Beinder.Mock
 {
+    using Annex;
+    using Mixin;
+    using Tools;
 
     public class MockViewMixin : NotifyPropertyChanged, IMixin<MockView>
     {

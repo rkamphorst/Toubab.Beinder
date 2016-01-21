@@ -1,9 +1,9 @@
-﻿using System;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Annex;
-
-namespace Toubab.Beinder.Mock
+﻿namespace Toubab.Beinder.Mock
 {
+    using System;
+    using Annex;
+    using Bindable;
+
     class MockProperty : IProperty
     {
         public int Changed { get; set; }

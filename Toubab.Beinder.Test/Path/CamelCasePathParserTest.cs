@@ -1,9 +1,7 @@
-﻿using System;
-using NUnit.Framework;
-using Toubab.Beinder.Path;
-
-namespace Toubab.Beinder.Path
+﻿namespace Toubab.Beinder.Path
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class CamelCasePathParserTest
     {

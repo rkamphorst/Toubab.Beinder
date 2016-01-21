@@ -1,7 +1,7 @@
-using Toubab.Beinder.Tools;
-
 namespace Toubab.Beinder.Mock
 {
+    using Tools;
+
     public class NotifyPropertyChangedClass : NotifyPropertyChanged 
     {
         string _property;

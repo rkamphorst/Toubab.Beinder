@@ -1,11 +1,11 @@
-﻿using NUnit.Framework;
-using Toubab.Beinder.Scanner;
-using Toubab.Beinder.Mock;
-using System.Linq;
-using Toubab.Beinder.Mock.Abcd;
-
-namespace Toubab.Beinder
+﻿namespace Toubab.Beinder
 {
+    using System.Linq;
+    using NUnit.Framework;
+    using Mock;
+    using Mock.Abcd;
+    using Scanner;
+
     [TestFixture]
     public class BinderWithReflectionScannersTest
     {

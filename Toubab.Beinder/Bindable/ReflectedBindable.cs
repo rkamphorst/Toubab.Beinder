@@ -1,7 +1,7 @@
-using System.Reflection;
-
 namespace Toubab.Beinder.Bindable
 {
+    using System.Reflection;
+
     /// <summary>
     /// Base class for bindables that were harvested through reflection
     /// </summary>

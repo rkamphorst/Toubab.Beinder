@@ -1,14 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Path;
-using Toubab.Beinder.Extend;
-using Toubab.Beinder.Annex;
-
 namespace Toubab.Beinder.Scanner
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using Annex;
+    using Bindable;
+    using Path;
+
     /// <summary>
     /// Scans a dictionary for properties
     /// </summary>
@@ -37,7 +36,7 @@ namespace Toubab.Beinder.Scanner
             );
         }
 
-        class DictionaryEntryProperty : Bindable.Bindable
+        class DictionaryEntryProperty : Bindable
         {
             readonly string _key;
 

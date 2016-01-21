@@ -1,8 +1,7 @@
-﻿using System;
-using Toubab.Beinder.Mixin;
-
-namespace Toubab.Beinder.Extend
+﻿namespace Toubab.Beinder.Extend
 {
+    using Mixin;
+
     public interface ICustomMixin<T> : IMixin<T>
     {
     }

@@ -1,10 +1,8 @@
-using System;
-using System.Text.RegularExpressions;
-using System.Linq;
-using Toubab.Beinder.Extend;
-
 namespace Toubab.Beinder.Path
 {
+    using System;
+    using System.Linq;
+    using System.Text.RegularExpressions;
 
     public class UnderscorePathParser : IPathParser
     {

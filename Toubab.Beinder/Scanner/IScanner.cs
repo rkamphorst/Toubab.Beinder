@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using Toubab.Beinder.Bindable;
-
 namespace Toubab.Beinder.Scanner
 {
+    using System.Collections.Generic;
+    using Bindable;
+
     /// <summary>
     /// Interface for a property scanner of object instances.
     /// </summary>

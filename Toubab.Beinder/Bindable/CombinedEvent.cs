@@ -1,9 +1,9 @@
-using System;
-using System.Linq;
-using Toubab.Beinder.Annex;
-
 namespace Toubab.Beinder.Bindable
 {
+    using System;
+    using System.Linq;
+    using Annex;
+
     /// <summary>
     /// Combines multiple <see cref="IEvent"/> instances into one
     /// </summary>

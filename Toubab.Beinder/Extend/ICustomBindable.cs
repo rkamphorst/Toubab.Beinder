@@ -1,7 +1,7 @@
-﻿using Toubab.Beinder.Bindable;
-
-namespace Toubab.Beinder.Bindable
+﻿namespace Toubab.Beinder.Extend
 {
+    using Bindable;
+
     public interface ICustomBindable : IBindable
     {
     }

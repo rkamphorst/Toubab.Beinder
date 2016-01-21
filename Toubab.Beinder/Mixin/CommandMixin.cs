@@ -1,11 +1,10 @@
-﻿using System;
-using System.Windows.Input;
-using Toubab.Beinder.Mixin;
-using Toubab.Beinder.Annex;
-using Toubab.Beinder.Tools;
-
-namespace Toubab.Beinder.Mixin
+﻿namespace Toubab.Beinder.Mixin
 {
+    using System.Windows.Input;
+    using Mixin;
+    using Annex;
+    using Tools;
+
     /// <summary>
     /// Mixin to facilitate binding of <see cref="ICommand" /> instances to
     /// <see cref="ICommandSource"/> instances.

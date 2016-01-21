@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using NUnit.Framework;
-using Toubab.Beinder.Mock;
-
-namespace Toubab.Beinder.Valve
+﻿namespace Toubab.Beinder.Valve
 {
+    using System.Linq;
+    using NUnit.Framework;
+    using Mock;
+
     [TestFixture]
     public class StateValveTest
     {

@@ -1,8 +1,8 @@
-﻿using System;
-using Toubab.Beinder.Annex;
-
-namespace Toubab.Beinder.Bindable
+﻿namespace Toubab.Beinder.Bindable
 {
+    using System;
+    using Annex;
+
     /// <summary>
     /// Represents a bindable property, event or method
     /// </summary>

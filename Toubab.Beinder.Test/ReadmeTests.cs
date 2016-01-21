@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
-using Toubab.Beinder.Tools;
-
-namespace Toubab.Beinder
+﻿namespace Toubab.Beinder
 {
+    using NUnit.Framework;
+    using Tools;
+
     [TestFixture]
     public class ReadmeTests
     {

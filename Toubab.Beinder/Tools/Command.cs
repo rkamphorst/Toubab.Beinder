@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
-namespace Toubab.Beinder.Tools
+﻿namespace Toubab.Beinder.Tools
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+
     /// <summary>
     /// Easy-to-use implementation of ICommand
     /// </summary>

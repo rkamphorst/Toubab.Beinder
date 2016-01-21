@@ -1,10 +1,8 @@
-using System;
-using Toubab.Beinder.Bindable;
-using Toubab.Beinder.Path;
-
 namespace Toubab.Beinder.Extend
 {
-    public abstract class CustomEventHandler<T> : Bindable.Bindable, ICustomEventHandler<T>
+    using Bindable;
+
+    public abstract class CustomEventHandler<T> : Bindable, ICustomEventHandler<T>
     {
         protected CustomEventHandler(Path.Path path)
             : base(path)

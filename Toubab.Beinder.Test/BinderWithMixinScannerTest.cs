@@ -1,11 +1,10 @@
-﻿using System;
-using NUnit.Framework;
-using Toubab.Beinder.Scanner;
-using Toubab.Beinder.Mock;
-using System.Linq;
-
-namespace Toubab.Beinder
+﻿namespace Toubab.Beinder
 {
+    using System.Linq;
+    using NUnit.Framework;
+    using Mock;
+    using Scanner;
+
     [TestFixture]
     public class BinderWithMixinScannerTest
     {
