@@ -49,10 +49,14 @@
         /// <param name="canExecute">CanExecute callback</param>
         /// <param name="notify">Notify object(s)</param>
         public Command(Action<object> execute, Func<object,bool> canExecute = null, params object[] notify)
-            : this(o => { execute(o); return Task.FromResult(0); }, canExecute, notify)
+            : this(o =>
+                {
+                    execute(o);
+                    return Task.FromResult(0);
+                }, canExecute, notify)
         {
         }
-            
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -67,6 +71,9 @@
         /// <param name="notify">Notif object(s)</param>
         public Command(Func<object,Task> execute, Func<object,bool> canExecute = null, params object[] notify)
         {
+            if (execute == null)
+                throw new ArgumentNullException("execute");
+
             _execute = execute;
             _canExecute = canExecute;
             _notify = notify.Length > 0 
@@ -87,8 +94,6 @@
 
             _executeMutex = new SemaphoreSlim(1, 1);
         }
-
-        #region ICommand members
 
         public event EventHandler CanExecuteChanged;
 
@@ -119,6 +124,11 @@
         /// </remarks>
         public async void Execute(object parameter)
         {
+            await ExecuteAsync(parameter);
+        }
+
+        public async Task ExecuteAsync(object parameter)
+        {
             await _executeMutex.WaitAsync();
             try
             {
@@ -132,10 +142,6 @@
             OnCanExecuteChanged();
         }
 
-        #endregion
-
-        #region IDisposable members
-
         public void Dispose()
         {
             if (_notify != null)
@@ -145,8 +151,10 @@
                 {
                     var pc = notifier as INotifyPropertyChanged;
                     var cc = notifier as INotifyCollectionChanged;
-                    if (cc != null) cc.CollectionChanged -= NotifierCollectionChanged;
-                    if (pc != null) pc.PropertyChanged -= NotifierPropertyChanged;
+                    if (cc != null)
+                        cc.CollectionChanged -= NotifierCollectionChanged;
+                    if (pc != null)
+                        pc.PropertyChanged -= NotifierPropertyChanged;
                 }
                 _notify = null;
                 _canExecute = null;
@@ -155,16 +163,20 @@
             }
         }
 
-        #endregion
-
         void NotifierPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            OnCanExecuteChanged();
+            if (_canExecute != null)
+            {
+                OnCanExecuteChanged();
+            }
         }
 
         void NotifierCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            OnCanExecuteChanged();
+            if (_canExecute != null)
+            {
+                OnCanExecuteChanged();
+            }
         }
 
         /// <summary>

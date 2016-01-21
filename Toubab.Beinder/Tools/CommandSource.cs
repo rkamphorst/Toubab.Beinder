@@ -138,10 +138,6 @@ namespace Toubab.Beinder.Tools
         /// <summary>
         /// Raises the execute event.
         /// </summary>
-        /// <remarks>
-        /// Call this method in an eventhandler that handles the event that should
-        /// execute the command.
-        /// </remarks>
         public virtual bool OnExecute(object parameter)
         {
             if (CanExecute(parameter))

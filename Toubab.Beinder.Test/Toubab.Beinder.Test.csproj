@@ -75,6 +75,7 @@
     <Compile Include="Tools\TypeUtilitiesAdapteeArgumentTest.cs" />
     <Compile Include="Bindable\BindableTest.cs" />
     <Compile Include="Valve\StateValveTest.cs" />
+    <Compile Include="Tools\CommandTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
