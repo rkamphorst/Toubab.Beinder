@@ -36,20 +36,26 @@
         /// 
         /// You have two interfaces:
         /// 
+        /// ```csharp
         ///     public interface IApple { /* interface members */ }
         ///     public interface IApple&lt;T&gt; { /* probably empty */ }
+        /// ```
         /// 
-        /// When you implement the class as follows:
+        /// When you implement them as follows:
         /// 
+        /// ```csharp
         ///     public class Pear { /* pear members */ }
         ///     public class DisguisePearAsApple : IApple&lt;Pear&gt; { 
         ///         /* implementation of IApple members */
         ///     };
+        /// ```
         /// 
         /// And run the following:
         /// 
+        /// ```
         ///     Type adapteeType =
         ///        typeof(DisguisePearAsApple).GetGenericAdapteeArgument&lt;IApple&gt;();
+        /// ```
         /// 
         /// Then <c>adapteeType</c> will contain a <cref name="Type"/> object
         /// representing <c>Pear</c>.
