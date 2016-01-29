@@ -13,7 +13,7 @@ namespace Toubab.Beinder.Tools
         /// Constructor
         /// </summary>
         /// <param name="parameter">The parameter to run the query for.</param>
-        public CommandCanExecuteArgs(object parameter) 
+        public CommandCanExecuteArgs(object parameter)
         {
             Parameter = parameter;
         }
@@ -30,7 +30,31 @@ namespace Toubab.Beinder.Tools
         /// Initially, the value is <c>(Nullable<bool>)null</c>. Event handlers
         /// set this value to either true or false.
         /// </remarks>
-        public bool? CanExecute { get; set; }
+        public bool? CanExecute { get; private set; }
+
+        public void Respond(bool response)
+        {
+            if (response)
+            {
+                Yes();
+            }
+            else
+            {
+                No();
+            }
+        }
+
+        public void Yes()
+        {
+            if (!CanExecute.HasValue || !CanExecute.Value)
+                CanExecute = true;
+        }
+
+        public void No()
+        {
+            if (!CanExecute.HasValue)
+                CanExecute = false;
+        }
 
     }
     

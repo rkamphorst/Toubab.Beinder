@@ -54,8 +54,19 @@ namespace Toubab.Beinder.Mock
                 if (_bogusCommand == null)
                 {
                     _bogusCommand = new Command(
-                        execute: _ => BogusCount++, 
-                        canExecute: _ => string.IsNullOrEmpty(SpecialProperty2)
+                        execute: p => 
+                        {
+                            if (!(p is int)) 
+                            {
+                                BogusCount++;
+                            } 
+                            else 
+                            {
+                                BogusCount += (int)p;
+                            }
+                            
+                        }, 
+                        canExecute: p => Equals(p, (object)42) || string.IsNullOrEmpty(SpecialProperty2)
                     );
                 }
                 return _bogusCommand;

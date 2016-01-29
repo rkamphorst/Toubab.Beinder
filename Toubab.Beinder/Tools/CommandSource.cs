@@ -3,6 +3,7 @@ namespace Toubab.Beinder.Tools
     using System;
     using System.Collections.Generic;
 
+
     /// <summary>
     /// Easy-to-use implementation of ICommandSource
     /// </summary>
@@ -18,8 +19,8 @@ namespace Toubab.Beinder.Tools
         }
 
         /// <summary>
-        /// Initializes a <see cref="Toubab.Beinder.CommandSource"/> with a <c>null</c> parameter
-        /// and handler "can execute changed" handler <paramref name="canExecuteChanged"/>.
+        /// Initializes a <see cref="CommandSource"/> with a <c>null</c> parameter
+        /// and "can execute changed" handler <paramref name="canExecuteChanged"/>.
         /// </summary>
         /// <remarks>
         /// Calls <see cref="CommandSource(object, Action{bool})"/> with the first parameter
@@ -31,7 +32,7 @@ namespace Toubab.Beinder.Tools
         }
 
         /// <summary>
-        /// Initializes a <see cref="Toubab.Beinder.CommandSource"/> with a single parameter.
+        /// Initializes a <see cref="CommandSource"/> with a single parameter.
         /// </summary>
         /// <param name="parameter">Parameter for the command</param>
         /// <param name="canExecuteChanged">What to do when <see cref="CanExecuteChanged()"/> is called.
@@ -39,33 +40,12 @@ namespace Toubab.Beinder.Tools
         /// for given <paramref name="parameter"/>.
         /// </param>
         public CommandSource(object parameter, Action<bool> canExecuteChanged)
-            : this(() => new[] { parameter }, (o, b) => canExecuteChanged(b))
+            : this(f => canExecuteChanged(f(parameter)))
         {
         }
 
         /// <summary>
-        /// Initializes a <see cref="Toubab.Beinder.CommandSource"/> with run-time determined
-        /// parameters.
-        /// </summary>
-        /// <param name="getParameters">Called to get the parameters for the commnd are needed</param>
-        /// <param name="canExecuteChanged">Called when the "can execute changed" event of the bound command
-        /// is raised. The first parameter to this callback will be the parameter object, the second
-        /// will indicate whether the command can execute for that parameter.</param>
-        public CommandSource(
-            Func<IEnumerable<object>> getParameters, 
-            Action<object,bool> canExecuteChanged
-        )
-            : this(new Action<Func<object,bool>>(
-                canExecute =>
-                {
-                    foreach (var p in getParameters())
-                        canExecuteChanged(p, canExecute(p));
-                }))
-        {
-        }
-
-        /// <summary>
-        /// Initializes a <see cref="Toubab.Beinder.CommandSource"/> instance.
+        /// Initializes a <see cref="CommandSource"/> instance.
         /// </summary>
         /// <param name="canExecuteChanged">Execute changed callback.
         /// The first parameter to this callback is a <see cref="Func{object,bool}"/>
@@ -83,20 +63,21 @@ namespace Toubab.Beinder.Tools
         /// <remarks>
         /// This event will be bound to the <see cref="Mixin.CommandMixin.CanExecuteQuery"/>
         /// method. That method will update the <see cref="CommandCanExecuteArgs"/>, which is then 
-        /// read by <see cref="CanExecute"/> to determine whether any bound <see cref="ICommand"/>
-        /// can execute.
+        /// read by <see cref="CanExecute"/> to determine whether any bound 
+        /// <see cref="System.Windows.Input.ICommand"/> can execute.
         /// 
         /// Whenever this event occurs, <see cref="Mixin.CommandMixin.CanExecuteQuery"/> will
         /// be called (if bound).
+        /// 
         /// <remarks>
         public event Action<CommandCanExecuteArgs> CanExecuteQuery;
-
+            
         /// <summary>
         /// Event used to execute the command
         /// </summary>
         /// <remarks>
         /// This event will be bound to the <see cref="Mixin.CommandMixin.Execute"/> method
-        /// (note: that method effectively hides the <see cref="ICommand.Execute"/> method).
+        /// (note: that method effectively hides the <see cref="System.Windows.Input.ICommand.Execute"/> method).
         /// Whenever this event is raised, that method will be called.
         /// </remarks>
         public event Action<object> Execute;
@@ -105,7 +86,7 @@ namespace Toubab.Beinder.Tools
         /// Called when "can execute" changes for any parameter
         /// </summary>
         /// <remarks>
-        /// This method will be bound to the <see cref="ICommand.CanExecuteChanged"/>
+        /// This method will be bound to the <see cref="System.Windows.Input.ICommand.CanExecuteChanged"/>
         /// event. Whenever that event occurs, this method will be called.
         /// </remarks>
         public virtual void CanExecuteChanged(object source, EventArgs args)
@@ -120,8 +101,11 @@ namespace Toubab.Beinder.Tools
         /// <remarks>
         /// See the <see cref="CanExecuteQuery"/> documentation for more details on the
         /// used mechanism.
+        /// 
+        /// Note: <see cref="CanExecute"/> returns <c>true</c> if *any* of the handlers
+        /// of <see cref="CanExecuteQuery"/> indicates that the command can be executed.
         /// </remarks>
-        protected virtual bool CanExecute(object parameter)
+        public virtual bool CanExecute(object parameter)
         {
             var evt = CanExecuteQuery;
             bool result = false;
@@ -138,16 +122,15 @@ namespace Toubab.Beinder.Tools
         /// <summary>
         /// Raises the execute event.
         /// </summary>
+        /// <remarks>
+        /// Does *not* check whether the command can actually execute!
+        /// </remarks>
         public virtual bool OnExecute(object parameter)
         {
-            if (CanExecute(parameter))
-            {
-                var evt = Execute;
-                if (evt != null)
-                    evt(parameter);
-                return true;
-            }
-            return false;
+            var evt = Execute;
+            if (evt != null)
+                evt(parameter);
+            return true;
         }
 
     }

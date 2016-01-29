@@ -19,9 +19,7 @@
         /// </remarks>
         public void CanExecuteQuery(CommandCanExecuteArgs args)
         {
-            if (!args.CanExecute.HasValue || !args.CanExecute.Value)
-                args.CanExecute =
-                    GetObject().CanExecute(args.Parameter);
+            args.Respond(GetObject().CanExecute(args.Parameter));
         }
 
         /// <summary>
