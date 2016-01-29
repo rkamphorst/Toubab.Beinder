@@ -21,6 +21,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <LangVersion>6</LangVersion>
+    <DocumentationFile>bin\Debug\Toubab.Beinder.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -109,5 +110,8 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bindable\README.md" />
   </ItemGroup>
 </Project>

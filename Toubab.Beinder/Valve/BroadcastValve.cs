@@ -7,7 +7,7 @@ namespace Toubab.Beinder.Valve
     using Bindable;
     using Tools;
 
-    public class BroadcastValve : IDisposable, IEnumerable<IBindable>
+    public class BroadcastValve : IDisposable, IGrouping<Path.Path, IBindable>
     {
         readonly LinkedList<WeakReference<IBindable>> _bindables = 
             new LinkedList<WeakReference<IBindable>>();
@@ -29,10 +29,26 @@ namespace Toubab.Beinder.Valve
             Push(sender, e.Payload);
         }
 
+        /// <summary>
+        /// Event that is raised just before the <see cref="BroadcastValve"/> is disposed.
+        /// </summary>
         public event EventHandler Disposing;
 
         bool _disposed;
 
+        /// <summary>
+        /// Disposes of this instance.
+        /// </summary>
+        /// <remarks>
+        /// Consists of the following parts:
+        /// 
+        /// 1. Unregistering of broadcast event handlers from <see cref="IEvent"/> instances in the valve
+        /// 2. Calling <see cref="Dispose(bool)"/> with a <c>true</c> parameter.
+        /// 
+        /// Just before these steps, the <see cref="Disposing"/> event is raised.
+        /// 
+        /// Note to subclass implementors: use <see cref="Dispose(bool)"/> to implement disposal.
+        /// </remarks>
         public void Dispose()
         {
             if (_disposed)
@@ -57,6 +73,9 @@ namespace Toubab.Beinder.Valve
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Finalizer
+        /// </summary>
         ~BroadcastValve()
         {
             if (_disposed)
@@ -65,21 +84,34 @@ namespace Toubab.Beinder.Valve
             Dispose(false);
         }
 
+        /// <summary>
+        /// Overridable dispose
+        /// </summary>
+        /// <remarks>
+        /// Override this method to add disposal logic in a subclass.
+        /// </remarks>
+        /// <param name="disposing">If set to <c>true</c> disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
         }
 
+        /// <summary>
+        /// Throw an exception if this instance is disposed.
+        /// </summary>
+        /// <exception cref="ObjectDisposedExcdption">If this object is disposed.</exception>
         protected void AssertNotDisposed()
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
         }
 
+        /// <inheritdoc/>
         public IEnumerator<IBindable> GetEnumerator()
         {
             return EnumerateLiveRefsAndRemoveDefuncts(_bindables).GetEnumerator();
         }
 
+        /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -110,6 +142,7 @@ namespace Toubab.Beinder.Valve
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var first = this.FirstOrDefault();
@@ -122,6 +155,9 @@ namespace Toubab.Beinder.Valve
             );
         }
 
+        /// <summary>
+        /// Enumerate the weak references that are still alive, and remove the ones that are "dead"
+        /// </summary>
         protected static IEnumerable<T> EnumerateLiveRefsAndRemoveDefuncts<T>(LinkedList<WeakReference<T>> list) 
             where T : class
         {
@@ -151,6 +187,17 @@ namespace Toubab.Beinder.Valve
             }
 
 
+        }
+
+        /// <summary>
+        /// Key of the grouping that this <see cref="BroadcastValve"/> represents.
+        /// </summary>
+        Path.Path IGrouping<Path.Path, IBindable>.Key
+        {
+            get
+            {
+                return this.FirstOrDefault()?.Path;
+            }
         }
     }
     

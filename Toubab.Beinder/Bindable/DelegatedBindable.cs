@@ -35,7 +35,7 @@
         }
 
         /// <summary>
-        /// Copy constructor (used by <see cref="CloneWithoutObject"/>).
+        /// Copy constructor (to be used by <see cref="IBindable.CloneWithoutObject"/>).
         /// The object this bindable belongs to is not copied.
         /// </summary>
         /// <param name="toCopy">The object to copy into a new instance.</param>

@@ -29,7 +29,7 @@
     /// </summary>
     /// <remarks>
     /// The type parameter <typeparamref cref="T" /> serves as a marker that is
-    /// used by <see cref="TypeAdapterFactory{IMixin}"/> and <see cref="TypeAdapterRegistry{IMixin}"/>
+    /// used by <see cref="Tools.TypeAdapterFactory{IMixin}"/> and <see cref="Tools.TypeAdapterRegistry{IMixin}"/>
     /// to automatically find the right mix-in for a given type.
     /// </remarks>
     /// <typeparam name="T">Type this is a mix-in for</typeparam>

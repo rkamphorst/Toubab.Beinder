@@ -6,9 +6,13 @@
     using System.Reflection;
     using System.Text.RegularExpressions;
 
+    /// <summary>
+    /// Utility (extension) methods that operate on <see cref="Type"/> instances.
+    /// </summary>
     public static class TypeUtilities
     {
-        public static Regex BaseClassNameRegex = new Regex(@"^[^\s\.\+`]+");
+        
+        static Regex BaseClassNameRegex = new Regex(@"^[^\s\.\+`]+");
 
         /// <summary>
         /// Gets the "generic adaptee argument" from a for a given <paramref name="adapterType"/>
@@ -45,7 +49,7 @@
         /// And run the following:
         /// 
         ///     Type adapteeType =
-        ///        typeof(DisguisePearAsApple).GetGenericAdapteeArgument<IApple>();
+        ///        typeof(DisguisePearAsApple).GetGenericAdapteeArgument&lt;IApple&gt;();
         /// 
         /// Then <c>adapteeType</c> will contain a <cref name="Type"/> object
         /// representing <c>Pear</c>.
@@ -87,7 +91,10 @@
             
         }
 
-
+        /// <summary>
+        /// Determines whether the types in <paramref name="otherTypes"/> are assignable 
+        /// to the types in <paramref name="types"/>
+        /// </summary>
         public static bool AreAssignableFromTypes(this IEnumerable<Type> types, IEnumerable<Type> otherTypes) 
         {
             using (var enu = types.GetEnumerator()) 
@@ -106,6 +113,10 @@
             return true;
         }
 
+        /// <summary>
+        /// Determines whether the objects in <paramref name="objects"/> are assignable 
+        /// to the types in <paramref name="types"/>
+        /// </summary>
         public static bool AreAssignableFromObjects(this IEnumerable<Type> types, IEnumerable<object> objects) 
         {
             return types.AreAssignableFromTypes(objects.Select(o => o == null ? null : o.GetType()));

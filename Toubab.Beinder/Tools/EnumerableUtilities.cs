@@ -3,7 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    
+
+    /// <summary>
+    /// Utility (extension) methods for <see cref="IEnumerable{T}"/> instances.
+    /// </summary>
     public static class EnumerableUtilities
     {
         /// <summary>

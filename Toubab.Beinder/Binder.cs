@@ -128,8 +128,8 @@ namespace Toubab.Beinder
         /// bindables with matching bindable names are bound to each other. 
         /// 
         /// This is done recursively, so that properties of properties are also bound (this 
-        /// can only be the case for bindable states (aka properties), represented with
-        /// <see cref="IBindableState"/>). Furthermore, when a property's value changes, 
+        /// can only be the case for bindable properties, represented with
+        /// <see cref="IProperty"/>). Furthermore, when a property's value changes, 
         /// the "properties of properties" (child properties) are automatically rebound.
         /// 
         /// When the binding is established, values of properties from the first object
@@ -154,7 +154,7 @@ namespace Toubab.Beinder
         /// but need to be bound to a <see cref="IBindable"/> of child (or descendant) object.
         /// 
         /// This method is called by <see cref="Bind(IEnumerable{object})"/> to do the
-        /// initial binding, and by <see cref="BindChildren()"/> via <see cref="BindMultiple()"/>
+        /// initial binding, and by <see cref="BindChildren"/> via <see cref="BindMultiple"/>
         /// to do the recursive (re)binding.
         /// </remarks>
         BroadcastValve[] Bind(object[] objects, object activator, BinderState externalState)
@@ -267,7 +267,7 @@ namespace Toubab.Beinder
         /// <remarks>
         /// <see cref="BindChildren"/> binds matching properties / bindables of child properties.
         /// 
-        /// Because every instance of <see cref="IBindable"/> (and notably, <see cref="IBindableState"/>)
+        /// Because every instance of <see cref="IBindable"/> (and notably, <see cref="IProperty"/>)
         /// advertises multiple values to bind, this results in *multiple* valves for each
         /// property. <see cref="BindMultiple"/> is a helper method that takes care
         /// of iterating over each set of parameters, calling <see cref="Bind(object[], object, BinderState)"/> 
@@ -371,7 +371,7 @@ namespace Toubab.Beinder
             /// 
             /// Because the list in <see cref="BinderState"/> is sorted, the *Bindables* consist
             /// of all the first elements in the list that have the same path. If any of those 
-            /// is a <see cref="IBindableState"/> ("state bindable"), *ContainsState* is true.
+            /// is a <see cref="IProperty"/> ("state bindable"), *ContainsState* is true.
             /// 
             /// If *ContainsState* is true, the *ExternalState* consists of all those states that have 
             /// a path that starts with the first path.
@@ -474,7 +474,7 @@ namespace Toubab.Beinder
         /// <see cref="IBindable.SetObject(object)"/>). The relative path is 
         /// needed separately (next to <see cref="IBindable.Path"/>) for the
         /// cases where the candidate bindable is bound in a child context, i.e.,
-        /// is passed to <see cref="BindChildren()"/> through the <c>externalState</c>
+        /// is passed to <see cref="BindChildren"/> through the <c>externalState</c>
         /// parameter.
         /// </remarks>
         struct CandidateBindable
@@ -500,7 +500,7 @@ namespace Toubab.Beinder
             /// Relative path. 
             /// </summary>
             /// <remarks>
-            /// If passed to <see cref="BindChildren()"/> in the <c>externalState</c>
+            /// If passed to <see cref="BindChildren"/> in the <c>externalState</c>
             /// parameter, this path is relative to the objects in the <c>objects</c>
             /// parameter.
             /// </remarks>
@@ -534,7 +534,7 @@ namespace Toubab.Beinder
         /// Parameters to create a valve with
         /// </summary>
         /// <remarks>
-        /// For further explanation of these parameters, see <see cref="BinderState.PopValveParameters()"/>.
+        /// For further explanation of these parameters, see <see cref="BinderState.PopValveParameters"/>.
         /// </remarks>
         struct ValveParameters
         {
@@ -547,7 +547,7 @@ namespace Toubab.Beinder
             }
 
             /// <summary>
-            /// Whether any of the bindables in <see cref="Bindables"/> is a state bindable (<see cref="IBindableState"/>)
+            /// Whether any of the bindables in <see cref="Bindables"/> is a state bindable (<see cref="IProperty"/>)
             /// </summary>
             /// <remarks>
             /// If this property is true, a <see cref="StateValve"/> should be created;
@@ -598,15 +598,16 @@ namespace Toubab.Beinder
             }
 
 
-            public IEnumerator<object> GetEnumerator()
+            public IEnumerator<IGrouping<Path.Path, IBindable>> GetEnumerator()
             {
-                return _valves.Cast<object>().GetEnumerator();
+                return _valves.Cast<IGrouping<Path.Path, IBindable>>().GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }
+                
         }
     }
 }

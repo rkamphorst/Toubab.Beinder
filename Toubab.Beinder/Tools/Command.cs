@@ -11,14 +11,14 @@
     /// Easy-to-use implementation of ICommand
     /// </summary>
     /// <remarks>
-    /// Use one of the constructors to provide call-backs for <see cref="Execute()"/>
-    /// and <see cref="CanExecute()"/>, and optionally one or more *notify* objects.
+    /// Use one of the constructors to provide call-backs for <see cref="Execute"/>
+    /// and <see cref="CanExecute"/>, and optionally one or more *notify* objects.
     /// 
-    /// If you do not supply a callback for <see cref="CanExecute()"/>, <c>true</c> is
-    /// assumed as a default return value for any call of <see cref="CanExecute()"/>. 
+    /// If you do not supply a callback for <see cref="CanExecute"/>, <c>true</c> is
+    /// assumed as a default return value for any call of <see cref="CanExecute"/>. 
     /// 
     /// This Command makes sure that it is only ever executing once at a time.
-    /// <see cref="Execute"/> is protected by a mutex; and during a call, <see cref="CanExecute()"/>
+    /// <see cref="Execute"/> is protected by a mutex; and during a call, <see cref="CanExecute"/>
     /// will return false, regardless of whether the supplied callback returns true
     /// or not.
     /// 
@@ -27,7 +27,7 @@
     /// <see cref="INotifyCollectionChanged"/> event on the notify object(s). If notify
     /// object(s) do not implement one of these interfaces, they have no effect. 
     /// 
-    /// If you do not supply notify objects, the Target of the <see cref="CanExecute()"/>
+    /// If you do not supply notify objects, the Target of the <see cref="CanExecute"/>
     /// callback is automatically configured to be the notify object.
     /// </remarks>
     public class Command : ICommand, IDisposable

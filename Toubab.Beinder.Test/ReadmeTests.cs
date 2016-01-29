@@ -1,5 +1,8 @@
 ﻿namespace Toubab.Beinder
 {
+    using System;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
     using NUnit.Framework;
     using Tools;
 
@@ -26,6 +29,8 @@
                 get { return _myControl; }
                 set { SetProperty(ref _myControl, value); }
             }
+
+
         }
 
         class ViewModelClass : NotifyPropertyChanged
@@ -53,6 +58,38 @@
                 get { return _myControlLabel; }
                 set { SetProperty(ref _myControlLabel, value); }
             }
+                
+            int _entryListCount ;
+            public int EntryListCount 
+            {
+                get { return _entryListCount; }
+                set { SetProperty(ref _entryListCount, value); }
+            }
+
+            ICommand _slowlyDeleteOneEntryCommand;
+
+            public ICommand SlowlyDeleteOneEntryCommand 
+            {
+                get 
+                {
+                    if (_slowlyDeleteOneEntryCommand == null) 
+                    {
+                        _slowlyDeleteOneEntryCommand = new Command(
+                            _ => SlowlyDeleteOneEntry(),
+                            _ => EntryListCount > 0
+                        );
+                    }
+                    return _slowlyDeleteOneEntryCommand;
+                }
+            }
+
+            async Task SlowlyDeleteOneEntry() 
+            {
+                if (EntryListCount <= 0) return;
+                await Task.Delay(2000);
+                EntryListCount--;
+            }
+
         }
             
         class BaseControlClass : NotifyPropertyChanged

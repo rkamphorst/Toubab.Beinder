@@ -15,8 +15,6 @@ namespace Toubab.Beinder.Bindable
     public abstract class ReflectedBindable<T> : Bindable
         where T : MemberInfo
     {
-        protected readonly T _memberInfo;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -25,7 +23,7 @@ namespace Toubab.Beinder.Bindable
         protected ReflectedBindable(Path.Path path, T memberInfo)
             : base(path)
         {
-            _memberInfo = memberInfo;
+            Member = memberInfo;
         }
 
         /// <summary>
@@ -36,13 +34,13 @@ namespace Toubab.Beinder.Bindable
         protected ReflectedBindable(ReflectedBindable<T> toCopy)
             : base(toCopy)
         {
-            _memberInfo = toCopy._memberInfo;
+            Member = toCopy.Member;
         }
 
         /// <summary>
         /// The reflected member (event, property or method)
         /// </summary>
-        protected T Member { get { return _memberInfo; } }
+        protected readonly T Member;
 
     }
 

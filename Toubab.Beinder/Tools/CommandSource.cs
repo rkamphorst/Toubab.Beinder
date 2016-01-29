@@ -13,6 +13,7 @@ namespace Toubab.Beinder.Tools
 
         /// <summary>
         /// Constructor to be used by subclasses
+        /// </summary>
         protected CommandSource() 
         {
             _canExecuteChanged = null;
@@ -35,7 +36,7 @@ namespace Toubab.Beinder.Tools
         /// Initializes a <see cref="CommandSource"/> with a single parameter.
         /// </summary>
         /// <param name="parameter">Parameter for the command</param>
-        /// <param name="canExecuteChanged">What to do when <see cref="CanExecuteChanged()"/> is called.
+        /// <param name="canExecuteChanged">What to do when <see cref="CanExecuteChanged"/> is called.
         /// The boolean parameter of this callback will indicate whether execution is enabled
         /// for given <paramref name="parameter"/>.
         /// </param>
@@ -48,7 +49,7 @@ namespace Toubab.Beinder.Tools
         /// Initializes a <see cref="CommandSource"/> instance.
         /// </summary>
         /// <param name="canExecuteChanged">Execute changed callback.
-        /// The first parameter to this callback is a <see cref="Func{object,bool}"/>
+        /// The first parameter to this callback is a <see cref="Func{A,B}"/>
         /// with which the <paramref name="canExecuteChanged"/> callback can determine
         /// for a parameter whether execution is enabled or not.
         /// </param>
