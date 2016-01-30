@@ -2,7 +2,7 @@ namespace Toubab.Beinder.Bindable
 {
     using System;
     using System.Linq;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Combines multiple <see cref="IProperty"/> instances into one
@@ -108,7 +108,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public override IAnnex CloneWithoutObject()
+        public override IMixin CloneWithoutObject()
         {
             return new CombinedProperty(this);
         }

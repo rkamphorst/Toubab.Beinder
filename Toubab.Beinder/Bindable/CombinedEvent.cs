@@ -2,7 +2,7 @@ namespace Toubab.Beinder.Bindable
 {
     using System;
     using System.Linq;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Combines multiple <see cref="IEvent"/> instances into one
@@ -20,7 +20,7 @@ namespace Toubab.Beinder.Bindable
     /// from the same actual event. The "chosen event" is chosen to be the first one that 
     /// raises a <see cref="Broadcast"/> after a call to <see cref="SetObject"/>. After this 
     /// first broadcast, the "chosen event" is the only <see cref="IEvent"/> instance to 
-    /// cause broadcasts from the <see cref="CombinedEvent"/> , until <see cref="SetObject()"/> 
+    /// cause broadcasts from the <see cref="CombinedEvent"/> , until <see cref="IMixin.SetObject"/> 
     /// is called again.
     /// 
     /// See <see cref="CombinedBindable{T}"/> documentation for more information on how 
@@ -100,7 +100,7 @@ namespace Toubab.Beinder.Bindable
         public event EventHandler<BroadcastEventArgs> Broadcast;
 
         /// <inheritdoc/>
-        public override IAnnex CloneWithoutObject()
+        public override IMixin CloneWithoutObject()
         {
             return new CombinedEvent(this);
         }

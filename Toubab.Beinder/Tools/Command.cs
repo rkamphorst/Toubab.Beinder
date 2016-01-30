@@ -42,7 +42,7 @@
         /// </summary>
         /// <remarks>
         /// The <paramref name="execute"/> callback will run in a separate thread and
-        /// <c>await</c>ed, during which it cannot be called again. <see cref="CanExecute()"/> 
+        /// <c>await</c>ed, during which it cannot be called again. <see cref="CanExecute"/> 
         /// will return <c>false</c> during this time.
         /// </remarks>
         /// <param name="execute">Execute callback</param>
@@ -65,12 +65,12 @@
         /// </summary>
         /// <remarks>
         /// The <paramref name="execute"/> callback will be <c>await</c>ed, during which
-        /// it cannot be called again. <see cref="CanExecute()"/> will return <c>false</c>
-        /// during this time. When <paramref name="execute"> is done, <see cref="CanExecute()"/>
+        /// it cannot be called again. <see cref="CanExecute"/> will return <c>false</c>
+        /// during this time. When <paramref name="execute" /> is done, <see cref="CanExecute"/>
         /// will return to calling <paramref name="canExecute"/>.
         /// </remarks>
-        /// <param name="execute"><see cref="Execute()"/> callback</param>
-        /// <param name="canExecute"><see cref="CanExecute()"/> callback</param>
+        /// <param name="execute"><see cref="Execute"/> callback</param>
+        /// <param name="canExecute"><see cref="CanExecute"/> callback</param>
         /// <param name="notify">Notif object(s)</param>
         public Command(Func<object,Task> execute, Func<object,bool> canExecute = null, params object[] notify)
         {
@@ -98,13 +98,17 @@
             _executeMutex = new SemaphoreSlim(1, 1);
         }
 
+        /// <summary>
+        /// Raised when something happened that causes <see cref="CanExecute"/> to (possibly) return a different value
+        /// than before.
+        /// </summary>
         public event EventHandler CanExecuteChanged;
 
         /// <summary>
         /// Calculates whether this command can execute for given <paramref name="parameter"/>.
         /// </summary>
         /// <remarks>
-        /// Also, if <see cref="Execute()"/> is in the process of executing,
+        /// Also, if <see cref="Execute"/> is in the process of executing,
         /// this method will return <c>false</c>.
         /// </remarks>
         public bool CanExecute(object parameter)
@@ -122,7 +126,7 @@
         /// If you nevertheless call this method while another execution is in progress,
         /// the execution will take place *after* the current execution.
         /// 
-        /// While there is an execution in process, <see cref="CanExecute()"/>
+        /// While there is an execution in process, <see cref="CanExecute"/>
         /// will return <c>false</c>.
         /// </remarks>
         public async void Execute(object parameter)

@@ -1,6 +1,7 @@
+using Toubab.Beinder.Mixin;
+
 namespace Toubab.Beinder.Bindable
 {
-    using Annex;
 
     /// <summary>
     /// Event handler (method) bindable that delegates to another event handler (method) bindable.
@@ -33,7 +34,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public override IAnnex CloneWithoutObject()
+        public override IMixin CloneWithoutObject()
         {
             return new DelegatedEventHandler(this);
         }

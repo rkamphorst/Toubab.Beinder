@@ -1,7 +1,7 @@
 ﻿namespace Toubab.Beinder.Mock
 {
     using System;
-    using Annex;
+    using Mixin;
     using Bindable;
 
     class MockProperty : IProperty
@@ -49,7 +49,7 @@
             get { return "abc"; }
         }
 
-        public IAnnex CloneWithoutObject()
+        public IMixin CloneWithoutObject()
         {
             return new MockProperty
             {

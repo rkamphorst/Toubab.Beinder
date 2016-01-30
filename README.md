@@ -16,22 +16,20 @@ There are a lot of implementations of data binding, in C# and beyond. So why thi
 
 ## TL;DR
 
-```csharp
-/* Create binder */
-var binder = new Binder();
+	/* Create binder */
+	var binder = new Binder();
 
-/* Establish bindings.
- * Store the bindings in this._bindings to make sure it is not garbage collected.
- * This is typically done when the view appears (*not* when it is created!)
- */
-this._bindings = binder.Bind(viewModel, view);
+	/* Establish bindings.
+	 * Store the bindings in this._bindings to make sure it is not garbage collected.
+	 * This is typically done when the view appears (*not* when it is created!)
+	 */
+	this._bindings = binder.Bind(viewModel, view);
 
-/* Destroy bindings.
- * Typically when the view disappears.
- */
-this._bindings.Dispose();
-this._bindings = null;
-```
+	/* Destroy bindings.
+	 * Typically when the view disappears.
+	 */
+	this._bindings.Dispose();
+	this._bindings = null;
 
 ## Features
 

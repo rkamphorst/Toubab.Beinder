@@ -1,7 +1,6 @@
 namespace Toubab.Beinder.Mock
 {
     using System;
-    using Annex;
     using Mixin;
 
     public class MockViewMixin2 : IMixin<MockView>
@@ -14,7 +13,7 @@ namespace Toubab.Beinder.Mock
             _mockView = (MockView) newObject;
         }
 
-        public IAnnex CloneWithoutObject() 
+        public IMixin CloneWithoutObject() 
         {
             return new MockViewMixin2();
         }

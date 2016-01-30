@@ -1,7 +1,7 @@
 ﻿namespace Toubab.Beinder.Bindable
 {
     using System;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Base class for a bindable that delegates to another bindable.
@@ -13,7 +13,7 @@
     /// <seealso cref="DelegatedEvent"/>
     /// <seealso cref="DelegatedEventHandler"/>
     /// <seealso cref="DelegatedProperty"/>
-    /// <seealso cref="Mixin.IMixin{T}"/>
+    /// <seealso cref="Beinder.Mixin.IMixin{T}"/>
     public abstract class DelegatedBindable<TBindable> : Bindable
         where TBindable : IBindable
     {
@@ -26,16 +26,16 @@
         protected DelegatedBindable(TBindable delegateBindable)
             : base(delegateBindable.Path)
         {
-            if (!(delegateBindable.Object is IAnnex))
+            if (!(delegateBindable.Object is IMixin))
                 throw new ArgumentException(
-                    "Delegate bindable has to have a non-null Object that implements IAnnex", 
+                    "Delegate bindable has to have a non-null Object that implements IMixin", 
                     "delegateBindable"
                 );
             Delegate = delegateBindable;
         }
 
         /// <summary>
-        /// Copy constructor (to be used by <see cref="IBindable.CloneWithoutObject"/>).
+        /// Copy constructor (to be used by <see cref="IMixin.CloneWithoutObject"/>).
         /// The object this bindable belongs to is not copied.
         /// </summary>
         /// <param name="toCopy">The object to copy into a new instance.</param>
@@ -43,13 +43,13 @@
             : base(toCopy)
         {
             Delegate = (TBindable) toCopy.Delegate.CloneWithoutObject();
-            Delegate.SetObject(((IAnnex)toCopy.Delegate.Object).CloneWithoutObject());
+            Delegate.SetObject(((IMixin)toCopy.Delegate.Object).CloneWithoutObject());
         }
 
         /// <inheritdoc/>
         public override void SetObject(object value)
         {
-            ((IAnnex)Delegate.Object).SetObject(value);
+            ((IMixin)Delegate.Object).SetObject(value);
             base.SetObject(value);
         }
 

@@ -2,7 +2,7 @@ namespace Toubab.Beinder.Bindable
 {
     using System;
     using System.Reflection;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Reflected property bindable
@@ -88,7 +88,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public override IAnnex CloneWithoutObject()
+        public override IMixin CloneWithoutObject()
         {
             return new ReflectedProperty(this);
         }

@@ -3,7 +3,7 @@ namespace Toubab.Beinder.Bindable
     using System;
     using System.Linq;
     using System.Reflection;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Reflected event handler bindable
@@ -14,7 +14,7 @@ namespace Toubab.Beinder.Bindable
     /// 
     /// <see cref="TryHandleBroadcast"/> will be called in response to a <see cref="IEvent.Broadcast"/>
     /// event. When this happens, the parameters in <see cref="BroadcastEventArgs.Payload"/> are passed
-    /// to the method represented by <see cref="Member"/>.
+    /// to the method represented by <see cref="ReflectedBindable{T}.Member"/>.
     /// </remarks>    
     public class ReflectedEventHandler : ReflectedBindable<MethodInfo>, IEventHandler
     {
@@ -69,7 +69,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public override IAnnex CloneWithoutObject()
+        public override IMixin CloneWithoutObject()
         {
             return new ReflectedEventHandler(this);
         }

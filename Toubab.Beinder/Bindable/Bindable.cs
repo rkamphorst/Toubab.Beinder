@@ -2,6 +2,7 @@ namespace Toubab.Beinder.Bindable
 {
     using System;
     using System.Linq;
+    using Mixin;
 
     /// <summary>
     /// Base class for classes that implement <see cref="IBindable"/>
@@ -9,7 +10,7 @@ namespace Toubab.Beinder.Bindable
     /// <seealso cref="CombinedBindable{T}"/>
     /// <seealso cref="DelegatedBindable{T}"/>
     /// <seealso cref="ReflectedBindable{T}"/>
-    public abstract class Bindable : Annex.Annex, IBindable
+    public abstract class Bindable : Mixin, IBindable
     {
         readonly Path.Path _path;
 

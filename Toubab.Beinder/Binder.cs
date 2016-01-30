@@ -471,7 +471,7 @@ namespace Toubab.Beinder
         /// <remarks>
         /// This is a utility class to simplify passing on bindables that should be
         /// "attached" later on ("attach" as in "attach an object to it with 
-        /// <see cref="IBindable.SetObject(object)"/>). The relative path is 
+        /// <see cref="IMixin.SetObject(object)"/>). The relative path is 
         /// needed separately (next to <see cref="IBindable.Path"/>) for the
         /// cases where the candidate bindable is bound in a child context, i.e.,
         /// is passed to <see cref="BindChildren"/> through the <c>externalState</c>

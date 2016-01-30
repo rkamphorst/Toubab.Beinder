@@ -38,7 +38,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -73,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Events</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Events</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -96,33 +95,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Toubab.Beinder.Tools.TypeAdapterRegistry&lt; IAdapter &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Registry for adapters that adapt to a common interface <em>IAdapter</em> .  
+ <a href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7d35a25a83faba8d856b0cbca6cb8462"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d35a25a83faba8d856b0cbca6cb8462"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterFromAssembly</b> (Assembly assembly)</td></tr>
+<tr class="memitem:a7d35a25a83faba8d856b0cbca6cb8462"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#a7d35a25a83faba8d856b0cbca6cb8462">RegisterFromAssembly</a> (Assembly assembly)</td></tr>
+<tr class="memdesc:a7d35a25a83faba8d856b0cbca6cb8462"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all types from given assembly that are of type <em>IAdapter</em> .  <a href="#a7d35a25a83faba8d856b0cbca6cb8462">More...</a><br/></td></tr>
 <tr class="separator:a7d35a25a83faba8d856b0cbca6cb8462"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86edc036a4e6d82270f6839a293e5455"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86edc036a4e6d82270f6839a293e5455"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Register&lt; T &gt;</b> ()</td></tr>
+<tr class="memitem:a86edc036a4e6d82270f6839a293e5455"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#a86edc036a4e6d82270f6839a293e5455">Register&lt; T &gt;</a> ()</td></tr>
+<tr class="memdesc:a86edc036a4e6d82270f6839a293e5455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register type <em>T</em>   <a href="#a86edc036a4e6d82270f6839a293e5455">More...</a><br/></td></tr>
 <tr class="separator:a86edc036a4e6d82270f6839a293e5455"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aced1293e102e5be17007a1266c15b56a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aced1293e102e5be17007a1266c15b56a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Register</b> (Type adapterType)</td></tr>
+<tr class="memitem:aced1293e102e5be17007a1266c15b56a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#aced1293e102e5be17007a1266c15b56a">Register</a> (Type adapterType)</td></tr>
+<tr class="memdesc:aced1293e102e5be17007a1266c15b56a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register type <em>adapterType</em>   <a href="#aced1293e102e5be17007a1266c15b56a">More...</a><br/></td></tr>
 <tr class="separator:aced1293e102e5be17007a1266c15b56a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b27ade1d512fcf0c7e404e75fdf5e4f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b27ade1d512fcf0c7e404e75fdf5e4f"></a>
-IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>FindAdapterTypesFor&lt; TAdaptee &gt;</b> (TAdaptee adaptee=default(TAdaptee))</td></tr>
+<tr class="memitem:a3b27ade1d512fcf0c7e404e75fdf5e4f"><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#a3b27ade1d512fcf0c7e404e75fdf5e4f">FindAdapterTypesFor&lt; TAdaptee &gt;</a> (TAdaptee adaptee=default(TAdaptee))</td></tr>
+<tr class="memdesc:a3b27ade1d512fcf0c7e404e75fdf5e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find all types in the registry that adapt type <em>TAdaptee</em>  to <em>IAdapter</em> .  <a href="#a3b27ade1d512fcf0c7e404e75fdf5e4f">More...</a><br/></td></tr>
 <tr class="separator:a3b27ade1d512fcf0c7e404e75fdf5e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c30de515312910cbbc54f783574b41d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4c30de515312910cbbc54f783574b41d"></a>
-IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>FindAdapterTypesFor</b> (Type adapteeType)</td></tr>
+<tr class="memitem:a4c30de515312910cbbc54f783574b41d"><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#a4c30de515312910cbbc54f783574b41d">FindAdapterTypesFor</a> (Type adapteeType)</td></tr>
+<tr class="memdesc:a4c30de515312910cbbc54f783574b41d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find all types in the registry that adapt type <em>adapteeType</em>  to <em>IAdapter</em> .  <a href="#a4c30de515312910cbbc54f783574b41d">More...</a><br/></td></tr>
 <tr class="separator:a4c30de515312910cbbc54f783574b41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a3451e9675032e510d4c78951c37cd46b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3451e9675032e510d4c78951c37cd46b"></a>
-virtual IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetAdapteeTypes</b> (Type adapterType)</td></tr>
+<tr class="memitem:a3451e9675032e510d4c78951c37cd46b"><td class="memItemLeft" align="right" valign="top">virtual IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#a3451e9675032e510d4c78951c37cd46b">GetAdapteeTypes</a> (Type adapterType)</td></tr>
+<tr class="memdesc:a3451e9675032e510d4c78951c37cd46b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an adapter, determine which type(s) of adaptees it can adapt.  <a href="#a3451e9675032e510d4c78951c37cd46b">More...</a><br/></td></tr>
 <tr class="separator:a3451e9675032e510d4c78951c37cd46b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="typeconstraint">
+<div class="textblock"><p>Registry for adapters that adapt to a common interface <em>IAdapter</em> . </p>
+<div class="typeconstraint">
 <dl><dt><b>Type Constraints</b><dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em>IAdapter</em></td><td>&#160;:</td><td valign="top"><em>class</em></td><td>&#160;</td></tr>
@@ -130,14 +133,188 @@ virtual IEnumerable&lt; Type &gt;&#160;</td><td class="memItemRight" valign="bot
 </dl>
 </div>
 
-<p>Definition at line <a class="el" href="_type_adapter_registry_8cs_source.html#l00008">8</a> of file <a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>/Users/toubab/Projects/Toubab.Beinder/Toubab.Beinder/Tools/<a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a></li>
+<p>Definition at line <a class="el" href="_type_adapter_registry_8cs_source.html#l00011">11</a> of file <a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a4c30de515312910cbbc54f783574b41d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">IEnumerable&lt;Type&gt; Toubab.Beinder.Tools.TypeAdapterRegistry&lt; IAdapter &gt;.FindAdapterTypesFor </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>adapteeType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Find all types in the registry that adapt type <em>adapteeType</em>  to <em>IAdapter</em> . </p>
+<p>This method <em>only</em> finds the adapters! It does not associate adaptee and adapter, this has to be done separately. </p>
+
+<p>Definition at line <a class="el" href="_type_adapter_registry_8cs_source.html#l00119">119</a> of file <a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3b27ade1d512fcf0c7e404e75fdf5e4f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">IEnumerable&lt;Type&gt; Toubab.Beinder.Tools.TypeAdapterRegistry&lt; IAdapter &gt;.<a class="el" href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#a4c30de515312910cbbc54f783574b41d">FindAdapterTypesFor</a>&lt; TAdaptee &gt; </td>
+          <td>(</td>
+          <td class="paramtype">TAdaptee&#160;</td>
+          <td class="paramname"><em>adaptee</em> = <code>default(TAdaptee)</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Find all types in the registry that adapt type <em>TAdaptee</em>  to <em>IAdapter</em> . </p>
+<p>This method <em>only</em> finds the adapters! It does not associate adaptee and adapter, this has to be done separately. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TAdaptee</td><td>The type to be adapted to <em>IAdapter</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">adaptee</td><td>Not used; but if used, you don't have to specify <em>TAdaptee</em>  as it is inferred by the compiler from <em>adaptee</em> .</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_type_adapter_registry_8cs_source.html#l00106">106</a> of file <a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3451e9675032e510d4c78951c37cd46b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual IEnumerable&lt;Type&gt; Toubab.Beinder.Tools.TypeAdapterRegistry&lt; IAdapter &gt;.GetAdapteeTypes </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>adapterType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Given an adapter, determine which type(s) of adaptees it can adapt. </p>
+<p>Used by <a class="el" href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#aced1293e102e5be17007a1266c15b56a" title="Register type adapterType  ">Register</a> to build up an adaptee-adapter search index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">adapterType</td><td>Type of the adapter.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_type_adapter_registry_8cs_source.html#l00146">146</a> of file <a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aced1293e102e5be17007a1266c15b56a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Toubab.Beinder.Tools.TypeAdapterRegistry&lt; IAdapter &gt;.Register </td>
+          <td>(</td>
+          <td class="paramtype">Type&#160;</td>
+          <td class="paramname"><em>adapterType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register type <em>adapterType</em>  </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">adapterType</td><td>Tye type to register</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_type_adapter_registry_8cs_source.html#l00046">46</a> of file <a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a86edc036a4e6d82270f6839a293e5455"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Toubab.Beinder.Tools.TypeAdapterRegistry&lt; IAdapter &gt;.<a class="el" href="class_toubab_1_1_beinder_1_1_tools_1_1_type_adapter_registry_3_01_i_adapter_01_4.html#aced1293e102e5be17007a1266c15b56a">Register</a>&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register type <em>T</em>  </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type to register</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b><dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>IAdapter</em></td><td>&#160;</td></tr>
+</table>
+</dl>
+</div>
+
+<p>Definition at line <a class="el" href="_type_adapter_registry_8cs_source.html#l00036">36</a> of file <a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7d35a25a83faba8d856b0cbca6cb8462"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Toubab.Beinder.Tools.TypeAdapterRegistry&lt; IAdapter &gt;.RegisterFromAssembly </td>
+          <td>(</td>
+          <td class="paramtype">Assembly&#160;</td>
+          <td class="paramname"><em>assembly</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register all types from given assembly that are of type <em>IAdapter</em> . </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">assembly</td><td>Assembly to get types from</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_type_adapter_registry_8cs_source.html#l00022">22</a> of file <a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>Toubab.Beinder/Tools/<a class="el" href="_type_adapter_registry_8cs_source.html">TypeAdapterRegistry.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 29 2016 22:48:41 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 30 2016 16:50:05 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3.1
 </small></address>

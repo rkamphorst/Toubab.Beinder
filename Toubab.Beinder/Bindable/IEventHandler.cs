@@ -15,8 +15,8 @@ namespace Toubab.Beinder.Bindable
         ///     <see cref="IEvent.Broadcast"/>. 
         ///   * Will be "shared" with other calls, i.e., this array instance is also passed in calls
         ///     to other <see cref="IEventHandler"/> instances that handle the same event.
-        ///   * Will have at least the length of the array in <see cref="ValueTypes"/>, and each of the 
-        ///     types of the payload will be assignable ty the corresponding types in <see cref="ValueTypes"/>.
+        ///   * Will have at least the length of the array in <see cref="IBindable.ValueTypes"/>, and each of the 
+        ///     types of the payload will be assignable ty the corresponding types in <see cref="IBindable.ValueTypes"/>.
         /// 
         /// If <see cref="BroadcastEventArgs.Payload"/> does not meet these requirements,
         /// <see cref="TryHandleBroadcast"/> will not be called to handle that particular event.

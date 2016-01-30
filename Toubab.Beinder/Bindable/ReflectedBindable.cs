@@ -27,7 +27,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <summary>
-        /// Copy constructor (used by <see cref="CloneWithoutObject"/>).
+        /// Copy constructor (used by <see cref="Mixin.IMixin.CloneWithoutObject"/>).
         /// The object this bindable belongs to is not copied.
         /// </summary>
         /// <param name="toCopy">The object to copy into a new instance.</param>

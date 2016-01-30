@@ -1,7 +1,7 @@
 namespace Toubab.Beinder.Bindable
 {
     using System;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Event bindable that delegates to another event bindable.
@@ -40,7 +40,7 @@ namespace Toubab.Beinder.Bindable
         public event EventHandler<BroadcastEventArgs> Broadcast;
 
         /// <inheritdoc/>
-        public override IAnnex CloneWithoutObject()
+        public override IMixin CloneWithoutObject()
         {
             return new DelegatedEvent(this);
         }

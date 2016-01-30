@@ -38,7 +38,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -73,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Events</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Events</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -110,11 +109,11 @@ Inheritance diagram for Toubab.Beinder.Bindable.ReflectedEvent:</div>
 <area href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_event.html" title="Bindable event " alt="Toubab.Beinder.Bindable.IEvent" shape="rect" coords="604,168,896,192"/>
 <area href="class_toubab_1_1_beinder_1_1_bindable_1_1_bindable.html" title="Base class for classes that implement IBindable " alt="Toubab.Beinder.Bindable.Bindable" shape="rect" coords="151,112,443,136"/>
 <area href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_bindable.html" title="Represents a bindable property, event or method " alt="Toubab.Beinder.Bindable.IBindable" shape="rect" coords="604,112,896,136"/>
-<area href="class_toubab_1_1_beinder_1_1_annex_1_1_annex.html" title="Annex implementation " alt="Toubab.Beinder.Annex.Annex" shape="rect" coords="0,56,292,80"/>
+<area href="class_toubab_1_1_beinder_1_1_mixin_1_1_mixin.html" title="Annex implementation " alt="Toubab.Beinder.Mixin.Mixin" shape="rect" coords="0,56,292,80"/>
 <area href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_bindable.html" title="Represents a bindable property, event or method " alt="Toubab.Beinder.Bindable.IBindable" shape="rect" coords="302,56,594,80"/>
-<area href="interface_toubab_1_1_beinder_1_1_annex_1_1_i_annex.html" title="Annex: Carries extra (metadata about) properties, events and methods on an object ..." alt="Toubab.Beinder.Annex.IAnnex" shape="rect" coords="604,56,896,80"/>
-<area href="interface_toubab_1_1_beinder_1_1_annex_1_1_i_annex.html" title="Annex: Carries extra (metadata about) properties, events and methods on an object ..." alt="Toubab.Beinder.Annex.IAnnex" shape="rect" coords="0,0,292,24"/>
-<area href="interface_toubab_1_1_beinder_1_1_annex_1_1_i_annex.html" title="Annex: Carries extra (metadata about) properties, events and methods on an object ..." alt="Toubab.Beinder.Annex.IAnnex" shape="rect" coords="302,0,594,24"/>
+<area href="interface_toubab_1_1_beinder_1_1_mixin_1_1_i_mixin.html" title="Interface for a mix-in " alt="Toubab.Beinder.Mixin.IMixin" shape="rect" coords="604,56,896,80"/>
+<area href="interface_toubab_1_1_beinder_1_1_mixin_1_1_i_mixin.html" title="Interface for a mix-in " alt="Toubab.Beinder.Mixin.IMixin" shape="rect" coords="0,0,292,24"/>
+<area href="interface_toubab_1_1_beinder_1_1_mixin_1_1_i_mixin.html" title="Interface for a mix-in " alt="Toubab.Beinder.Mixin.IMixin" shape="rect" coords="302,0,594,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -125,18 +124,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ade1688476cbfe701a9ee1cdcf90addb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa92f631618d456ef58d87c9b264361f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa92f631618d456ef58d87c9b264361f0"></a>
 override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#aa92f631618d456ef58d87c9b264361f0">SetObject</a> (object value)</td></tr>
-<tr class="memdesc:aa92f631618d456ef58d87c9b264361f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the object that this <a class="el" href="interface_toubab_1_1_beinder_1_1_annex_1_1_i_annex.html" title="Annex: Carries extra (metadata about) properties, events and methods on an object ...">IAnnex</a> is attached to. An <a class="el" href="class_toubab_1_1_beinder_1_1_annex_1_1_annex.html" title="Annex implementation ">Annex</a> is "detachted" if the associated object is null, otherwise it is "attached".Whenever a non-<code>null</code> object is set with this method, event handlers might be attached to that object. For that reason, make sure a <code>null</code> object is set whenever possible to avoid obsolete event subscriptions (that e.g. prevent an object from being collected by the garbage collector). <dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">newObject</td><td>The new object to set.</td></tr>
-  </table>
-  </dd>
-</dl>
- <br/></td></tr>
+<tr class="memdesc:aa92f631618d456ef58d87c9b264361f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the object that this <a class="el" href="interface_toubab_1_1_beinder_1_1_mixin_1_1_i_mixin.html" title="Interface for a mix-in ">IMixin</a> is attached to. An mixin is "detachted" if the associated object is null, otherwise it is "attached".Whenever a non-<code>null</code> object is set with this method, event handlers might be attached to that object. For that reason, make sure a <code>null</code> object is set whenever possible to avoid obsolete event subscriptions (that e.g. prevent an object from being collected by the garbage collector).  <br/></td></tr>
 <tr class="separator:aa92f631618d456ef58d87c9b264361f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b5807142994004be3237de231f17413"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b5807142994004be3237de231f17413"></a>
-override <a class="el" href="interface_toubab_1_1_beinder_1_1_annex_1_1_i_annex.html">IAnnex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#a3b5807142994004be3237de231f17413">CloneWithoutObject</a> ()</td></tr>
-<tr class="memdesc:a3b5807142994004be3237de231f17413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a detached copy of this object. The returned object is a copy, except that it is not "attached". It has to be separately attached by calling <a class="el" href="interface_toubab_1_1_beinder_1_1_annex_1_1_i_annex.html#aa5b682221fc0efd55a887864bfaedba8" title="Set the object that this IAnnex is attached to. ">SetObject</a>.  <br/></td></tr>
-<tr class="separator:a3b5807142994004be3237de231f17413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad611c05ad687e699ee6c8510fe421bed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad611c05ad687e699ee6c8510fe421bed"></a>
+override <a class="el" href="interface_toubab_1_1_beinder_1_1_mixin_1_1_i_mixin.html">IMixin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#ad611c05ad687e699ee6c8510fe421bed">CloneWithoutObject</a> ()</td></tr>
+<tr class="memdesc:ad611c05ad687e699ee6c8510fe421bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a detached copy of this object. The returned object is a copy, except that it is not "attached". It has to be separately attached by calling <a class="el" href="interface_toubab_1_1_beinder_1_1_mixin_1_1_i_mixin.html#a7e11bab6d30dd917f009d9ede24c69ac" title="Set the object that this IMixin is attached to. ">SetObject</a>.  <br/></td></tr>
+<tr class="separator:ad611c05ad687e699ee6c8510fe421bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -163,7 +156,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memdesc:aea81094ba1a2e1a9562b24ed5f3e1c5a inherit pro_methods_class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor  <a href="#aea81094ba1a2e1a9562b24ed5f3e1c5a">More...</a><br/></td></tr>
 <tr class="separator:aea81094ba1a2e1a9562b24ed5f3e1c5a inherit pro_methods_class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d7d0233c9f4dc2b1c7975c6c93c7a64 inherit pro_methods_class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4.html#a1d7d0233c9f4dc2b1c7975c6c93c7a64">ReflectedBindable</a> (ReflectedBindable&lt; T &gt; toCopy)</td></tr>
-<tr class="memdesc:a1d7d0233c9f4dc2b1c7975c6c93c7a64 inherit pro_methods_class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor (used by <a class="el" href="class_toubab_1_1_beinder_1_1_annex_1_1_annex.html#a4688c1599c047479ca0346340ff2c254" title="Makes a detached copy of this object. The returned object is a copy, except that it is not &quot;attached&quot;...">CloneWithoutObject</a>). The object this bindable belongs to is not copied.  <a href="#a1d7d0233c9f4dc2b1c7975c6c93c7a64">More...</a><br/></td></tr>
+<tr class="memdesc:a1d7d0233c9f4dc2b1c7975c6c93c7a64 inherit pro_methods_class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor (used by <a class="el" href="interface_toubab_1_1_beinder_1_1_mixin_1_1_i_mixin.html#a34412201d3aa14df5b3e4ab170dca2dc" title="Makes a detached copy of this object. ">Mixin.IMixin.CloneWithoutObject</a>). The object this bindable belongs to is not copied.  <a href="#a1d7d0233c9f4dc2b1c7975c6c93c7a64">More...</a><br/></td></tr>
 <tr class="separator:a1d7d0233c9f4dc2b1c7975c6c93c7a64 inherit pro_methods_class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4.html">Toubab.Beinder.Bindable.ReflectedBindable&lt; T &gt;</a></td></tr>
 <tr class="memitem:a73398f2eadfebe911dbb8cae7c34b2b7 inherit pro_attribs_class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4"><td class="memItemLeft" align="right" valign="top">readonly T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_bindable_3_01_t_01_4.html#a73398f2eadfebe911dbb8cae7c34b2b7">Member</a></td></tr>
@@ -174,8 +167,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Reflected event bindable </p>
 <p>Adapts a reflected event (EventInfo) to the <a class="el" href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_event.html" title="Bindable event ">IEvent</a> interface.</p>
 <p>This class raises <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#a6999d11405262aae8d174aa04f27be2c">Broadcast</a> every time the actual event is raised. The <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_broadcast_event_args.html#a7e32f858bf9a80487cbbfdf543deb576" title="The value that is propagated by the event. ">BroadcastEventArgs.Payload</a> will contain the parameters that were passed to the event delegate.</p>
-<p>An event handler that raises the <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#a6999d11405262aae8d174aa04f27be2c">Broadcast</a> event is attached to the original event when <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#aa92f631618d456ef58d87c9b264361f0" title="Set the object that this IAnnex is attached to. An Annex is &quot;detachted&quot; if the associated object is n...">SetObject</a> is called (with a non-null parameter). If a non-null object was already attached (<a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_bindable.html#a0343f55545cba3f7d0e9eac6dc09e862">Object</a> was not null), the event handlers are first detached from that object.</p>
-<p>When <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#aa92f631618d456ef58d87c9b264361f0" title="Set the object that this IAnnex is attached to. An Annex is &quot;detachted&quot; if the associated object is n...">SetObject</a> is called with a <code>null</code> parameter, event handlers are detached from the <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_bindable.html#a0343f55545cba3f7d0e9eac6dc09e862">Object</a> if it was non-<code>null</code>.</p>
+<p>An event handler that raises the <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#a6999d11405262aae8d174aa04f27be2c">Broadcast</a> event is attached to the original event when <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#aa92f631618d456ef58d87c9b264361f0" title="Set the object that this IMixin is attached to. An mixin is &quot;detachted&quot; if the associated object is n...">SetObject</a> is called (with a non-null parameter). If a non-null object was already attached (<a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_bindable.html#a0343f55545cba3f7d0e9eac6dc09e862">Object</a> was not null), the event handlers are first detached from that object.</p>
+<p>When <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_reflected_event.html#aa92f631618d456ef58d87c9b264361f0" title="Set the object that this IMixin is attached to. An mixin is &quot;detachted&quot; if the associated object is n...">SetObject</a> is called with a <code>null</code> parameter, event handlers are detached from the <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_bindable.html#a0343f55545cba3f7d0e9eac6dc09e862">Object</a> if it was non-<code>null</code>.</p>
 <p>Note that only events with a <code>void</code> return type, and with up to 32 parameters are supported. If you attempt to construct this type with events that don't meet these requirements, an ArgumentException is thrown. </p>
 
 <p>Definition at line <a class="el" href="_reflected_event_8cs_source.html#l00031">31</a> of file <a class="el" href="_reflected_event_8cs_source.html">ReflectedEvent.cs</a>.</p>
@@ -224,12 +217,12 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/Users/toubab/Projects/Toubab.Beinder/Toubab.Beinder/Bindable/<a class="el" href="_reflected_event_8cs_source.html">ReflectedEvent.cs</a></li>
+<li>Toubab.Beinder/Bindable/<a class="el" href="_reflected_event_8cs_source.html">ReflectedEvent.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 29 2016 22:48:41 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 30 2016 16:50:04 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3.1
 </small></address>

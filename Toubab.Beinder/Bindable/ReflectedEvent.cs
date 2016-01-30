@@ -3,7 +3,7 @@ namespace Toubab.Beinder.Bindable
     using System;
     using System.Linq;
     using System.Reflection;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Reflected event bindable
@@ -105,7 +105,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public override IAnnex CloneWithoutObject()
+        public override IMixin CloneWithoutObject()
         {
             return new ReflectedEvent(this);
         }

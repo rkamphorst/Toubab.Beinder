@@ -1,7 +1,7 @@
 namespace Toubab.Beinder.Bindable
 {
     using System.Linq;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Combines multiple <see cref="IEventHandler"/> instances into one
@@ -16,7 +16,7 @@ namespace Toubab.Beinder.Bindable
     /// **Handle Broadcasts**: The combined property handles broadcasts that are received by calling 
     /// <see cref="TryHandleBroadcast"/> on all contained properties (in order), until 
     /// one signals that the broadcast has been handled (by returning <c>true</c>).
-    /// If <see cref="IEventHandler.ValueTypes"/> of a contained event handler are not compatible
+    /// If <see cref="IBindable.ValueTypes"/> of a contained event handler are not compatible
     /// with the arguments supplied to <see cref="TryHandleBroadcast"/>, that method is not 
     /// called on that instance.
     /// 
@@ -58,7 +58,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public override IAnnex CloneWithoutObject()
+        public override IMixin CloneWithoutObject()
         {
             return new CombinedEventHandler(this);
         }

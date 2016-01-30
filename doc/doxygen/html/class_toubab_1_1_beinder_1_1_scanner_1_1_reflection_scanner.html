@@ -38,7 +38,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -73,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Events</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Events</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -113,8 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7c9bff92662b73084f3bfa43930ecbef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan the specified type and enumerate the bindable members.  <a href="#a7c9bff92662b73084f3bfa43930ecbef">More...</a><br/></td></tr>
 <tr class="separator:a7c9bff92662b73084f3bfa43930ecbef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner.html">Toubab.Beinder.Scanner.TypeScanner</a></td></tr>
-<tr class="memitem:a98db31ebc4a9d8507ec35d01844be6bc inherit pub_methods_class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner"><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_bindable.html">IBindable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner.html#a98db31ebc4a9d8507ec35d01844be6bc">Scan</a> (object obj)</td></tr>
-<tr class="memdesc:a98db31ebc4a9d8507ec35d01844be6bc inherit pub_methods_class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan the specified object and enumerate the properties  <a href="#a98db31ebc4a9d8507ec35d01844be6bc">More...</a><br/></td></tr>
+<tr class="memitem:a98db31ebc4a9d8507ec35d01844be6bc inherit pub_methods_class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a98db31ebc4a9d8507ec35d01844be6bc"></a>
+IEnumerable&lt; <a class="el" href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_bindable.html">IBindable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner.html#a98db31ebc4a9d8507ec35d01844be6bc">Scan</a> (object obj)</td></tr>
+<tr class="memdesc:a98db31ebc4a9d8507ec35d01844be6bc inherit pub_methods_class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan the specified object and enumerate the properties Every returned property should <em>not</em> have the object associated to it! This is done by the binder at the latest stage possible.  <br/></td></tr>
 <tr class="separator:a98db31ebc4a9d8507ec35d01844be6bc inherit pub_methods_class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
@@ -164,12 +164,12 @@ Properties</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/Users/toubab/Projects/Toubab.Beinder/Toubab.Beinder/Scanner/<a class="el" href="_reflection_scanner_8cs_source.html">ReflectionScanner.cs</a></li>
+<li>Toubab.Beinder/Scanner/<a class="el" href="_reflection_scanner_8cs_source.html">ReflectionScanner.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 29 2016 22:48:41 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 30 2016 16:50:05 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3.1
 </small></address>

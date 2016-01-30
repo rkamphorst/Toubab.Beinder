@@ -12,6 +12,7 @@ namespace Toubab.Beinder.Scanner
     {
         readonly Dictionary<Type, List<IBindable>> _typeCache = new Dictionary<Type, List<IBindable>>();
 
+        /// <inheritdoc />
         public IEnumerable<IBindable> Scan(object obj)
         {
             var type = obj.GetType();

@@ -1,7 +1,7 @@
 ﻿namespace Toubab.Beinder.Bindable
 {
     using System;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Represents a bindable property, event or method
@@ -12,7 +12,7 @@
     /// dictionary entry or a named child view. 
     /// 
     /// The object that holds the property can be retrieved through 
-    /// <see cref="Object"/>, and can be set with <see cref="SetObject"/>. 
+    /// <see cref="Object"/>, and can be set with <see cref="IMixin.SetObject"/>. 
     /// 
     /// The bindable has a name, which is represented by the <see cref="Path"/>. 
     /// 
@@ -21,7 +21,7 @@
     /// store (property). These three kinds of bindables have corresponding
     /// interface that inherit from this one: <see cref="IEvent"/>, 
     /// <see cref="IEventHandler"/> and <see cref="IProperty"/>.
-    public interface IBindable : IAnnex
+    public interface IBindable : IMixin
     {
         /// <summary>
         /// Types of values this bindable can bind to

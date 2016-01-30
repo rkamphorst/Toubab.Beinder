@@ -4,9 +4,9 @@ namespace Toubab.Beinder.Scanner
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-    using Annex;
     using Bindable;
     using Path;
+    using Mixin;
 
     /// <summary>
     /// Scans a dictionary for properties
@@ -123,7 +123,7 @@ namespace Toubab.Beinder.Scanner
 
             }
 
-            public override IAnnex CloneWithoutObject()
+            public override IMixin CloneWithoutObject()
             {
                 return new DictionaryEntryProperty(this);
             }

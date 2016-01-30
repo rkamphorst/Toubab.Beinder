@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -70,8 +70,6 @@
     <Compile Include="Bindable\DelegatedEvent.cs" />
     <Compile Include="Bindable\DelegatedEventHandler.cs" />
     <Compile Include="Bindable\DelegatedProperty.cs" />
-    <Compile Include="Annex\IAnnex.cs" />
-    <Compile Include="Annex\Annex.cs" />
     <Compile Include="Bindable\IEventHandler.cs" />
     <Compile Include="Bindable\IEvent.cs" />
     <Compile Include="Bindable\IProperty.cs" />
@@ -98,20 +96,12 @@
     <Compile Include="Tools\TypeUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Valve\" />
-    <Folder Include="Scanner\" />
-    <Folder Include="Bindable\" />
-    <Folder Include="Extend\" />
-    <Folder Include="Mixin\" />
-    <Folder Include="Annex\" />
-    <Folder Include="Tools\" />
-    <Folder Include="Path\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="System.Runtime" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Bindable\README.md" />
+    <None Include="IMixin.cd" />
   </ItemGroup>
 </Project>

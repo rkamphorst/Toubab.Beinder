@@ -38,7 +38,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -73,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Events</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Properties</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Events</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -115,8 +114,9 @@ Inheritance diagram for Toubab.Beinder.Scanner.TypeScanner:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a98db31ebc4a9d8507ec35d01844be6bc"><td class="memItemLeft" align="right" valign="top">IEnumerable&lt; <a class="el" href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_bindable.html">IBindable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner.html#a98db31ebc4a9d8507ec35d01844be6bc">Scan</a> (object obj)</td></tr>
-<tr class="memdesc:a98db31ebc4a9d8507ec35d01844be6bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan the specified object and enumerate the properties  <a href="#a98db31ebc4a9d8507ec35d01844be6bc">More...</a><br/></td></tr>
+<tr class="memitem:a98db31ebc4a9d8507ec35d01844be6bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a98db31ebc4a9d8507ec35d01844be6bc"></a>
+IEnumerable&lt; <a class="el" href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_bindable.html">IBindable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner.html#a98db31ebc4a9d8507ec35d01844be6bc">Scan</a> (object obj)</td></tr>
+<tr class="memdesc:a98db31ebc4a9d8507ec35d01844be6bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan the specified object and enumerate the properties Every returned property should <em>not</em> have the object associated to it! This is done by the binder at the latest stage possible.  <br/></td></tr>
 <tr class="separator:a98db31ebc4a9d8507ec35d01844be6bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f7c7ab847b0c0348d7b17653fee6644"><td class="memItemLeft" align="right" valign="top">abstract IEnumerable&lt; <a class="el" href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_bindable.html">IBindable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_scanner_1_1_type_scanner.html#a3f7c7ab847b0c0348d7b17653fee6644">Scan</a> (Type type)</td></tr>
 <tr class="memdesc:a3f7c7ab847b0c0348d7b17653fee6644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scan the specified type and enumerate the bindable members.  <a href="#a3f7c7ab847b0c0348d7b17653fee6644">More...</a><br/></td></tr>
@@ -127,35 +127,6 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="_type_scanner_8cs_source.html#l00011">11</a> of file <a class="el" href="_type_scanner_8cs_source.html">TypeScanner.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a98db31ebc4a9d8507ec35d01844be6bc"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">IEnumerable&lt;<a class="el" href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_bindable.html">IBindable</a>&gt; Toubab.Beinder.Scanner.TypeScanner.Scan </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>obj</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Scan the specified object and enumerate the properties </p>
-<p>Every returned property should <em>not</em> have the object associated to it! This is done by the binder at the latest stage possible. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">obj</td><td>Object to scan.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="interface_toubab_1_1_beinder_1_1_scanner_1_1_i_scanner.html#a394b39b203f4aa409107ac321342c9ba">Toubab.Beinder.Scanner.IScanner</a>.</p>
-
-<p>Definition at line <a class="el" href="_type_scanner_8cs_source.html#l00015">15</a> of file <a class="el" href="_type_scanner_8cs_source.html">TypeScanner.cs</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a3f7c7ab847b0c0348d7b17653fee6644"></a>
 <div class="memitem">
 <div class="memproto">
@@ -191,12 +162,12 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/Users/toubab/Projects/Toubab.Beinder/Toubab.Beinder/Scanner/<a class="el" href="_type_scanner_8cs_source.html">TypeScanner.cs</a></li>
+<li>Toubab.Beinder/Scanner/<a class="el" href="_type_scanner_8cs_source.html">TypeScanner.cs</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 29 2016 22:48:41 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 30 2016 16:50:05 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3.1
 </small></address>

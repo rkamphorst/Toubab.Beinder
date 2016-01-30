@@ -1,7 +1,7 @@
 namespace Toubab.Beinder.Bindable
 {
     using System;
-    using Annex;
+    using Mixin;
 
     /// <summary>
     /// Property bindable that delegates to another property bindable.
@@ -55,7 +55,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public override IAnnex CloneWithoutObject()
+        public override IMixin CloneWithoutObject()
         {
             return new DelegatedProperty(this);
         }

@@ -6,10 +6,10 @@ namespace Toubab.Beinder.Bindable
     /// <remarks>
     /// A property stores a state, represented by <see cref="Values"/>.
     /// 
-    /// When this state changes, it can raise the <see cref="Broadcast"/> event;
+    /// When this state changes, it can raise the <see cref="IEvent.Broadcast"/> event;
     /// 
-    /// When another property (or event) raises the <see cref="Broadcast"/> event,
-    /// this <see cref="IProperty"/> handle that broadcast with <see cref="TryHandleBroadcast"/>
+    /// When another property (or event) raises the <see cref="IEvent.Broadcast"/> event,
+    /// this <see cref="IProperty"/> handle that broadcast with <see cref="IEventHandler.TryHandleBroadcast"/>
     /// and update <see cref="Values"/>.
     /// 
     /// Hence, the <see cref="IProperty"/> aggregates the <see cref="IEvent"/> and 
@@ -17,7 +17,7 @@ namespace Toubab.Beinder.Bindable
     /// to store the state in.
     /// 
     /// Note that an <see cref="IProperty"/> implementation should *only* raise
-    /// the <see cref="Broadcast"/> event.
+    /// the <see cref="IEvent.Broadcast"/> event.
     /// </remarks>
     public interface IProperty : IEvent, IEventHandler
     {

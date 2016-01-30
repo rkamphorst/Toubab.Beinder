@@ -98,7 +98,7 @@ namespace Toubab.Beinder.Valve
         /// <summary>
         /// Throw an exception if this instance is disposed.
         /// </summary>
-        /// <exception cref="ObjectDisposedExcdption">If this object is disposed.</exception>
+        /// <exception cref="System.ObjectDisposedException">If this object is disposed.</exception>
         protected void AssertNotDisposed()
         {
             if (_disposed)
