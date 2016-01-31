@@ -107,7 +107,7 @@ Inheritance diagram for Toubab.Beinder.Bindable.DelegatedBindable&lt; TBindable 
   <img src="class_toubab_1_1_beinder_1_1_bindable_1_1_delegated_bindable_3_01_t_bindable_01_4.png" usemap="#Toubab.Beinder.Bindable.DelegatedBindable&lt; TBindable &gt;_map" alt=""/>
   <map id="Toubab.Beinder.Bindable.DelegatedBindable&lt; TBindable &gt;_map" name="Toubab.Beinder.Bindable.DelegatedBindable&lt; TBindable &gt;_map">
 <area href="class_toubab_1_1_beinder_1_1_bindable_1_1_bindable.html" title="Base class for classes that implement IBindable " alt="Toubab.Beinder.Bindable.Bindable" shape="rect" coords="355,112,700,136"/>
-<area href="class_toubab_1_1_beinder_1_1_mixin_1_1_mixin.html" title="Annex implementation " alt="Toubab.Beinder.Mixin.Mixin" shape="rect" coords="177,56,522,80"/>
+<area href="class_toubab_1_1_beinder_1_1_mixin_1_1_mixin.html" title="Base Mixin implementation " alt="Toubab.Beinder.Mixin.Mixin" shape="rect" coords="177,56,522,80"/>
 <area href="interface_toubab_1_1_beinder_1_1_bindable_1_1_i_bindable.html" title="Represents a bindable property, event or method " alt="Toubab.Beinder.Bindable.IBindable" shape="rect" coords="532,56,877,80"/>
 <area href="interface_toubab_1_1_beinder_1_1_mixin_1_1_i_mixin.html" title="Interface for a mix-in " alt="Toubab.Beinder.Mixin.IMixin" shape="rect" coords="177,0,522,24"/>
 <area href="interface_toubab_1_1_beinder_1_1_mixin_1_1_i_mixin.html" title="Interface for a mix-in " alt="Toubab.Beinder.Mixin.IMixin" shape="rect" coords="532,0,877,24"/>
@@ -159,8 +159,8 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:ad451a531435b3c53235e802a22668954"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad451a531435b3c53235e802a22668954"></a>
-readonly TBindable&#160;</td><td class="memItemRight" valign="bottom"><b>Delegate</b></td></tr>
+<tr class="memitem:ad451a531435b3c53235e802a22668954"><td class="memItemLeft" align="right" valign="top">readonly TBindable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_delegated_bindable_3_01_t_bindable_01_4.html#ad451a531435b3c53235e802a22668954">Delegate</a></td></tr>
+<tr class="memdesc:ad451a531435b3c53235e802a22668954"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_bindable.html" title="Base class for classes that implement IBindable ">Bindable</a> that is delegated to.  <a href="#ad451a531435b3c53235e802a22668954">More...</a><br/></td></tr>
 <tr class="separator:ad451a531435b3c53235e802a22668954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
@@ -195,7 +195,7 @@ abstract Type[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for a bindable that delegates to another bindable. </p>
-<p>Concrete subclasses of this class are used by <a class="el" href="class_toubab_1_1_beinder_1_1_scanner_1_1_mixin_scanner.html">Scanner.MixinScanner</a> to delegate to propeties, events and event handlers (methods) on mix-ins. </p>
+<p>Concrete subclasses of this class are used by <a class="el" href="class_toubab_1_1_beinder_1_1_scanner_1_1_custom_mixin_scanner.html">Scanner.CustomMixinScanner</a> to delegate to propeties, events and event handlers (methods) on mix-ins. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_delegated_event.html" title="Event bindable that delegates to another event bindable. ">DelegatedEvent</a>, <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_delegated_event_handler.html" title="Event handler (method) bindable that delegates to another event handler (method) bindable. ">DelegatedEventHandler</a>, <a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_delegated_property.html" title="Property bindable that delegates to another property bindable. ">DelegatedProperty</a>, Beinder.Mixin.IMixin{T}</dd></dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b><dt><dd>
@@ -237,7 +237,7 @@ abstract Type[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_delegated_bindable_8cs_source.html#l00026">26</a> of file <a class="el" href="_delegated_bindable_8cs_source.html">DelegatedBindable.cs</a>.</p>
+<p>Definition at line <a class="el" href="_delegated_bindable_8cs_source.html#l00029">29</a> of file <a class="el" href="_delegated_bindable_8cs_source.html">DelegatedBindable.cs</a>.</p>
 
 </div>
 </div>
@@ -271,7 +271,32 @@ abstract Type[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_delegated_bindable_8cs_source.html#l00042">42</a> of file <a class="el" href="_delegated_bindable_8cs_source.html">DelegatedBindable.cs</a>.</p>
+<p>Definition at line <a class="el" href="_delegated_bindable_8cs_source.html#l00045">45</a> of file <a class="el" href="_delegated_bindable_8cs_source.html">DelegatedBindable.cs</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ad451a531435b3c53235e802a22668954"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly TBindable Toubab.Beinder.Bindable.DelegatedBindable&lt; TBindable &gt;.Delegate</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="class_toubab_1_1_beinder_1_1_bindable_1_1_bindable.html" title="Base class for classes that implement IBindable ">Bindable</a> that is delegated to. </p>
+
+<p>Definition at line <a class="el" href="_delegated_bindable_8cs_source.html#l00023">23</a> of file <a class="el" href="_delegated_bindable_8cs_source.html">DelegatedBindable.cs</a>.</p>
 
 </div>
 </div>
@@ -281,7 +306,7 @@ abstract Type[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jan 30 2016 17:05:06 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jan 31 2016 16:23:02 for Beinder by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.3.1
 </small></address>

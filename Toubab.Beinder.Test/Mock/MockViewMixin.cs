@@ -2,8 +2,9 @@ namespace Toubab.Beinder.Mock
 {
     using Mixin;
     using Tools;
+    using Extend;
 
-    public class MockViewMixin : NotifyPropertyChanged, IMixin<MockView>
+    public class MockViewMixin : NotifyPropertyChanged, ICustomMixin<MockView>
     {
 
         MockView _mockView;

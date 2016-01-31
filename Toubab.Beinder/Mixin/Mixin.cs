@@ -1,7 +1,7 @@
 namespace Toubab.Beinder.Mixin
 {
     /// <summary>
-    /// Annex implementation
+    /// Base Mixin implementation
     /// </summary>
     /// <remarks>
     /// Serves as a base implementation for <see cref="Bindable.Bindable"/> and
@@ -37,17 +37,4 @@ namespace Toubab.Beinder.Mixin
         public abstract IMixin CloneWithoutObject();
     }
 
-    /// <summary>
-    /// Partial implementation of <see cref="IMixin"/>
-    /// </summary>
-    public abstract class Mixin<T> : Mixin, IMixin<T>
-    {
-        /// <summary>
-        /// Gets the object this is a mix-in for
-        /// </summary>
-        protected new T GetObject()
-        {
-            return (T)base.GetObject();
-        }
-    }
 }

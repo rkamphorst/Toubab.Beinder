@@ -17,7 +17,7 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
-            var mixinScanner = new MixinScanner(bnd.Scanner);
+            var mixinScanner = new CustomMixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<MockViewMixin>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             bnd.Scanner.Add(mixinScanner);
@@ -38,7 +38,7 @@ namespace Toubab.Beinder
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
-            var mixinScanner = new MixinScanner(bnd.Scanner);
+            var mixinScanner = new CustomMixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<MockViewMixin2>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
@@ -61,7 +61,7 @@ namespace Toubab.Beinder
             // Arrange
 
             var bnd = new Binder(new CombinedScanner());
-            var mixinScanner = new MixinScanner(bnd.Scanner);
+            var mixinScanner = new CustomMixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<CommandMixin>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
@@ -84,7 +84,7 @@ namespace Toubab.Beinder
             // Arrange
 
             var bnd = new Binder(new CombinedScanner());
-            var mixinScanner = new MixinScanner(bnd.Scanner);
+            var mixinScanner = new CustomMixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<CommandMixin>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
@@ -107,7 +107,7 @@ namespace Toubab.Beinder
             // Arrange
 
             var bnd = new Binder(new CombinedScanner());
-            var mixinScanner = new MixinScanner(bnd.Scanner);
+            var mixinScanner = new CustomMixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<CommandMixin>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
@@ -131,7 +131,7 @@ namespace Toubab.Beinder
             // Arrange
 
             var bnd = new Binder(new CombinedScanner());
-            var mixinScanner = new MixinScanner(bnd.Scanner);
+            var mixinScanner = new CustomMixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<CommandMixin>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
@@ -155,7 +155,7 @@ namespace Toubab.Beinder
             // Arrange
 
             var bnd = new Binder(new CombinedScanner());
-            var mixinScanner = new MixinScanner(bnd.Scanner);
+            var mixinScanner = new CustomMixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<CommandMixin>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
@@ -179,7 +179,7 @@ namespace Toubab.Beinder
             // Arrange
 
             var bnd = new Binder(new CombinedScanner());
-            var mixinScanner = new MixinScanner(bnd.Scanner);
+            var mixinScanner = new CustomMixinScanner(bnd.Scanner);
             mixinScanner.AdapterRegistry.Register<CommandMixin>();
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             bnd.Scanner.Add(new ReflectionScanner());

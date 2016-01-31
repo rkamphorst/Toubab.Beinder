@@ -47,13 +47,6 @@
       <FileName>Mixin\IMixin.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Toubab.Beinder.Mixin.IMixin&lt;T&gt;">
-    <Position X="10.5" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Mixin\IMixin.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Toubab.Beinder.Extend.ICustomEvent&lt;T&gt;">
     <Position X="4.5" Y="9.25" Width="1.5" />
     <TypeIdentifier>
@@ -75,13 +68,6 @@
       <FileName>Extend\ICustomProperty.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Toubab.Beinder.Extend.ICustomMixin&lt;T&gt;">
-    <Position X="10.5" Y="9.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Extend\ICustomMixin.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Toubab.Beinder.Extend.ICustomBindable">
     <Position X="2.5" Y="4.75" Width="1.75" />
     <TypeIdentifier>
@@ -94,6 +80,28 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Extend\ICustomBindable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Extend.ICustomMixin">
+    <Position X="10.5" Y="4.75" Width="1.5" />
+    <InheritanceLine Type="Toubab.Beinder.Mixin.IMixin" ManuallyRouted="true">
+      <Path>
+        <Point X="8.875" Y="1.796" />
+        <Point X="8.875" Y="2.104" />
+        <Point X="11.25" Y="2.104" />
+        <Point X="11.25" Y="4.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\ICustomMixin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Extend.ICustomMixin&lt;T&gt;">
+    <Position X="10.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\ICustomMixin.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

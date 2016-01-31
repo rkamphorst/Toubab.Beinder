@@ -49,7 +49,7 @@
             Assert.AreEqual(1, propc.Changed);
         }
 
-        [Test, Ignore("Works on Mono, not on .NET??")]
+        [Test]
         public void PropertiesAreGarbageCollectedFromValve()
         {
             // Arrange

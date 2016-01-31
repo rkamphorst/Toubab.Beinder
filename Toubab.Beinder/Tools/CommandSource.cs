@@ -70,7 +70,7 @@ namespace Toubab.Beinder.Tools
         /// Whenever this event occurs, <see cref="Mixin.CommandMixin.CanExecuteQuery"/> will
         /// be called (if bound).
         /// 
-        /// <remarks>
+        /// </remarks>
         public event Action<CommandCanExecuteArgs> CanExecuteQuery;
             
         /// <summary>

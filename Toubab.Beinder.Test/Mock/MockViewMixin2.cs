@@ -2,8 +2,9 @@ namespace Toubab.Beinder.Mock
 {
     using System;
     using Mixin;
+    using Extend;
 
-    public class MockViewMixin2 : IMixin<MockView>
+    public class MockViewMixin2 : ICustomMixin<MockView>
     {
 
         MockView _mockView;

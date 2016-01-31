@@ -38,7 +38,7 @@ namespace Toubab.Beinder
             result.Add(new NotifyPropertyChangedScanner());
             result.Add(new DictionaryScanner());
 
-            var mixinScanner = new MixinScanner(result);
+            var mixinScanner = new CustomMixinScanner(result);
             mixinScanner.AdapterRegistry.Register<CommandMixin>();
             result.Add(mixinScanner);
             

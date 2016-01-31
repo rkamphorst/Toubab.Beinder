@@ -2,7 +2,12 @@
 {
     using Mixin;
 
-    public interface ICustomMixin<T> : IMixin<T>
+    public interface ICustomMixin : IMixin
+    {
+
+    }
+
+    public interface ICustomMixin<T> : ICustomMixin
     {
     }
 }

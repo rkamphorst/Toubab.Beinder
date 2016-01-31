@@ -4,12 +4,13 @@
     using System.Collections.Generic;
     using Bindable;
     using Mixin;
+    using Extend;
 
-    public class MixinScanner : AdapterScanner<IMixin>
+    public class CustomMixinScanner : AdapterScanner<ICustomMixin>
     {
         readonly IScanner _scanner;
 
-        public MixinScanner(IScanner scanner)
+        public CustomMixinScanner(IScanner scanner)
         {
             _scanner = scanner;
         }

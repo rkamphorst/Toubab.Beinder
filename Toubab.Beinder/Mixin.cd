@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Toubab.Beinder.Mixin.Mixin" Collapsed="true">
+    <Position X="20" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAgAAAAAAAAABAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Mixin\Mixin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.Bindable" Collapsed="true">
+    <Position X="19" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAIkAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\Bindable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.CombinedBindable&lt;TBindable&gt;" Collapsed="true">
+    <Position X="17" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\CombinedBindable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.DelegatedBindable&lt;TBindable&gt;" Collapsed="true">
+    <Position X="18.75" Y="6.25" Width="2.25" />
+    <InheritanceLine Type="Toubab.Beinder.Bindable.Bindable" ManuallyRouted="true">
+      <Path>
+        <Point X="19.875" Y="2.691" />
+        <Point X="19.875" Y="3.907" />
+        <Point X="19.875" Y="3.907" />
+        <Point X="19.875" Y="6.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\DelegatedBindable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.ReflectedBindable&lt;T&gt;" Collapsed="true">
+    <Position X="20.25" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\ReflectedBindable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Toubab.Beinder.Extend.CustomEvent&lt;T&gt;" Collapsed="true">
+    <Position X="22.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\CustomEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Extend.CustomEventHandler&lt;T&gt;" Collapsed="true">
+    <Position X="24.25" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\CustomEventHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Extend.CustomMixin&lt;T&gt;" Collapsed="true">
+    <Position X="28" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\CustomMixin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Extend.CustomProperty&lt;T&gt;" Collapsed="true">
+    <Position X="26.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAACAAAAAAAAAAAAAAAAAQAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Extend\CustomProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.CombinedEvent" Collapsed="true">
+    <Position X="13" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAhABAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\CombinedEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.CombinedEventHandler" Collapsed="true">
+    <Position X="17.25" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\CombinedEventHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.CombinedProperty" Collapsed="true">
+    <Position X="15" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAACAAAAAAAABAAAAAAABAAAAAAAgAAAAACA=</HashCode>
+      <FileName>Bindable\CombinedProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.DelegatedEvent" Collapsed="true">
+    <Position X="19" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAIAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\DelegatedEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.DelegatedEventHandler" Collapsed="true">
+    <Position X="21.5" Y="7.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\DelegatedEventHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.DelegatedProperty" Collapsed="true">
+    <Position X="16.25" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAACAAIAAAAAAAAAAAAABAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Bindable\DelegatedProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.ReflectedEvent" Collapsed="true">
+    <Position X="20.75" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAASAAEAAAgAQABAAAAABQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\ReflectedEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.ReflectedEventHandler" Collapsed="true">
+    <Position X="25.25" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAFAAAAAAAAAAAAgAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\ReflectedEventHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.ReflectedProperty" Collapsed="true">
+    <Position X="23" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAACCAAAAAgAAAAACAAABAAAAIAAgAAAAAAA=</HashCode>
+      <FileName>Bindable\ReflectedProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

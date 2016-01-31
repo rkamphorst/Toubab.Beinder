@@ -44,7 +44,7 @@
     <Compile Include="Scanner\DictionaryScanner.cs" />
     <Compile Include="Scanner\CombinedScanner.cs" />
     <Compile Include="Scanner\TypeScanner.cs" />
-    <Compile Include="Scanner\MixinScanner.cs" />
+    <Compile Include="Scanner\CustomMixinScanner.cs" />
     <Compile Include="Bindable\Bindable.cs" />
     <Compile Include="Bindable\ReflectedBindable.cs" />
     <Compile Include="Bindable\ReflectedEvent.cs" />
@@ -96,12 +96,24 @@
     <Compile Include="Tools\TypeUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Bindable\Bindable.png" />
+    <Content Include="IMixin.png" />
+    <Content Include="Mixin.png" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bindable\Bindable.cd" />
+    <None Include="Bindable\CombinedBindable.cd" />
+    <None Include="Bindable\DelegatedBindable.cd" />
+    <None Include="Bindable\ReflectedBindable.cd" />
     <None Include="Bindable\README.md" />
     <None Include="IMixin.cd" />
+    <None Include="Mixin.cd" />
+    <None Include="Bindable\CombinedBindable.png" />
+    <None Include="Bindable\DelegatedBindable.png" />
+    <None Include="Bindable\ReflectedBindable.png" />
   </ItemGroup>
 </Project>

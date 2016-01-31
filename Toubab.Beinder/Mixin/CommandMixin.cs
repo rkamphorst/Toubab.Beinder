@@ -2,12 +2,13 @@
 {
     using System.Windows.Input;
     using Tools;
+    using Extend;
 
     /// <summary>
     /// Mixin to facilitate binding of <see cref="ICommand" /> instances to
     /// <see cref="ICommandSource"/> instances.
     /// </summary>
-    public class CommandMixin : Mixin<ICommand>
+    public class CommandMixin : CustomMixin<ICommand>
     {
         /// <summary>
         /// Method to be bound to the <see cref="ICommandSource.CanExecuteQuery"/> event.

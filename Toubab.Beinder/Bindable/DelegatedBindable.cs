@@ -7,7 +7,7 @@
     /// Base class for a bindable that delegates to another bindable.
     /// </summary>
     /// <remarks>
-    /// Concrete subclasses of this class are used by <see cref="Scanner.MixinScanner"/>
+    /// Concrete subclasses of this class are used by <see cref="Scanner.CustomMixinScanner"/>
     /// to delegate to propeties, events and event handlers (methods) on mix-ins.
     /// </remarks>
     /// <seealso cref="DelegatedEvent"/>
@@ -17,6 +17,9 @@
     public abstract class DelegatedBindable<TBindable> : Bindable
         where TBindable : IBindable
     {
+        /// <summary>
+        /// Bindable that is delegated to.
+        /// </summary>
         protected readonly TBindable Delegate;
 
         /// <summary>
