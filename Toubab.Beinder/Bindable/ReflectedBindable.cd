@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Toubab.Beinder.Mixin.Mixin" Collapsed="true">
+    <Position X="21.75" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAgAAAAAAAAABAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Mixin\Mixin.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.Bindable" Collapsed="true">
+    <Position X="21.75" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAIkAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\Bindable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.ReflectedBindable&lt;T&gt;" Collapsed="true">
+    <Position X="21.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\ReflectedBindable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.ReflectedEvent" Collapsed="true">
+    <Position X="19" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAASAAEAAAgAQABAAAAABQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\ReflectedEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.ReflectedEventHandler" Collapsed="true">
+    <Position X="24.5" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAFAAAAAAAAAAAAgAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\ReflectedEventHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindable.ReflectedProperty" Collapsed="true">
+    <Position X="21.5" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAACCAAAAAgAAAAACAAABAAAAIAAgAAAAAAA=</HashCode>
+      <FileName>Bindable\ReflectedProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

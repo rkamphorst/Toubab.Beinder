@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Toubab.Beinder.Bindable.IBindable">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIgAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\IBindable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Bindable.IEvent">
+    <Position X="4.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\IEvent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Bindable.IEventHandler">
+    <Position X="8.25" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindable\IEventHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Bindable.IProperty">
+    <Position X="6.25" Y="4.75" Width="1.75" />
+    <InheritanceLine Type="Toubab.Beinder.Bindable.IEvent" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6" Y="5.438" />
+        <Point X="6.25" Y="5.438" />
+      </Path>
+    </InheritanceLine>
+    <InheritanceLine Type="Toubab.Beinder.Bindable.IEventHandler" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.25" Y="5.438" />
+        <Point X="8" Y="5.438" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Bindable\IProperty.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Mixin.IMixin">
+    <Position X="8" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mixin\IMixin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Extend.ICustomEvent&lt;T&gt;">
+    <Position X="4.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\ICustomEvent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Extend.ICustomEventHandler&lt;T&gt;">
+    <Position X="8.25" Y="9.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\ICustomEventHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Extend.ICustomProperty&lt;T&gt;">
+    <Position X="6.25" Y="9.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\ICustomProperty.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Extend.ICustomBindable">
+    <Position X="2.5" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\ICustomBindable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Extend.ICustomBindable&lt;T&gt;">
+    <Position X="2.5" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\ICustomBindable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Extend.ICustomMixin">
+    <Position X="10.5" Y="4.75" Width="1.5" />
+    <InheritanceLine Type="Toubab.Beinder.Mixin.IMixin" ManuallyRouted="true">
+      <Path>
+        <Point X="8.875" Y="1.796" />
+        <Point X="8.875" Y="2.104" />
+        <Point X="11.25" Y="2.104" />
+        <Point X="11.25" Y="4.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\ICustomMixin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Toubab.Beinder.Extend.ICustomMixin&lt;T&gt;">
+    <Position X="10.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extend\ICustomMixin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

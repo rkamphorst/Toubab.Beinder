@@ -16,22 +16,20 @@ There are a lot of implementations of data binding, in C# and beyond. So why thi
 
 ## TL;DR
 
-```csharp
-/* Create binder */
-var binder = new Binder();
+	/* Create binder */
+	var binder = new Binder();
 
-/* Establish bindings.
- * Store the bindings in this._bindings to make sure it is not garbage collected.
- * This is typically done when the view appears (*not* when it is created!)
- */
-this._bindings = binder.Bind(viewModel, view);
+	/* Establish bindings.
+	 * Store the bindings in this._bindings to make sure it is not garbage collected.
+	 * This is typically done when the view appears (*not* when it is created!)
+	 */
+	this._bindings = binder.Bind(viewModel, view);
 
-/* Destroy bindings.
- * Typically when the view disappears.
- */
-this._bindings.Dispose();
-this._bindings = null;
-```
+	/* Destroy bindings.
+	 * Typically when the view disappears.
+	 */
+	this._bindings.Dispose();
+	this._bindings = null;
 
 ## Features
 
@@ -80,21 +78,19 @@ When you bind two (or more) objects, properties with the same name get bound to 
 
 Example:
 
-```csharp
-/* ViewModelClass and ViewClass both have a string property MyProperty,
- * and they both implement INotifyPropertyChanged
- */
-var view = new ViewClass { MyProperty = "aaa" };
-var viewModel = new ViewModelClass { MyProperty = "bbb" };
+	/* ViewModelClass and ViewClass both have a string property MyProperty,
+	 * and they both implement INotifyPropertyChanged
+	 */
+	var view = new ViewClass { MyProperty = "aaa" };
+	var viewModel = new ViewModelClass { MyProperty = "bbb" };
 
-this._bindings = binder.Bind(viewModel, view);
+	this._bindings = binder.Bind(viewModel, view);
 
-//  viewModel.MyProperty is now bound to view.MyProperty.
-//  view.MyProperty will have the value "bbb".
+	//  viewModel.MyProperty is now bound to view.MyProperty.
+	//  view.MyProperty will have the value "bbb".
 
-view.MyProperty = "ccc";      // propagates "ccc" to viewModel.MyProperty
-viewModel.MyProperty = "ddd"; // propagates "ddd" to view.MyProperty
-```
+	view.MyProperty = "ccc";      // propagates "ccc" to viewModel.MyProperty
+	viewModel.MyProperty = "ddd"; // propagates "ddd" to view.MyProperty
 
 ### Recursive binding
 
@@ -104,21 +100,19 @@ so on.
 
 Example:
 
-```csharp
-/* ViewModelClass, ViewClass, ControlModelClass and ControlClass all 
- * implement interface INotifyPropertyChanged.
- */
-var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
-var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb" } };
+	/* ViewModelClass, ViewClass, ControlModelClass and ControlClass all 
+	 * implement interface INotifyPropertyChanged.
+	 */
+	var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
+	var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb" } };
 
-this._bindings = binder.Bind(viewModel, view);
+	this._bindings = binder.Bind(viewModel, view);
 
-//  viewModel.MyControl.Label is now bound to view.MyControl.Label.
-//  both will have the value "bbb".
+	//  viewModel.MyControl.Label is now bound to view.MyControl.Label.
+	//  both will have the value "bbb".
 
-view.MyControl.Label = "ccc";      // propagates "ccc" to viewModel.MyControl.Label
-viewModel.MyControl.Label = "ddd"; // propagates "ddd" to view.MyControl.Label
-```
+	view.MyControl.Label = "ccc";      // propagates "ccc" to viewModel.MyControl.Label
+	viewModel.MyControl.Label = "ddd"; // propagates "ddd" to view.MyControl.Label
 
 ### Binding across object boundaries
 
@@ -128,21 +122,19 @@ can be extended to child properties of child properties, etc.
 
 Example:
 
-```csharp
-/* ViewModelClass, ViewClass, and ControlClass all implement interface 
- * INotifyPropertyChanged.
- */
-var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
-var viewModel = new ViewModelClass() { MyControlLabel = "bbb" };
+	/* ViewModelClass, ViewClass, and ControlClass all implement interface 
+	 * INotifyPropertyChanged.
+	 */
+	var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
+	var viewModel = new ViewModelClass() { MyControlLabel = "bbb" };
 
-this._bindings = binder.Bind(viewModel, view);
+	this._bindings = binder.Bind(viewModel, view);
 
-//  viewModel.MyControlLabel is now bound to view.MyControl.Label.
-//  both will have the value "bbb".
+	//  viewModel.MyControlLabel is now bound to view.MyControl.Label.
+	//  both will have the value "bbb".
 
-view.MyControl.Label = "ccc";      // propagates "ccc" to viewModel.MyControlLabel
-viewModel.MyControlLabel = "ddd";  // propagates "ddd" to view.MyControl.Label
-```
+	view.MyControl.Label = "ccc";      // propagates "ccc" to viewModel.MyControlLabel
+	viewModel.MyControlLabel = "ddd";  // propagates "ddd" to view.MyControl.Label
 
 ### Binding of collections
 
@@ -167,12 +159,12 @@ property comes from. There are two standard ways in order to do this:
 
 1. Implement `INotifyPropertyChanged` on the objects you want to bind.    
    See also
-   [NotifyPropertyChangedPropertyScanner](Toubab.Beinder/PropertyScanners/NotifyPropertyChangedPropertyScanner.cs).
+   [NotifyPropertyChangedScanner](Toubab.Beinder/PropertyScanners/NotifyPropertyChangedScanner.cs).
 2. Implement an event (handler type `EventHandler`) for each property you wan to bind, 
    with the same name, but postfixed with "Changed". Raise it whenever the property is 
    set with a new value.    
    See also
-   [ReflectionPropertyScanner](Toubab.Beinder/PropertyScanners/ReflectionPropertyScanner.cs).
+   [ReflectionScanner](Toubab.Beinder/PropertyScanners/ReflectionScanner.cs).
 
 ### Dynamic rebinding
 
@@ -181,37 +173,35 @@ what happens to the property's *child properties*? They get rebound.
 
 Consider the following example.
 
-```csharp
-/* ViewModelClass, ViewClass, ControlModelClass, ControlClass and TextControlClass all 
- * implement interface INotifyPropertyChanged.
- */
-var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
-var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb", Text = "ccc" };
+	/* ViewModelClass, ViewClass, ControlModelClass, ControlClass and TextControlClass all 
+	 * implement interface INotifyPropertyChanged.
+	 */
+	var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
+	var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb", Text = "ccc" };
 
-this._bindings = binder.Bind(viewModel, view);
+	this._bindings = binder.Bind(viewModel, view);
 
-//  viewModel.MyControl.Label is now bound to view.MyControl.Label.
-//  Both will have the value "bbb".
-//  viewModel.MyControl.Text is not bound to anything and will have value null.
+	//  viewModel.MyControl.Label is now bound to view.MyControl.Label.
+	//  Both will have the value "bbb".
+	//  viewModel.MyControl.Text is not bound to anything and will have value null.
 
-view.MyControl = new TextControlClass { Text = "ddd" };
+	view.MyControl = new TextControlClass { Text = "ddd" };
 
-// viewModel.MyControl.Text gets *rebound* to view.MyControl.Text.
-// Both will now have value "ddd".
-// viewModel.MyControl.Label will still have value "bbb".
-```
+	// viewModel.MyControl.Text gets *rebound* to view.MyControl.Text.
+	// Both will now have value "ddd".
+	// viewModel.MyControl.Label will still have value "bbb".
 
 ### Adaptation through extension
 
-#### Properties: `IProperty<T>`
+#### Properties: `ICustomProperty<T>`
 
-#### Type extensions: `ITypeExtensions<T>`
+#### Mixins: `IMixin<T>`
 
 #### Namespace preference: affinity and specialization
 
-#### Property scanners: `IPropertyScanner`
+#### Scanners: `IScanner`
 
-#### Property path parsers: `IPropertyPathParser`
+#### Path Parsers: `IPathParser`
 
 ## Justification
 

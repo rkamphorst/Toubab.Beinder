@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -20,6 +20,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <LangVersion>6</LangVersion>
+    <DocumentationFile>bin\Debug\Toubab.Beinder.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -28,45 +30,90 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Valve.cs" />
-    <Compile Include="TypeAdapterRegistry.cs" />
-    <Compile Include="PropertyPath.cs" />
-    <Compile Include="IProperty.cs" />
-    <Compile Include="IPropertyPathParser.cs" />
     <Compile Include="Binder.cs" />
-    <Compile Include="PropertyScanners\ReflectionPropertyScanner.cs" />
-    <Compile Include="PropertyScanners\NotifyPropertyChangedPropertyScanner.cs" />
-    <Compile Include="PropertyPathParsers\UnderscorePropertyPathParser.cs" />
-    <Compile Include="PropertyPathParsers\CamelCasePropertyPathParser.cs" />
-    <Compile Include="AggregateProperty.cs" />
-    <Compile Include="PropertyScanners\DictionaryPropertyScanner.cs" />
-    <Compile Include="TypeProperty.cs" />
-    <Compile Include="PropertyScanners\CustomPropertyScanner.cs" />
-    <Compile Include="TypeAdapterFactory.cs" />
-    <Compile Include="PropertyValueChangedEventArgs.cs" />
-    <Compile Include="NamespaceAffinityComparer.cs" />
-    <Compile Include="NamespaceSpecializationComparer.cs" />
-    <Compile Include="NamespacePreferenceComparer.cs" />
     <Compile Include="IBindings.cs" />
-    <Compile Include="PropertyScanners\DefaultPropertyScanner.cs" />
-    <Compile Include="TypePropertyScanner.cs" />
-    <Compile Include="IPropertyScanner.cs" />
-    <Compile Include="PropertyScanners\CombinedPropertyScanner.cs" />
-    <Compile Include="PropertyScanners\TypeExtensionsScanner.cs" />
-    <Compile Include="TypeUtilities.cs" />
-    <Compile Include="TypeExtension.cs" />
-    <Compile Include="ITypeExtension.cs" />
-    <Compile Include="NotifyPropertyChanged.cs" />
+    <Compile Include="Valve\StateValve.cs" />
+    <Compile Include="Valve\BroadcastValve.cs" />
+    <Compile Include="Scanner\CustomBindableScanner.cs" />
+    <Compile Include="Scanner\NotifyPropertyChangedScanner.cs" />
+    <Compile Include="Scanner\ReflectionScanner.cs" />
+    <Compile Include="Scanner\DictionaryScanner.cs" />
+    <Compile Include="Scanner\CombinedScanner.cs" />
+    <Compile Include="Scanner\TypeScanner.cs" />
+    <Compile Include="Scanner\CustomMixinScanner.cs" />
+    <Compile Include="Bindable\Bindable.cs" />
+    <Compile Include="Bindable\ReflectedBindable.cs" />
+    <Compile Include="Bindable\ReflectedEvent.cs" />
+    <Compile Include="Bindable\ReflectedEventHandler.cs" />
+    <Compile Include="Bindable\ReflectedProperty.cs" />
+    <Compile Include="Bindable\IBindable.cs" />
+    <Compile Include="Bindable\BroadcastEventArgs.cs" />
+    <Compile Include="Extend\CustomEvent.cs" />
+    <Compile Include="Extend\CustomEventHandler.cs" />
+    <Compile Include="Extend\CustomProperty.cs" />
+    <Compile Include="Extend\ICustomEvent.cs" />
+    <Compile Include="Extend\ICustomEventHandler.cs" />
+    <Compile Include="Extend\ICustomProperty.cs" />
+    <Compile Include="Mixin\Mixin.cs" />
+    <Compile Include="Mixin\IMixin.cs" />
+    <Compile Include="Scanner\IScanner.cs" />
+    <Compile Include="Extend\ICustomScanner.cs" />
+    <Compile Include="Extend\ICustomMixin.cs" />
+    <Compile Include="Extend\CustomMixin.cs" />
+    <Compile Include="Extend\ICustomBindable.cs" />
+    <Compile Include="Scanner\AdapterScanner.cs" />
+    <Compile Include="Bindable\DelegatedBindable.cs" />
+    <Compile Include="Bindable\DelegatedEvent.cs" />
+    <Compile Include="Bindable\DelegatedEventHandler.cs" />
+    <Compile Include="Bindable\DelegatedProperty.cs" />
+    <Compile Include="Bindable\IEventHandler.cs" />
+    <Compile Include="Bindable\IEvent.cs" />
+    <Compile Include="Bindable\IProperty.cs" />
+    <Compile Include="Tools\ICommandSource.cs" />
+    <Compile Include="Tools\Command.cs" />
+    <Compile Include="Tools\CommandCanExecuteArgs.cs" />
+    <Compile Include="Tools\CommandSource.cs" />
+    <Compile Include="Tools\NotifyPropertyChanged.cs" />
+    <Compile Include="Mixin\CommandMixin.cs" />
+    <Compile Include="Path\CamelCasePathParser.cs" />
+    <Compile Include="Path\UnderscorePathParser.cs" />
+    <Compile Include="Path\IPathParser.cs" />
+    <Compile Include="Path\Path.cs" />
+    <Compile Include="Bindable\CombinedProperty.cs" />
+    <Compile Include="Bindable\CombinedEventHandler.cs" />
+    <Compile Include="Bindable\CombinedBindable.cs" />
+    <Compile Include="Bindable\CombinedEvent.cs" />
+    <Compile Include="Tools\EnumerableUtilities.cs" />
+    <Compile Include="Tools\NamespaceAffinityComparer.cs" />
+    <Compile Include="Tools\NamespacePreferenceComparer.cs" />
+    <Compile Include="Tools\NamespaceSpecializationComparer.cs" />
+    <Compile Include="Tools\TypeAdapterFactory.cs" />
+    <Compile Include="Tools\TypeAdapterRegistry.cs" />
+    <Compile Include="Tools\TypeUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="PropertyScanners\" />
-    <Folder Include="PropertyPathParsers\" />
+    <Content Include="Bindable\Bindable.png" />
+    <Content Include="IMixin.png" />
+    <Content Include="Mixin.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bindable\Bindable.cd" />
+    <None Include="Bindable\CombinedBindable.cd" />
+    <None Include="Bindable\DelegatedBindable.cd" />
+    <None Include="Bindable\ReflectedBindable.cd" />
+    <None Include="Bindable\README.md" />
+    <None Include="IMixin.cd" />
+    <None Include="Mixin.cd" />
+    <None Include="Bindable\CombinedBindable.png" />
+    <None Include="Bindable\DelegatedBindable.png" />
+    <None Include="Bindable\ReflectedBindable.png" />
   </ItemGroup>
 </Project>
