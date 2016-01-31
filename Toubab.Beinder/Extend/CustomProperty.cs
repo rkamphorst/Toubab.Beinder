@@ -1,6 +1,7 @@
 namespace Toubab.Beinder.Extend
 {
     using System;
+    using System.Threading.Tasks;
     using Bindable;
 
     public abstract class CustomProperty<T> : Bindable, ICustomProperty<T>
@@ -27,7 +28,7 @@ namespace Toubab.Beinder.Extend
             }
         }
 
-        public abstract bool TryHandleBroadcast(object[] payload);
+        public abstract Task<bool> TryHandleBroadcast(object[] payload);
 
         public abstract object[] Values { get; }
     }

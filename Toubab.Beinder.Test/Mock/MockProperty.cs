@@ -1,6 +1,7 @@
 ﻿namespace Toubab.Beinder.Mock
 {
     using System;
+    using System.Threading.Tasks;
     using Mixin;
     using Bindable;
 
@@ -24,13 +25,13 @@
             get { return _values; }
         }
 
-        public bool TryHandleBroadcast(object[] values)
+        public Task<bool> TryHandleBroadcast(object[] values)
         {
             _values = values;
             Changed++;
             if (Broadcast != null)
                 Broadcast(this, new BroadcastEventArgs(this, values));
-            return true;
+            return Task.FromResult(true);
         }
 
         public object Object

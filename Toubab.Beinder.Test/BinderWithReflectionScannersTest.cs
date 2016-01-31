@@ -12,14 +12,14 @@
         IBindings _bindings;
 
         [Test]
-        public void BindTwoNotifyPropertyChangedObjects()
+        public async void BindTwoNotifyPropertyChangedObjects()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new NotifyPropertyChangedClass();
             var ob2 = new NotifyPropertyChangedClass();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
 
             // Act
             ob2.Property = "a";
@@ -30,7 +30,7 @@
         }
 
         [Test]
-        public void BindThreeNotifyPropertyChangedObjects()
+        public async void BindThreeNotifyPropertyChangedObjects()
         {
             {
                 // Arrange
@@ -39,7 +39,7 @@
                 var ob1 = new NotifyPropertyChangedClass();
                 var ob2 = new NotifyPropertyChangedClass();
                 var ob3 = new NotifyPropertyChangedClass();
-                _bindings = bnd.Bind(new object[] { ob1, ob2, ob3 });
+                _bindings = await bnd.Bind(new object[] { ob1, ob2, ob3 });
 
                 // Act
                 ob1.Property = "a";
@@ -58,7 +58,7 @@
                 var ob1 = new NotifyPropertyChangedClass();
                 var ob2 = new NotifyPropertyChangedClass();
                 var ob3 = new NotifyPropertyChangedClass();
-                _bindings = bnd.Bind(new object[] { ob1, ob2, ob3 });
+                _bindings = await bnd.Bind(new object[] { ob1, ob2, ob3 });
 
                 // Act
                 ob2.Property = "a";
@@ -77,7 +77,7 @@
                 var ob1 = new NotifyPropertyChangedClass();
                 var ob2 = new NotifyPropertyChangedClass();
                 var ob3 = new NotifyPropertyChangedClass();
-                _bindings = bnd.Bind(new object[] { ob1, ob2, ob3 });
+                _bindings = await bnd.Bind(new object[] { ob1, ob2, ob3 });
 
                 // Act
                 ob3.Property = "a";
@@ -91,7 +91,7 @@
         }
 
         [Test]
-        public void BindReflectedObjects()
+        public async void BindReflectedObjects()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -99,7 +99,7 @@
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new ClassWithPropertyAndEvents();
             var ob2 = new ClassWithPropertyAndEvents();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
 
             // Act
             ob2.Property = "a";
@@ -110,7 +110,7 @@
         }
 
         [Test]
-        public void BindObjectsOfDifferentTypesNotpropToReflected()
+        public async void BindObjectsOfDifferentTypesNotpropToReflected()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -118,7 +118,7 @@
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new ClassWithPropertyAndEvents();
             var ob2 = new NotifyPropertyChangedClass();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
 
             // Act
             ob2.Property = "a";
@@ -129,7 +129,7 @@
         }
 
         [Test]
-        public void BindObjectsOfDifferentTypesReflectedToNotprop()
+        public async void BindObjectsOfDifferentTypesReflectedToNotprop()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -137,7 +137,7 @@
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var ob1 = new NotifyPropertyChangedClass();
             var ob2 = new ClassWithPropertyAndEvents();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
 
             // Act
             ob2.Property = "a";
@@ -148,7 +148,7 @@
         }
 
         [Test]
-        public void BindDifferentlyDistributedObjectHierarchiesChangeChild()
+        public async void BindDifferentlyDistributedObjectHierarchiesChangeChild()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -157,7 +157,7 @@
             var ob1 = new Abcd1();
             var ob2 = new Abcd2();
             var ob3 = new Abcd3();
-            _bindings = bnd.Bind(new object[] { ob1, ob2, ob3 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2, ob3 });
 
             // Act
             ob1.Aaa.Bee.Cee.Dee.Eee = "x";
@@ -170,7 +170,7 @@
         }
 
         [Test]
-        public void BindDifferentlyDistributedObjectHierarchiesChangeParent()
+        public async void BindDifferentlyDistributedObjectHierarchiesChangeParent()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -179,7 +179,7 @@
             var ob1 = new Abcd1();
             var ob2 = new Abcd2();
             var ob3 = new Abcd3();
-            _bindings = bnd.Bind(new object[] { ob1, ob2, ob3 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2, ob3 });
             ob2.AaaBee.CeeDee.Eee = "x";
 
             // Act
@@ -201,7 +201,7 @@
         }
 
         [Test]
-        public void BindObjectsOfDifferentTypesResultsInPropertiesBeingSetOnce()
+        public async void BindObjectsOfDifferentTypesResultsInPropertiesBeingSetOnce()
         {
             // Arrange
             int ob1cnt = 0, ob2cnt = 0;
@@ -218,7 +218,7 @@
             {
                 ob2cnt++;
             };
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
             ob1cnt = 0;
             ob2cnt = 0;
 
@@ -232,7 +232,7 @@
         }
 
         [Test]
-        public void BindViewmodelToView()
+        public async void BindViewmodelToView()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -240,7 +240,7 @@
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
             var vm = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { vm, view });
+            _bindings = await bnd.Bind(new object[] { vm, view });
 
             // Act
             vm.ControlText = "banaan";
@@ -253,7 +253,7 @@
         }
 
         [Test]
-        public void BindViewToViewmodel()
+        public async void BindViewToViewmodel()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -261,7 +261,7 @@
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
             var vm = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { vm, view });
+            _bindings = await bnd.Bind(new object[] { vm, view });
 
             // Act
             view.Control.Text = "banaan";
@@ -274,7 +274,7 @@
         }
 
         [Test]
-        public void BindViewToViewmodelReplaceParent()
+        public async void BindViewToViewmodelReplaceParent()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -282,7 +282,7 @@
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
             var vm = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { vm, view });
+            _bindings = await bnd.Bind(new object[] { vm, view });
 
             // Act
             view.Control = new MockControl("ViewNew")
@@ -298,7 +298,7 @@
         }
 
         [Test]
-        public void ReplaceParentChangesChildrenIfParentDifferentTypes()
+        public async void ReplaceParentChangesChildrenIfParentDifferentTypes()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -306,7 +306,7 @@
             bnd.Scanner.Add(new NotifyPropertyChangedScanner());
             var view = new MockView { Control = new MockControl("ViewOrig") };
             var vm = new MockViewModel2 { Control = new MockControlViewModel("VmOrig") };
-            _bindings = bnd.Bind(new object[] { vm, view });
+            _bindings = await bnd.Bind(new object[] { vm, view });
 
             // Act
             view.Control = new MockControl("ViewNew")
@@ -322,7 +322,7 @@
         }
 
         [Test]
-        public void ReplaceParentWithSameTypeChangesParentAndLeavesChildrenAlone()
+        public async void ReplaceParentWithSameTypeChangesParentAndLeavesChildrenAlone()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -332,7 +332,7 @@
             var viewCtl = view.Control;
             var vm = new MockView { Control = new MockControl("VmOrig") { Text = "Peer", Size = 200 } };
             var vmCtl = vm.Control;
-            _bindings = bnd.Bind(new object[] { vm, view });
+            _bindings = await bnd.Bind(new object[] { vm, view });
 
             // Act
             view.Control = new MockControl("ViewNew")
@@ -351,14 +351,14 @@
         }
 
         [Test]
-        public void BindEventToMethd()
+        public async void BindEventToMethd()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
             bnd.Scanner.Add(new ReflectionScanner());
             var view = new MockView();
             var vm = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { vm, view });
+            _bindings = await bnd.Bind(new object[] { vm, view });
 
             // Act
             view.OnClick(); // raises the Click event
@@ -370,13 +370,13 @@
         }
 
         [Test]
-        public void BindCommandToCommandSource() 
+        public async void BindCommandToCommandSource() 
         {
             // Arrange
             var bnd = new Binder();
             var view = new MockView();
             var vm = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { vm, view });
+            _bindings = await bnd.Bind(new object[] { vm, view });
 
 
             // Act

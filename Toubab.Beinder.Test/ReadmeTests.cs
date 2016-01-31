@@ -138,7 +138,7 @@
         }
 
         [Test]
-        public void Tldr()
+        public async void Tldr()
         {
             var viewModel = new ViewModelClass();
             var view = new ViewClass();
@@ -150,7 +150,7 @@
             * Store the bindings in this._bindings to make sure it is not garbage collected.
             * This is typically done when the view appears (*not* when it is created!)
             */
-            this._bindings = binder.Bind(viewModel, view);
+            this._bindings = await binder.Bind(viewModel, view);
 
             /* Destroy bindings.
              * Typically when the view disappears.
@@ -160,7 +160,7 @@
         }
 
         [Test]
-        public void NameBasedBinding()
+        public async void NameBasedBinding()
         {
             var binder = new Binder();
 
@@ -170,7 +170,7 @@
             var view = new ViewClass { MyProperty = "aaa" };
             var viewModel = new ViewModelClass { MyProperty = "bbb" };
 
-            this._bindings = binder.Bind(viewModel, view);
+            this._bindings = await binder.Bind(viewModel, view);
 
             //  viewModel.MyProperty is now bound to view.MyProperty.
             //  view.MyProperty will have the value "bbb".
@@ -187,7 +187,7 @@
         }
 
         [Test]
-        public void RecursiveBinding()
+        public async void RecursiveBinding()
         {
             var binder = new Binder();
 
@@ -197,7 +197,7 @@
             var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
             var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb" } };
 
-            this._bindings = binder.Bind(viewModel, view);
+            this._bindings = await binder.Bind(viewModel, view);
 
             //  viewModel.MyControl.Label is now bound to view.MyControl.Label.
             //  both will have the value "bbb".
@@ -213,7 +213,7 @@
         }
 
         [Test]
-        public void BindingAcrossObjectBoundaries()
+        public async void BindingAcrossObjectBoundaries()
         {
             var binder = new Binder();
 
@@ -223,7 +223,7 @@
             var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
             var viewModel = new ViewModelClass { MyControlLabel = "bbb" };
 
-            this._bindings = binder.Bind(viewModel, view);
+            this._bindings = await binder.Bind(viewModel, view);
 
             //  viewModel.MyControlLabel is now bound to view.MyControl.Label.
             //  both will have the value "bbb".
@@ -239,7 +239,7 @@
         }
 
         [Test]
-        public void DynamicRebinding()
+        public async void DynamicRebinding()
         {
             var binder = new Binder();
 
@@ -249,7 +249,7 @@
             var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
             var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb", Text = "ccc" } };
 
-            this._bindings = binder.Bind(viewModel, view);
+            this._bindings = await binder.Bind(viewModel, view);
 
             //  viewModel.MyControl.Label is now bound to view.MyControl.Label.
             //  Both will have the value "bbb".

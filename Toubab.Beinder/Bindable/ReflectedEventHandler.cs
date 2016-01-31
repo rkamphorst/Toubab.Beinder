@@ -3,6 +3,7 @@ namespace Toubab.Beinder.Bindable
     using System;
     using System.Linq;
     using System.Reflection;
+    using System.Threading.Tasks;
     using Mixin;
 
     /// <summary>
@@ -52,7 +53,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public bool TryHandleBroadcast(object[] argument)
+        public Task<bool> TryHandleBroadcast(object[] argument)
         {
             if (argument.Length > ValueTypes.Length) 
             {
@@ -65,7 +66,7 @@ namespace Toubab.Beinder.Bindable
                 Member.Invoke(Object, argument);
             }
 
-            return true;
+            return Task.FromResult(true);
         }
 
         /// <inheritdoc/>

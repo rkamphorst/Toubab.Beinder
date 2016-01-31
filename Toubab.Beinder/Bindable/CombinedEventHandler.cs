@@ -1,6 +1,7 @@
 namespace Toubab.Beinder.Bindable
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using Mixin;
 
     /// <summary>
@@ -45,11 +46,11 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public bool TryHandleBroadcast(object[] argument)
+        public async Task<bool> TryHandleBroadcast(object[] argument)
         {
             foreach (var eventHandler in Bindables)
             {
-                if (eventHandler.TryHandleBroadcast(argument))
+                if (await eventHandler.TryHandleBroadcast(argument))
                 {
                     return true;
                 }

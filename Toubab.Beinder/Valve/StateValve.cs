@@ -1,7 +1,9 @@
+
 namespace Toubab.Beinder.Valve
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using Tools;
     using Bindable;
 
@@ -40,7 +42,7 @@ namespace Toubab.Beinder.Valve
         /// </remarks>
         /// <param name="toActivate">The object in the valve to activate. 
         /// If the object is not participating in the valve, nothing happens.</param>
-        public bool Activate(object toActivate)
+        public async Task<bool> Activate(object toActivate)
         {
             if (toActivate == null)
                 return false;
@@ -48,7 +50,7 @@ namespace Toubab.Beinder.Valve
             if (prop != null)
             {
                 var values = prop.Values;
-                Push(prop, values);
+                await Push(prop, values);
                 OnValuesChanged(prop, values);
                 return true;
             }
@@ -83,13 +85,13 @@ namespace Toubab.Beinder.Valve
             }
         }
 
-        protected override void HandleBroadcast(object sender, BroadcastEventArgs e)
+        protected override async Task HandleBroadcastAsync(object sender, BroadcastEventArgs e)
         {
-            base.HandleBroadcast(sender, e);
+            await base.HandleBroadcastAsync(sender, e);
             OnValuesChanged(e.SourceObject, e.Payload);
         }
 
-        protected override bool Push(object source, object[] payload)
+        protected override async Task<bool> Push(object source, object[] payload)
         {
             lock (_secret)
             {
@@ -102,7 +104,7 @@ namespace Toubab.Beinder.Valve
                     return false;
                 }
             }
-            return base.Push(source, payload);
+            return await base.Push(source, payload);
         }
 
     }

@@ -4,6 +4,7 @@ namespace Toubab.Beinder
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Bindable;
     using Scanner;
     using Valve;
@@ -111,9 +112,9 @@ namespace Toubab.Beinder
         /// <remarks>
         /// This is a utility method that merely calls <see cref="Bind(IEnumerable{object})"/>.
         /// </remarks>
-        public IBindings Bind(params object[] objects)
+        public async Task<IBindings> Bind(params object[] objects)
         {
-            return Bind((IEnumerable<object>)objects);
+            return await Bind((IEnumerable<object>)objects);
         }
 
         /// <summary>
@@ -135,11 +136,11 @@ namespace Toubab.Beinder
         /// When the binding is established, values of properties from the first object
         /// are propagated to the bound properties on the other objects.
         /// </remarks>
-        public IBindings Bind(IEnumerable<object> objects)
+        public async Task<IBindings> Bind(IEnumerable<object> objects)
         {
             var objectArray = objects.ToArray();
             var activator = objectArray.FirstOrDefault();
-            return new Bindings(Bind(objectArray, activator, null));
+            return new Bindings(await Bind(objectArray, activator, null));
         }
 
         /// <summary>
@@ -157,7 +158,7 @@ namespace Toubab.Beinder
         /// initial binding, and by <see cref="BindChildren"/> via <see cref="BindMultiple"/>
         /// to do the recursive (re)binding.
         /// </remarks>
-        BroadcastValve[] Bind(object[] objects, object activator, BinderState externalState)
+        async Task<BroadcastValve[]> Bind(object[] objects, object activator, BinderState externalState)
         {
             var resultList = new List<BroadcastValve>();
 
@@ -201,9 +202,10 @@ namespace Toubab.Beinder
                         v.Add(b);
 
                     // only state valves need activation
-                    v.Activate(activator);
+                    await v.Activate(activator);
+
                     // .. and binding of child properties
-                    BindChildren(v, activator, valveParams.ExternalState);
+                    await BindChildren(v, activator, valveParams.ExternalState);
                     newValve = v;
                 }
                 else
@@ -234,7 +236,7 @@ namespace Toubab.Beinder
         /// <param name="parentValve">Parent valve.</param>
         /// <param name="parentActivator">Parent activator object.</param>
         /// <param name="externalState">External state</param>
-        void BindChildren(StateValve parentValve, object parentActivator, BinderState externalState)
+        async Task BindChildren(StateValve parentValve, object parentActivator, BinderState externalState)
         {
             BroadcastValve[] childValves = null;
 
@@ -244,19 +246,19 @@ namespace Toubab.Beinder
                     cvalve.Dispose();
             };
 
-            Func<object, BroadcastValve[]> recursiveBind = pa =>
+            Func<object, Task<BroadcastValve[]>> recursiveBind = async pa =>
             {
                 var childObjects = parentValve.GetChildValveObjects();
                 var activators = parentValve.GetValuesForObject(pa);
-                return BindMultiple(childObjects, activators, pa, externalState);
+                return await BindMultiple(childObjects, activators, pa, externalState);
             };
 
-            childValves = recursiveBind(parentActivator);
+            childValves = await recursiveBind(parentActivator);
             
-            parentValve.ValueChanged += (s, e) =>
+            parentValve.ValueChanged += async (s, e) =>
             {
                 disposeChildValve();
-                childValves = recursiveBind(e.SourceObject);
+                childValves = await recursiveBind(e.SourceObject);
             };
             parentValve.Disposing += (s, e) => disposeChildValve();
         }
@@ -303,13 +305,13 @@ namespace Toubab.Beinder
         /// are concatenated and returned in an array.
         /// 
         /// </remarks>
-        BroadcastValve[] BindMultiple(object[][] objectss, object[] activators, object parentActivator, BinderState externalState)
+        async Task<BroadcastValve[]> BindMultiple(object[][] objectss, object[] activators, object parentActivator, BinderState externalState)
         {
             var results = new List<BroadcastValve[]>();
             for (int i = 0; i < objectss.Length; i++)
             {
                 var activator = (activators.Length > i ? activators[i] : parentActivator) ?? parentActivator;
-                results.Add(Bind(objectss[i], activator, externalState));
+                results.Add(await Bind(objectss[i], activator, externalState));
             }
             return results.SelectMany(r => r).ToArray();
         }

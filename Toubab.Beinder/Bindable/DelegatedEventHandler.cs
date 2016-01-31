@@ -1,7 +1,7 @@
-using Toubab.Beinder.Mixin;
-
 namespace Toubab.Beinder.Bindable
 {
+    using System.Threading.Tasks;
+    using Mixin;
 
     /// <summary>
     /// Event handler (method) bindable that delegates to another event handler (method) bindable.
@@ -28,9 +28,9 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public bool TryHandleBroadcast(object[] argument)
+        public async Task<bool> TryHandleBroadcast(object[] argument)
         {
-            return Delegate.TryHandleBroadcast(argument);
+            return await Delegate.TryHandleBroadcast(argument);
         }
 
         /// <inheritdoc/>

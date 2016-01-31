@@ -1,7 +1,9 @@
+
 namespace Toubab.Beinder.Bindable
 {
     using System;
     using System.Reflection;
+    using System.Threading.Tasks;
     using Mixin;
 
     /// <summary>
@@ -114,11 +116,11 @@ namespace Toubab.Beinder.Bindable
         public event EventHandler<BroadcastEventArgs> Broadcast;
 
         /// <inheritdoc/>
-        public bool TryHandleBroadcast(object[] argument)
+        public Task<bool> TryHandleBroadcast(object[] argument)
         {
             var t = Object;
             if (argument.Length != 1 || t == null || !Member.CanWrite)
-                return false;
+                return Task.FromResult(false);
             
             if (!Equals(argument[0], Values[0]))
             {
@@ -138,9 +140,9 @@ namespace Toubab.Beinder.Bindable
                     if (_rflEvent != null)
                         _rflEvent.SetObject(Object);
                 }
-                return true;
+                return Task.FromResult(true);
             }
-            return false;
+            return Task.FromResult(false);
         }
 
         /// <inheritdoc/>

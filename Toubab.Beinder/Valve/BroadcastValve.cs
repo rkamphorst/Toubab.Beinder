@@ -4,6 +4,7 @@ namespace Toubab.Beinder.Valve
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Bindable;
     using Tools;
 
@@ -12,21 +13,29 @@ namespace Toubab.Beinder.Valve
         readonly LinkedList<WeakReference<IBindable>> _bindables = 
             new LinkedList<WeakReference<IBindable>>();
 
-        public void Add(IBindable prop)
+        /// <summary>
+        /// Add a bindable to the valve.
+        /// </summary>
+        public void Add(IBindable bindable)
         {
             AssertNotDisposed();
             lock (_bindables)
             {             
-                _bindables.AddLast(new WeakReference<IBindable>(prop));
-                var prod = prop as IEvent;
+                _bindables.AddLast(new WeakReference<IBindable>(bindable));
+                var prod = bindable as IEvent;
                 if (prod != null)
                     prod.Broadcast += HandleBroadcast;
             }
         }
 
-        protected virtual void HandleBroadcast(object sender, BroadcastEventArgs e)
+        private async void HandleBroadcast(object sender, BroadcastEventArgs e)
         {
-            Push(sender, e.Payload);
+            await HandleBroadcastAsync(sender, e);
+        }
+
+        protected virtual async Task HandleBroadcastAsync(object sender, BroadcastEventArgs e)
+        {
+            await Push(sender, e.Payload);
         }
 
         /// <summary>
@@ -117,12 +126,13 @@ namespace Toubab.Beinder.Valve
             return GetEnumerator();
         }
 
-        protected virtual bool Push(object source, object[] payload)
+        protected virtual async Task<bool> Push(object source, object[] payload)
         {
             var srcBindable = source as IBindable;
+            var handleTasks = new List<Task<bool>>();
             lock (_bindables)
             {
-                bool valueWasBroadcast = false;
+                
                 foreach (var bnd in EnumerateLiveRefsAndRemoveDefuncts(_bindables))
                 {
                     var cons = bnd as IEventHandler;
@@ -134,12 +144,12 @@ namespace Toubab.Beinder.Valve
                                 : cons.ValueTypes.AreAssignableFromObjects(payload);
                         if (areParamsCompatible)
                         {
-                            valueWasBroadcast |= cons.TryHandleBroadcast(payload);
+                            handleTasks.Add(cons.TryHandleBroadcast(payload));
                         }
                     }
                 }
-                return valueWasBroadcast;
             }
+            return (await Task.WhenAll(handleTasks)).Any();
         }
 
         /// <inheritdoc/>

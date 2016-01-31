@@ -13,7 +13,7 @@ namespace Toubab.Beinder
         IBindings _bindings;
 
         [Test]
-        public void BindSpecialPropertyOnMixinWithNotifyPropertyChanged()
+        public async void BindSpecialPropertyOnMixinWithNotifyPropertyChanged()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -23,7 +23,7 @@ namespace Toubab.Beinder
             bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
 
             // Act
             ob2.SpecialProperty = 666;
@@ -34,7 +34,7 @@ namespace Toubab.Beinder
         }
 
         [Test]
-        public void BindSpecialPropertyOnMixinWithReflection()
+        public async void BindSpecialPropertyOnMixinWithReflection()
         {
             // Arrange
             var bnd = new Binder(new CombinedScanner());
@@ -45,7 +45,7 @@ namespace Toubab.Beinder
             bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
 
             // Act
             ob2.SpecialProperty2 = "666";
@@ -56,7 +56,7 @@ namespace Toubab.Beinder
         }
 
         [Test]
-        public void BogusCommandWithNullParameter()
+        public async void BogusCommandWithNullParameter()
         {
             // Arrange
 
@@ -68,7 +68,7 @@ namespace Toubab.Beinder
             bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
             ob2.BogusCount = 0;
 
             // Act
@@ -79,7 +79,7 @@ namespace Toubab.Beinder
         }
 
         [Test]
-        public void BogusCommandWithNonNullParameter()
+        public async void BogusCommandWithNonNullParameter()
         {
             // Arrange
 
@@ -91,7 +91,7 @@ namespace Toubab.Beinder
             bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
             ob2.BogusCount = 0;
 
             // Act
@@ -102,7 +102,7 @@ namespace Toubab.Beinder
         }
 
         [Test]
-        public void BogusCommandWithNullParameterCanExecute()
+        public async void BogusCommandWithNullParameterCanExecute()
         {
             // Arrange
 
@@ -114,7 +114,7 @@ namespace Toubab.Beinder
             bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
             ob2.SpecialProperty2 = string.Empty;
             ob2.BogusCount = 0;
 
@@ -126,7 +126,7 @@ namespace Toubab.Beinder
         }
 
         [Test]
-        public void BogusCommandWithNullParameterCannotExecute()
+        public async void BogusCommandWithNullParameterCannotExecute()
         {
             // Arrange
 
@@ -138,7 +138,7 @@ namespace Toubab.Beinder
             bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
             ob2.SpecialProperty2 = "nonempty";
             ob2.BogusCount = 0;
 
@@ -150,7 +150,7 @@ namespace Toubab.Beinder
         }
 
         [Test]
-        public void BogusCommandWithNonNullParameterCanExecute()
+        public async void BogusCommandWithNonNullParameterCanExecute()
         {
             // Arrange
 
@@ -162,7 +162,7 @@ namespace Toubab.Beinder
             bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
             ob2.SpecialProperty2 = "nonempty";
             ob2.BogusCount = 0;
 
@@ -174,7 +174,7 @@ namespace Toubab.Beinder
         }
 
         [Test]
-        public void BogusCommandWithNonNullParameterCannotExecute()
+        public async void BogusCommandWithNonNullParameterCannotExecute()
         {
             // Arrange
 
@@ -186,7 +186,7 @@ namespace Toubab.Beinder
             bnd.Scanner.Add(mixinScanner);
             var ob1 = new MockView();
             var ob2 = new MockViewModel();
-            _bindings = bnd.Bind(new object[] { ob1, ob2 });
+            _bindings = await bnd.Bind(new object[] { ob1, ob2 });
             ob2.SpecialProperty2 = "nonempty";
             ob2.BogusCount = 0;
 

@@ -1,6 +1,7 @@
 namespace Toubab.Beinder.Bindable
 {
     using System;
+    using System.Threading.Tasks;
     using Mixin;
 
     /// <summary>
@@ -40,9 +41,9 @@ namespace Toubab.Beinder.Bindable
         public event EventHandler<BroadcastEventArgs> Broadcast;
 
         /// <inheritdoc/>
-        public bool TryHandleBroadcast(object[] argument)
+        public async Task<bool> TryHandleBroadcast(object[] argument)
         {
-            return Delegate.TryHandleBroadcast(argument);
+            return await Delegate.TryHandleBroadcast(argument);
         }
 
         /// <inheritdoc/>

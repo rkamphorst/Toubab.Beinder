@@ -2,6 +2,7 @@ namespace Toubab.Beinder.Bindable
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using Mixin;
 
     /// <summary>
@@ -79,7 +80,7 @@ namespace Toubab.Beinder.Bindable
         }
 
         /// <inheritdoc/>
-        public bool TryHandleBroadcast(object[] argument)
+        public async Task<bool> TryHandleBroadcast(object[] argument)
         {
             // first, make sure _value is up to date
             _values = Bindables[0].Values;
@@ -98,7 +99,7 @@ namespace Toubab.Beinder.Bindable
             // write the property, try each one until one accepts
             foreach (var prop in Bindables)
             {
-                if (prop.TryHandleBroadcast(argument))
+                if (await prop.TryHandleBroadcast(argument))
                 {
                     return true;
                 }

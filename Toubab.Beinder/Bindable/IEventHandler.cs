@@ -1,5 +1,7 @@
 namespace Toubab.Beinder.Bindable
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Bindable event handler (method)
     /// </summary>
@@ -27,7 +29,7 @@ namespace Toubab.Beinder.Bindable
         /// <returns><c>true</c>, if the broadcast could be handled by this <see cref="IEventHandler"/>, 
         /// <c>false</c> otherwise.</returns>
         /// <param name="payload">Payload from the event.</param>
-        bool TryHandleBroadcast(object[] payload);
+        Task<bool> TryHandleBroadcast(object[] payload);
     }
 
 }

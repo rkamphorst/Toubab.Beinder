@@ -1,5 +1,6 @@
 namespace Toubab.Beinder.Extend
 {
+    using System.Threading.Tasks;
     using Bindable;
 
     public abstract class CustomEventHandler<T> : Bindable, ICustomEventHandler<T>
@@ -14,6 +15,6 @@ namespace Toubab.Beinder.Extend
         {
         }
 
-        public abstract bool TryHandleBroadcast(object[] payload);
+        public abstract Task<bool> TryHandleBroadcast(object[] payload);
     }
 }
