@@ -1,9 +1,9 @@
-﻿using System;
-using Toubab.Beinder.Mixin;
-
-namespace Toubab.Beinder.Extend
+﻿namespace Toubab.Beinder.Extend
 {
-    public abstract class CustomMixin<T> : Mixin.Mixin, ICustomMixin<T>
+    using System;
+    using Mixins;
+
+    public abstract class CustomMixin<T> : Mixin, ICustomMixin<T>
     {
         protected new T GetObject()
         {

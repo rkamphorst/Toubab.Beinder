@@ -1,35 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Toubab.Beinder.Bindable.IBindable">
+  <Interface Name="Toubab.Beinder.Bindables.IBindable">
     <Position X="6.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAIgAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Bindable\IBindable.cs</FileName>
+      <FileName>Bindables\IBindable.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Toubab.Beinder.Bindable.IEvent">
+  <Interface Name="Toubab.Beinder.Bindables.IEvent">
     <Position X="4.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Bindable\IEvent.cs</FileName>
+      <FileName>Bindables\IEvent.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Toubab.Beinder.Bindable.IEventHandler">
+  <Interface Name="Toubab.Beinder.Bindables.IEventHandler">
     <Position X="8.25" Y="4.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Bindable\IEventHandler.cs</FileName>
+      <FileName>Bindables\IEventHandler.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Toubab.Beinder.Bindable.IProperty">
+  <Interface Name="Toubab.Beinder.Bindables.IProperty">
     <Position X="6.25" Y="4.75" Width="1.75" />
-    <InheritanceLine Type="Toubab.Beinder.Bindable.IEvent" ManuallyRouted="true" FixedFromPoint="true">
+    <InheritanceLine Type="Toubab.Beinder.Bindables.IEvent" ManuallyRouted="true" FixedFromPoint="true">
       <Path>
         <Point X="6" Y="5.438" />
         <Point X="6.25" Y="5.438" />
       </Path>
     </InheritanceLine>
-    <InheritanceLine Type="Toubab.Beinder.Bindable.IEventHandler" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+    <InheritanceLine Type="Toubab.Beinder.Bindables.IEventHandler" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="8.25" Y="5.438" />
         <Point X="8" Y="5.438" />
@@ -37,14 +37,14 @@
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>Bindable\IProperty.cs</FileName>
+      <FileName>Bindables\IProperty.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Toubab.Beinder.Mixin.IMixin">
+  <Interface Name="Toubab.Beinder.Mixins.IMixin">
     <Position X="8" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Mixin\IMixin.cs</FileName>
+      <FileName>Mixins\IMixin.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Toubab.Beinder.Extend.ICustomEvent&lt;T&gt;">
@@ -84,7 +84,7 @@
   </Interface>
   <Interface Name="Toubab.Beinder.Extend.ICustomMixin">
     <Position X="10.5" Y="4.75" Width="1.5" />
-    <InheritanceLine Type="Toubab.Beinder.Mixin.IMixin" ManuallyRouted="true">
+    <InheritanceLine Type="Toubab.Beinder.Mixins.IMixin" ManuallyRouted="true">
       <Path>
         <Point X="8.875" Y="1.796" />
         <Point X="8.875" Y="2.104" />

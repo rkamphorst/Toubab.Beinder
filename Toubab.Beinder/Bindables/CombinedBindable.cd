@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Toubab.Beinder.Mixins.Mixin" Collapsed="true">
+    <Position X="15.5" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAgAAAAAAAAABAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Mixins\Mixins.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindables.Bindable" Collapsed="true">
+    <Position X="15.5" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAIkAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindables\Bindable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindables.CombinedBindable&lt;TBindable&gt;" Collapsed="true">
+    <Position X="15.5" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindables\CombinedBindable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Toubab.Beinder.Bindables.CombinedEvent" Collapsed="true">
+    <Position X="13.25" Y="5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAhABAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindables\CombinedEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindables.CombinedEventHandler" Collapsed="true">
+    <Position X="18.5" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Bindables\CombinedEventHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Toubab.Beinder.Bindables.CombinedProperty" Collapsed="true">
+    <Position X="15.5" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAACAAAAAAAABAAAAAAABAAAAAAAgAAAAACA=</HashCode>
+      <FileName>Bindables\CombinedProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

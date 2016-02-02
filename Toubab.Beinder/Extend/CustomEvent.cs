@@ -1,11 +1,12 @@
 ﻿namespace Toubab.Beinder.Extend
 {
     using System;
-    using Bindable;
+    using Bindables;
+    using Paths;
 
     public abstract class CustomEvent<T> : Bindable, ICustomEvent<T>
     {
-        protected CustomEvent(Path.Path path)
+        protected CustomEvent(Path path)
             : base(path)
         {
         }

@@ -1,6 +1,6 @@
 namespace Toubab.Beinder.Extend
 {
-    using Bindable;
+    using Bindables;
 
     public interface ICustomEvent<T> : ICustomBindable<T>, IEvent
     {

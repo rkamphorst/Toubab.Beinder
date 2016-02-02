@@ -4,8 +4,8 @@ namespace Toubab.Beinder
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Bindable;
-
+    using Bindables;
+    using Paths;
 
     /// <summary>
     /// Constructed bindings (returned by <see cref="Binder.Bind(object[])"/>).
@@ -19,7 +19,7 @@ namespace Toubab.Beinder
     /// instances. Child bindables (i.e., "properties of properties") that are
     /// bound are not accessible.
     /// </remarks>
-    public interface IBindings : IDisposable, IEnumerable<IGrouping<Path.Path,IBindable>>
+    public interface IBindings : IDisposable, IEnumerable<IGrouping<Path,IBindable>>
     {
     }
  

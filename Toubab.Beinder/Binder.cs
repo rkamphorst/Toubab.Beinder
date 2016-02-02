@@ -5,10 +5,11 @@ namespace Toubab.Beinder
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Bindable;
-    using Scanner;
-    using Valve;
-    using Mixin;
+    using Bindables;
+    using Scanners;
+    using Mixins;
+    using Paths;
+    using Valves;
 
     /// <summary>
     /// Binder: binds properties, events and methods of different objects
@@ -482,11 +483,11 @@ namespace Toubab.Beinder
         struct CandidateBindable
         {
             public CandidateBindable(object obj, IBindable property)
-                : this(obj, property, new Path.Path(property.Path))
+                : this(obj, property, new Path(property.Path))
             {
             }
 
-            CandidateBindable(object obj, IBindable bindable, Path.Path path)
+            CandidateBindable(object obj, IBindable bindable, Path path)
             {
                 Object = obj;
                 Bindable = bindable;
@@ -506,7 +507,7 @@ namespace Toubab.Beinder
             /// parameter, this path is relative to the objects in the <c>objects</c>
             /// parameter.
             /// </remarks>
-            public Path.Path RelativePath { get; private set; }
+            public Path RelativePath { get; private set; }
 
             /// <summary>
             /// The object to be attached to <see cref="Bindable"/>.
@@ -520,7 +521,7 @@ namespace Toubab.Beinder
             /// Returns <c>null</c> (empty nullable) if <see cref="RelativePath"/>
             /// does not start with <paramref name="basePath"/>.
             /// </remarks>
-            public CandidateBindable? RelativeTo(Path.Path basePath)
+            public CandidateBindable? RelativeTo(Path basePath)
             {
                 var newPath = RelativePath.RelativeTo(basePath);
                 return newPath != null ? (CandidateBindable?)new CandidateBindable(Object, Bindable, newPath) : null;
@@ -600,9 +601,9 @@ namespace Toubab.Beinder
             }
 
 
-            public IEnumerator<IGrouping<Path.Path, IBindable>> GetEnumerator()
+            public IEnumerator<IGrouping<Path, IBindable>> GetEnumerator()
             {
-                return _valves.Cast<IGrouping<Path.Path, IBindable>>().GetEnumerator();
+                return _valves.Cast<IGrouping<Path, IBindable>>().GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()

@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using NUnit.Framework;
-    using Mock;
-    using Mock.Abcd;
-    using Scanner;
+    using Mocks;
+    using Mocks.Abcd;
+    using Scanners;
 
     [TestFixture]
     public class BinderWithReflectionScannersTest

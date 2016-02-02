@@ -1,6 +1,6 @@
 ﻿namespace Toubab.Beinder.Extend
 {
-    using Mixin;
+    using Mixins;
 
     public interface ICustomMixin : IMixin
     {

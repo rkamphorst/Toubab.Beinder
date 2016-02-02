@@ -1,6 +1,6 @@
 ﻿namespace Toubab.Beinder.Extend
 {
-    using Scanner;
+    using Scanners;
 
     public interface ICustomScanner : IScanner
     {

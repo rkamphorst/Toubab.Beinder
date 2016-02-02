@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using NUnit.Framework;
-    using Mock;
+    using Mocks;
 
     [TestFixture]
     public class CommandTest

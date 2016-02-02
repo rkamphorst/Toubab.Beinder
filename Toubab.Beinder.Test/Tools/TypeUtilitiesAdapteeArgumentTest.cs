@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using NUnit.Framework;
-    using Mock.Fruit;
+    using Mocks.Fruits;
 
     [TestFixture]
     public class TypeUtilitiesAdapteeArgumentTest
