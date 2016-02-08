@@ -44,8 +44,14 @@ namespace Toubab.Beinder.Droid.Sample
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f050001
+			public const int button_simple_activity = 2131034113;
+			
 			// aapt resource value: 0x7f050000
-			public const int myButton = 2131034112;
+			public const int hello_world_button = 2131034112;
+			
+			// aapt resource value: 0x7f050002
+			public const int my_button = 2131034114;
 			
 			static Id()
 			{
@@ -61,7 +67,10 @@ namespace Toubab.Beinder.Droid.Sample
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int Main = 2130903040;
+			public const int main = 2130903040;
+			
+			// aapt resource value: 0x7f030001
+			public const int simple = 2130903041;
 			
 			static Layout()
 			{
