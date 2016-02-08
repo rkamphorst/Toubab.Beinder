@@ -20,10 +20,30 @@ namespace Toubab.Beinder.Droid.Sample
             // and attach an event to it
             Button button = FindViewById<Button>(Resource.Id.myButton);
             
-            button.Click += delegate
+            button.Click += async delegate
             {
                 button.Text = string.Format("{0} clicks!", count++);
+                Activity emptyActivity =
+                    await this.StartActivityWithCallbacksAsync<EmptyActivity>(
+                        created: (activity, sis) => {
+                            if (sis == null) {
+                                Toast.MakeText(this, "Created for the first time!", ToastLength.Short).Show();
+                            } else {
+                                Toast.MakeText(this, "Created again after being deflated!", ToastLength.Short).Show();
+                            }
+                        },
+                        started:           activity => Toast.MakeText(this, "Activity started!", ToastLength.Short).Show(),
+                        resumed:           activity => Toast.MakeText(this, "Activity resumed!", ToastLength.Short).Show(),
+                        paused:            activity => Toast.MakeText(this, "Activity paused", ToastLength.Short).Show(),
+                        stopped:           activity => Toast.MakeText(this, "Activity stopped", ToastLength.Short).Show(),
+                        destroyed:         activity => Toast.MakeText(this, "Activity destroyed", ToastLength.Short).Show(),
+                        saveInstanceState: (activity, bundle) => Toast.MakeText(this, "Activity saved instance state", ToastLength.Short).Show()
+                    );
+
+                Toast.MakeText(this, "Got activity: " + emptyActivity.Title, ToastLength.Short).Show();
             };
+
+
         }
     }
 }
