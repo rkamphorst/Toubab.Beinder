@@ -26,7 +26,10 @@ namespace Toubab.Beinder.Valves
     /// </remarks>
     public class StateValve : BroadcastValve
     {
-        static readonly object[] _secret = new[] { new object() };
+        // the secret object array. 
+        // it is guaranteed that no object array outside this class
+        // can hold the same array as this one; and that is what we want.
+        static readonly object[] _secret = { new object() };
        
         object[] _values = _secret;
 
@@ -93,9 +96,16 @@ namespace Toubab.Beinder.Valves
 
         protected override async Task<bool> Push(IEvent source, object[] payload)
         {
+            // important! any event that emanates from an IProperty source is
+            // interpreted as a property change. Therefore, the payload is 
+            // replaced with the new value of the property; the original event 
+            // arguments are discarded.
+            if (source is IProperty)
+                payload = ((IProperty)source).Values;
+
             lock (_secret)
             {
-                if (!Equals(_values, payload) && !Enumerable.SequenceEqual(_values, payload))
+                if (!Equals(_values, payload) && !_values.SequenceEqual(payload))
                 {
                     _values = payload;
                 }

@@ -107,10 +107,11 @@ namespace Toubab.Beinder.Bindables
                 if (listener == null)
                     _rflEvent.SetBroadcastListener(null);
                 else
-                    _rflEvent.SetBroadcastListener(payload => {
-                        if (!_handlingBroadcast) 
-                            listener(Values);
-                    });
+                    _rflEvent.SetBroadcastListener(payload =>
+                        {
+                            if (!_handlingBroadcast)
+                                listener(null);
+                        });
             }
         }
 
