@@ -21,12 +21,11 @@ namespace Toubab.Beinder.Bindables
     /// If the property's value changes, an event might be raised to indicate this. This event
     /// can be specified in the constructor. 
     /// 
-    /// <see cref="ReflectedProperty"/> can also react to <see cref="IEvent.Broadcast"/> events through
-    /// <see cref="TryHandleBroadcast"/>: it sets the value of the underlying property
+    /// <see cref="ReflectedProperty"/> can also react to <see cref="IEvent"/> broadcast 
+    /// events through <see cref="TryHandleBroadcast"/>: it sets the value of the underlying property
     /// accordingly. While setting the property, the "change event" handler is temporarily
-    /// disconnected to prevent <see cref="Broadcast"/> events emanating from this instance,
-    /// to prevent <see cref="Broadcast"/> events caused by other <see cref="Broadcast"/> events
-    /// (which would result in an endless loop).
+    /// disconnected to prevent a broadcast listener of this instance to react to the change,
+    /// which could result in an endless loop.
     /// </remarks>   
     public class ReflectedProperty : ReflectedBindable<PropertyInfo>, IProperty
     {
