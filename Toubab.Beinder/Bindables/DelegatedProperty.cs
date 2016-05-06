@@ -16,7 +16,6 @@ namespace Toubab.Beinder.Bindables
         public DelegatedProperty(IProperty delegateProperty)
             : base(delegateProperty)
         {
-            delegateProperty.Broadcast += DelegateBroadcast;
         }
 
         /// <summary>
@@ -25,20 +24,15 @@ namespace Toubab.Beinder.Bindables
         /// </summary>
         /// <param name="toCopy">The object to copy into a new instance.</param>
         protected DelegatedProperty(DelegatedProperty toCopy)
-            : base((DelegatedBindable<IProperty>) toCopy)
+            : base((DelegatedBindable<IProperty>)toCopy)
         {
-            Delegate.Broadcast += DelegateBroadcast;
-        }
-
-        void DelegateBroadcast(object sender, BroadcastEventArgs args)
-        {
-            var evt = Broadcast;
-            if (evt != null)
-                evt(this, new BroadcastEventArgs(Object, args.Payload));
         }
 
         /// <inheritdoc/>
-        public event EventHandler<BroadcastEventArgs> Broadcast;
+        public void SetBroadcastListener(Action<object[]> listener)
+        {
+            Delegate.SetBroadcastListener(listener);
+        }
 
         /// <inheritdoc/>
         public async Task<bool> TryHandleBroadcast(object[] argument)

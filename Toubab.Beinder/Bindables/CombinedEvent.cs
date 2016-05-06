@@ -38,10 +38,6 @@ namespace Toubab.Beinder.Bindables
         public CombinedEvent(IEvent[] events)
             : base(events)
         {
-            foreach (var e in events)
-            {
-                e.Broadcast += HandleContainedBroadcast;
-            }
         }
 
         /// <summary>
@@ -55,36 +51,21 @@ namespace Toubab.Beinder.Bindables
             
         }
 
-        void HandleContainedBroadcast(object sender, BroadcastEventArgs e)
+        void SetContainedBroadcastListener(int index, Action<object[]> listener)
         {
-            int chosenEvent = _chosenEvent;
-            var obj = Object;
-            IBindable chosenInstance = null;
-            if (chosenEvent != -1)
+            if (listener == null)
             {
-                chosenInstance = Bindables[chosenEvent];
+                Bindables[index].SetBroadcastListener(null);
             }
             else
             {
-                for (int i = 0; i < Bindables.Length; i++)
-                {
-                    if (ReferenceEquals(sender, Bindables[i]))
+                Bindables[index].SetBroadcastListener(payload =>
                     {
-                        if (chosenEvent == -1)
-                        {
-                            chosenEvent = i;
-                            chosenInstance = Bindables[i];
-                        }
-                    }
-                }
-                _chosenEvent = chosenEvent;
-            }
-                
-            if (ReferenceEquals(sender, chosenInstance))
-            {
-                var evt = Broadcast;
-                if (evt != null)
-                    evt(this, e);
+                        if (_chosenEvent < 0)
+                            _chosenEvent = index;
+                        if (Equals(_chosenEvent, index))
+                            listener(payload);
+                    });
             }
         }
 
@@ -96,8 +77,13 @@ namespace Toubab.Beinder.Bindables
             base.SetObject(value);
         }
 
-        /// <inheritdoc/>
-        public event EventHandler<BroadcastEventArgs> Broadcast;
+        public void SetBroadcastListener(Action<object[]> listener)
+        {
+            for (int i = 0; i < Bindables.Length; i++)
+            {
+                SetContainedBroadcastListener(i, listener);
+            }
+        }
 
         /// <inheritdoc/>
         public override IMixin CloneWithoutObject()

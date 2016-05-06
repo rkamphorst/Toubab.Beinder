@@ -61,18 +61,9 @@ namespace Toubab.Beinder.Scanners
                     .Select(kvp => kvp.Key)
                     .Contains(_key))
                 {
-                    OnBroadcast(Values);
+                    // TODO: do something with broadcasts
                 }
             }
-
-            void OnBroadcast(object[] argument)
-            {
-                var e = Broadcast;
-                if (e != null)
-                    e(this, new BroadcastEventArgs(Object, argument));
-            }
-
-            public event EventHandler<BroadcastEventArgs> Broadcast;
 
             public override Type[] ValueTypes { get { return new[] { typeof(object) }; } }
 

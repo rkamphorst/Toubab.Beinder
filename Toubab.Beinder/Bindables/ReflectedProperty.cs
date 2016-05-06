@@ -31,7 +31,7 @@ namespace Toubab.Beinder.Bindables
     public class ReflectedProperty : ReflectedBindable<PropertyInfo>, IProperty
     {
         readonly ReflectedEvent _rflEvent;
-        readonly Func<BroadcastEventArgs, bool> _broadcastFilter;
+        bool _handlingBroadcast;
 
         /// <summary>
         /// Constructor
@@ -53,15 +53,13 @@ namespace Toubab.Beinder.Bindables
             Path path, 
             PropertyInfo propertyInfo, 
             EventInfo eventInfo = null,
-            Func<BroadcastEventArgs, bool> broadcastFilter = null
+            Func<object[], bool> broadcastFilter = null
         )
             : base(path, propertyInfo)
         {
             if (eventInfo != null)
             {
-                _rflEvent = new ReflectedEvent(path, eventInfo);
-                _rflEvent.Broadcast += PropagateBroadcast;
-                _broadcastFilter = broadcastFilter;
+                _rflEvent = new ReflectedEvent(path, eventInfo, broadcastFilter);
             }
         }
 
@@ -76,18 +74,7 @@ namespace Toubab.Beinder.Bindables
             if (toCopy._rflEvent != null)
             {
                 _rflEvent = (ReflectedEvent)toCopy._rflEvent.CloneWithoutObject();
-                _rflEvent.Broadcast += PropagateBroadcast;
-                _broadcastFilter = toCopy._broadcastFilter;
             }
-        }
-
-        void PropagateBroadcast(object source, BroadcastEventArgs args)
-        {
-            var evt = Broadcast;
-            if (evt == null || (_broadcastFilter != null && !_broadcastFilter(args)))
-                return;
-            var myArgs = new BroadcastEventArgs(Object, Values);
-            evt(this, myArgs);
         }
 
         /// <inheritdoc/>
@@ -114,7 +101,19 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public event EventHandler<BroadcastEventArgs> Broadcast;
+        public void SetBroadcastListener(Action<object[]> listener)
+        {
+            if (_rflEvent != null)
+            {
+                if (listener == null)
+                    _rflEvent.SetBroadcastListener(null);
+                else
+                    _rflEvent.SetBroadcastListener(payload => {
+                        if (!_handlingBroadcast) 
+                            listener(Values);
+                    });
+            }
+        }
 
         /// <inheritdoc/>
         public Task<bool> TryHandleBroadcast(object[] argument)
@@ -127,19 +126,18 @@ namespace Toubab.Beinder.Bindables
             {
                 try
                 {
-                    // temporarily set object on reflected event to null,
-                    // so event does not fire.
-                    if (_rflEvent != null)
-                        _rflEvent.SetObject(null);
+                    // set the "handling broadcast" flag,
+                    // so broadcasts aren't propagated until finished
+                    // -- provided broadcasts happen on the same thread.
+                    _handlingBroadcast = true;
 
                     // set new value
                     Member.SetValue(t, argument[0]);
                 }
                 finally
                 {
-                    // restore the object on reflected event
-                    if (_rflEvent != null)
-                        _rflEvent.SetObject(Object);
+                    // finished handling broadcast
+                    _handlingBroadcast = false;
                 }
                 return Task.FromResult(true);
             }

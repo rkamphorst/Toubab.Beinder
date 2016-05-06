@@ -42,7 +42,7 @@ namespace Toubab.Beinder.Scanners
             var ob = new ClassWithPropertyAndEvents();
             ob.Property = "banaan";
             property.SetObject(ob);
-            property.Broadcast += (sender, e) => newValue = e.Payload;
+            property.SetBroadcastListener(payload => newValue = payload);
 
             // Act
             property.TryHandleBroadcast(new[] { "fdsa" });
@@ -63,11 +63,11 @@ namespace Toubab.Beinder.Scanners
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "simple", "event" }));
             var ob = new ClassWithPropertyAndEvents();
             evt.SetObject(ob);
-            evt.Broadcast += (sender, e) =>
+            evt.SetBroadcastListener(payload => 
             {
-                eventArgs = e.Payload;
+                eventArgs = payload;
                 eventHappened++;
-            };
+            });
 
             // Act
             ob.OnSimpleEvent();
@@ -90,11 +90,11 @@ namespace Toubab.Beinder.Scanners
                 .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "simple", "event" }));
             var ob = new ClassWithPropertyAndEvents();
             evt.SetObject(ob);
-            evt.Broadcast += (sender, e) =>
-            {
-                eventArgs = e.Payload;
-                eventHappened++;
-            };
+            evt.SetBroadcastListener(payload => 
+                {
+                    eventArgs = payload;
+                    eventHappened++;
+                });
 
             // Act
             ob.OnSimpleEvent();
@@ -128,11 +128,11 @@ namespace Toubab.Beinder.Scanners
             };
 
             evt.SetObject(ob);
-            evt.Broadcast += (sender, e) =>
-            { 
-                eventArgs = e.Payload; 
-                eventHappened++; 
-            };
+            evt.SetBroadcastListener(payload => 
+                {
+                    eventArgs = payload;
+                    eventHappened++;
+                });
 
             // Act
 
@@ -168,11 +168,11 @@ namespace Toubab.Beinder.Scanners
             };
 
             evt.SetObject(ob);
-            evt.Broadcast += (sender, e) =>
-            { 
-                eventArgs = e.Payload; 
-                eventHappened++; 
-            };
+            evt.SetBroadcastListener(payload => 
+                {
+                    eventArgs = payload;
+                    eventHappened++;
+                });
 
             // Act
             ob.OnComplexEvent("a", 15, cwpae, vtfce, ob);

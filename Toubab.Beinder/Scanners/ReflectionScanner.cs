@@ -41,7 +41,7 @@ namespace Toubab.Beinder.Scanners
             .Concat(
                 type.GetRuntimeEvents()
                     .Where(info => !info.IsSpecialName && info.AddMethod.IsPublic)
-                    .Select(evt => (IBindable) new ReflectedEvent(_pathParser.Parse(evt.Name), evt))
+                    .Select(evt => (IBindable) new ReflectedEvent(_pathParser.Parse(evt.Name), evt, null))
             );
         }
 

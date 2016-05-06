@@ -12,7 +12,12 @@
 
         public string Name { get; set; }
 
-        public event EventHandler<BroadcastEventArgs> Broadcast;
+        Action<object[]> _broadcastListener;
+
+        public void SetBroadcastListener(Action<object[]> listener)
+        {
+            _broadcastListener = listener;
+        }
 
         public Type[] ValueTypes
         { 
@@ -30,8 +35,8 @@
         {
             _values = values;
             Changed++;
-            if (Broadcast != null)
-                Broadcast(this, new BroadcastEventArgs(this, values));
+            if (_broadcastListener != null)
+                _broadcastListener(values);
             return Task.FromResult(true);
         }
 

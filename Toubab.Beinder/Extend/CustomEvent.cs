@@ -16,17 +16,7 @@
         {
         }
 
-        public event EventHandler<BroadcastEventArgs> Broadcast;
-
-        protected virtual void OnBroadcast(object[] payload)
-        {
-            var evt = Broadcast;
-            if (evt != null)
-            {
-                var args = new BroadcastEventArgs(Object, payload);
-                evt(this, args);
-            }
-        }
+        public abstract void SetBroadcastListener(Action<object[]> listener);
     }
 
 }

@@ -28,6 +28,7 @@ namespace Toubab.Beinder.Bindables
     /// </remarks>
     public class CombinedProperty : CombinedBindable<IProperty>, IProperty
     {
+        readonly CombinedEvent _cmbEvent;
 
         /// <summary>
         /// Constructor.
@@ -37,10 +38,7 @@ namespace Toubab.Beinder.Bindables
             : base(properties)
         {
             _values = properties[0].Values;
-            foreach (var prop in properties)
-            {
-                prop.Broadcast += HandleContainedBroadcast;
-            }
+            _cmbEvent = new CombinedEvent(properties);
         }
 
         /// <summary>
@@ -53,19 +51,11 @@ namespace Toubab.Beinder.Bindables
         {
         }
 
-        void HandleContainedBroadcast(object sender, BroadcastEventArgs e)
-        {
-            if (_values == null || !_values.SequenceEqual(e.Payload))
-            {
-                _values = e.Payload;
-                var evt = Broadcast;
-                if (evt != null)
-                    evt(this, new BroadcastEventArgs(Object, e.Payload));
-            }
-        }
-
         /// <inheritdoc/>
-        public event EventHandler<BroadcastEventArgs> Broadcast;
+        public void SetBroadcastListener(Action<object[]> listener) 
+        {
+            _cmbEvent.SetBroadcastListener(listener);
+        }
 
         object[] _values;
 

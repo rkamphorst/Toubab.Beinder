@@ -85,13 +85,13 @@ namespace Toubab.Beinder.Valves
             }
         }
 
-        protected override async Task HandleBroadcastAsync(object sender, BroadcastEventArgs e)
+        protected override async Task HandleBroadcastAsync(IEvent sender, object[] e)
         {
             await base.HandleBroadcastAsync(sender, e);
-            OnValuesChanged(e.SourceObject, e.Payload);
+            OnValuesChanged(sender.Object, e);
         }
 
-        protected override async Task<bool> Push(object source, object[] payload)
+        protected override async Task<bool> Push(IEvent source, object[] payload)
         {
             lock (_secret)
             {

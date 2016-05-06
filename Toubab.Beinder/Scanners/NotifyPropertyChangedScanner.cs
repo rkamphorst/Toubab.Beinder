@@ -46,11 +46,11 @@ namespace Toubab.Beinder.Scanners
                     );
         }
 
-        Func<BroadcastEventArgs, bool> CreateBroadcastFilter(string propertyName)
+        Func<object[], bool> CreateBroadcastFilter(string propertyName)
         {
-            return (bcArgs) =>
+            return (payload) =>
             {
-                var pcArgs = bcArgs.Payload.Length > 1 ? bcArgs.Payload[1] as PropertyChangedEventArgs : null;
+                var pcArgs = payload.Length > 1 ? payload[1] as PropertyChangedEventArgs : null;
                 return pcArgs != null && (
                     string.IsNullOrEmpty(pcArgs.PropertyName) || Equals(pcArgs.PropertyName, propertyName)
                 );

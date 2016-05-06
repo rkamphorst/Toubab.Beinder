@@ -15,7 +15,6 @@ namespace Toubab.Beinder.Bindables
         public DelegatedEvent(IEvent delegateEvent) 
             : base(delegateEvent)
         {
-            delegateEvent.Broadcast += DelegateBroadcast;
         }
 
         /// <summary>
@@ -26,18 +25,13 @@ namespace Toubab.Beinder.Bindables
         protected DelegatedEvent(DelegatedEvent toCopy) 
             : base((DelegatedBindable<IEvent>) toCopy)
         {
-            Delegate.Broadcast += DelegateBroadcast;
-        }
-
-        void DelegateBroadcast(object sender, BroadcastEventArgs args) 
-        {
-            var evt = Broadcast;
-            if (evt != null)
-                evt(this, new BroadcastEventArgs(Object, args.Payload));
         }
 
         /// <inheritdoc/>
-        public event EventHandler<BroadcastEventArgs> Broadcast;
+        public void SetBroadcastListener(Action<object[]> listener) 
+        {
+            Delegate.SetBroadcastListener(listener);
+        }
 
         /// <inheritdoc/>
         public override IMixin CloneWithoutObject()

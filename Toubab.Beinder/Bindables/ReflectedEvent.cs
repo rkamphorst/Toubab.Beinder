@@ -37,6 +37,9 @@ namespace Toubab.Beinder.Bindables
         readonly Delegate _handleEventDelegate;
         readonly Type[] _parameterTypes;
 
+        readonly Func<object[], bool> _broadcastFilter;
+        Action<object[]> _broadcastListener;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -45,15 +48,21 @@ namespace Toubab.Beinder.Bindables
         ///     non-void return type.
         /// </exception>
         /// <param name="path">Set the <see cref="Path"/> of the bindable to this value</param>
-        /// <param name="eventInfo">The reflected evet.</param>
-        public ReflectedEvent(Path path, EventInfo eventInfo)
+        /// <param name="eventInfo">The reflected event.</param>
+        /// <param name="broadcastFilter">If <paramref name="eventInfo"/> refers to an event that is
+        /// overloaded (e.g. this is the case with <see cref="System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/>),
+        /// the broadcastFilter decides which events are represented by this bindable.
+        /// The broadcastFilter is a callback that takes the broadcast payload and returns true
+        /// if this is an event that should be broadcast. If not supplied, default is to let all
+        /// events through.</param>
+        public ReflectedEvent(Path path, EventInfo eventInfo, Func<object[], bool> broadcastFilter)
             : base(path, eventInfo)
         {
             var invokeMethod = Member.EventHandlerType
                 .GetRuntimeMethods().First(m => Equals(m.Name, DelegateInvokeMethod));
             _parameterTypes = invokeMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
-            if (_parameterTypes.Length > 32) 
+            if (_parameterTypes.Length > 32)
                 throw new ArgumentException("Not supported: Event delegate has more than 32 parameters", "eventInfo");
             if (invokeMethod.ReturnType != typeof(void))
                 throw new ArgumentException("Not supported: Event delegate has a non-void return type", "eventInfo");
@@ -65,6 +74,7 @@ namespace Toubab.Beinder.Bindables
             if (_parameterTypes.Length > 0)
                 handlerMethodInfo = handlerMethodInfo.MakeGenericMethod(_parameterTypes);
             _handleEventDelegate = handlerMethodInfo.CreateDelegate(eventInfo.EventHandlerType, this);
+            _broadcastFilter = broadcastFilter;
         }
 
         /// <summary>
@@ -72,11 +82,12 @@ namespace Toubab.Beinder.Bindables
         /// The object this bindable belongs to is not copied.
         /// </summary>
         /// <param name="toCopy">The object to copy into a new instance.</param>
-        ReflectedEvent(ReflectedEvent toCopy) 
+        ReflectedEvent(ReflectedEvent toCopy)
             : base(toCopy)
         {
             _parameterTypes = toCopy._parameterTypes;
             _handleEventDelegate = toCopy._handleEventDelegate.GetMethodInfo().CreateDelegate(Member.EventHandlerType, this);
+            _broadcastFilter = toCopy._broadcastFilter;
         }
 
         /// <inheritdoc/>
@@ -88,21 +99,15 @@ namespace Toubab.Beinder.Bindables
             }
         }
 
-        /// <inheritdoc/>
-        public event EventHandler<BroadcastEventArgs> Broadcast;
-
-        /// <inheritdoc/>
-        public override void SetObject(object value)
+        public void SetBroadcastListener(Action<object[]> listener)
         {
-            var oldValue = Object;
+            var oldListener = _broadcastListener;
+            _broadcastListener = listener;
 
-            if (oldValue != null)
-                Member.RemoveEventHandler(oldValue, _handleEventDelegate);
-
-            base.SetObject(value);
-
-            if (value != null)
-                Member.AddEventHandler(value, _handleEventDelegate);
+            if (oldListener != null && listener == null)
+                Member.RemoveEventHandler(Object, _handleEventDelegate);
+            else if (oldListener == null && listener != null)
+                Member.AddEventHandler(Object, _handleEventDelegate);
         }
 
         /// <inheritdoc/>
@@ -123,7 +128,7 @@ namespace Toubab.Beinder.Bindables
          * that were passed to HandleEvent();
          */
 
-        void HandleEvent() 
+        void HandleEvent()
         {
             OnBroadcast();
         }
@@ -292,9 +297,10 @@ namespace Toubab.Beinder.Bindables
 
         void OnBroadcast(params object[] value)
         {
-            var evt = Broadcast;
-            if (evt != null)
-                evt(this, new BroadcastEventArgs(Object, value));
+            var lst = _broadcastListener;
+            var bcf = _broadcastFilter;
+            if (lst != null && (bcf == null || bcf(value)))
+                lst(value);
         }
     }
 

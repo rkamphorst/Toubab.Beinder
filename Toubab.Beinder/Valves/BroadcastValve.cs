@@ -25,18 +25,20 @@ namespace Toubab.Beinder.Valves
                 _bindables.AddLast(new WeakReference<IBindable>(bindable));
                 var prod = bindable as IEvent;
                 if (prod != null)
-                    prod.Broadcast += HandleBroadcast;
+                    prod.SetBroadcastListener(payload => {
+                        HandleBroadcast(prod, payload);
+                    });
             }
         }
 
-        private async void HandleBroadcast(object sender, BroadcastEventArgs e)
+        private async void HandleBroadcast(IEvent sender, object[] e)
         {
             await HandleBroadcastAsync(sender, e);
         }
 
-        protected virtual async Task HandleBroadcastAsync(object sender, BroadcastEventArgs e)
+        protected virtual async Task HandleBroadcastAsync(IEvent sender, object[] e)
         {
-            await Push(sender, e.Payload);
+            await Push(sender, e);
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace Toubab.Beinder.Valves
                 var prod = bindable as IEvent;
                 if (prod != null)
                 {
-                    prod.Broadcast -= HandleBroadcast;
+                    prod.SetBroadcastListener(null);
                 }
             }
 
@@ -127,9 +129,8 @@ namespace Toubab.Beinder.Valves
             return GetEnumerator();
         }
 
-        protected virtual async Task<bool> Push(object source, object[] payload)
+        protected virtual async Task<bool> Push(IEvent source, object[] payload)
         {
-            var srcBindable = source as IBindable;
             var handleTasks = new List<Task<bool>>();
             lock (_bindables)
             {
@@ -140,8 +141,8 @@ namespace Toubab.Beinder.Valves
                     if (cons != null && !ReferenceEquals(source, cons))
                     {
                         bool areParamsCompatible =
-                            srcBindable != null
-                            ? cons.ValueTypes.AreAssignableFromTypes(srcBindable.ValueTypes)
+                            source != null
+                            ? cons.ValueTypes.AreAssignableFromTypes(source.ValueTypes)
                                 : cons.ValueTypes.AreAssignableFromObjects(payload);
                         if (areParamsCompatible)
                         {
