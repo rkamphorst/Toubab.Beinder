@@ -9,7 +9,7 @@ namespace Toubab.Beinder.Valves
     using Paths;
     using Tools;
 
-    public class BroadcastValve : IDisposable, IGrouping<Path, IBindable>
+    public class Valve : IDisposable, IGrouping<Path, IBindable>
     {
         readonly LinkedList<WeakReference<IBindable>> _bindables = 
             new LinkedList<WeakReference<IBindable>>();
@@ -88,7 +88,7 @@ namespace Toubab.Beinder.Valves
         /// <summary>
         /// Finalizer
         /// </summary>
-        ~BroadcastValve()
+        ~Valve()
         {
             if (_disposed)
                 return;

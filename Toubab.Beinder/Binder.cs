@@ -159,9 +159,9 @@ namespace Toubab.Beinder
         /// initial binding, and by <see cref="BindChildren"/> via <see cref="BindMultiple"/>
         /// to do the recursive (re)binding.
         /// </remarks>
-        async Task<BroadcastValve[]> Bind(object[] objects, object activator, BinderState externalState)
+        async Task<Valve[]> Bind(object[] objects, object activator, BinderState externalState)
         {
-            var resultList = new List<BroadcastValve>();
+            var resultList = new List<Valve>();
 
             // use Scanner to can given objects for IBindable objects
             var state = BinderState.FromScan(Scanner, objects);
@@ -180,7 +180,7 @@ namespace Toubab.Beinder
                 // - Bindables, the bindables that will participate in a new Valve
                 // - ExternalState, external state for the recursive binding 
                 //                  (state that needs to be bound to child properties)
-                BroadcastValve newValve;
+                Valve newValve;
 
                 // create a list of attached bindables
                 // a bindable is attached if an object has been assigned to it.
@@ -212,7 +212,7 @@ namespace Toubab.Beinder
                 else
                 {
                     // otherwise, create a broadcast valve
-                    var v = new BroadcastValve();
+                    var v = new Valve();
                     foreach (var b in bs)
                         v.Add(b);
                     newValve = v;
@@ -239,7 +239,7 @@ namespace Toubab.Beinder
         /// <param name="externalState">External state</param>
         async Task BindChildren(StateValve parentValve, object parentActivator, BinderState externalState)
         {
-            BroadcastValve[] childValves = null;
+            Valve[] childValves = null;
 
             Action disposeChildValve = () =>
             {
@@ -247,7 +247,7 @@ namespace Toubab.Beinder
                     cvalve.Dispose();
             };
 
-            Func<object, Task<BroadcastValve[]>> recursiveBind = async pa =>
+            Func<object, Task<Valve[]>> recursiveBind = async pa =>
             {
                 var childObjects = parentValve.GetChildValveObjects();
                 var activators = parentValve.GetValuesForObject(pa);
@@ -306,9 +306,9 @@ namespace Toubab.Beinder
         /// are concatenated and returned in an array.
         /// 
         /// </remarks>
-        async Task<BroadcastValve[]> BindMultiple(object[][] objectss, object[] activators, object parentActivator, BinderState externalState)
+        async Task<Valve[]> BindMultiple(object[][] objectss, object[] activators, object parentActivator, BinderState externalState)
         {
-            var results = new List<BroadcastValve[]>();
+            var results = new List<Valve[]>();
             for (int i = 0; i < objectss.Length; i++)
             {
                 var activator = (activators.Length > i ? activators[i] : parentActivator) ?? parentActivator;
@@ -582,9 +582,9 @@ namespace Toubab.Beinder
         class Bindings : IBindings
         {
 
-            BroadcastValve[] _valves;
+            Valve[] _valves;
 
-            public Bindings(BroadcastValve[] valves)
+            public Bindings(Valve[] valves)
             {
                 _valves = valves;
             }

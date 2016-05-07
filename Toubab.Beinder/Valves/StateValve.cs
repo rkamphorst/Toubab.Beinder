@@ -24,7 +24,7 @@ namespace Toubab.Beinder.Valves
     /// has effect: *only* if it may cause a state change, an event from one of the bindables
     /// in the valve is propagated to the other bindables in the valve.
     /// </remarks>
-    public class StateValve : BroadcastValve
+    public class StateValve : Valve
     {
         // the secret object array. 
         // it is guaranteed that no object array outside this class
