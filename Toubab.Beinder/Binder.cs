@@ -186,21 +186,17 @@ namespace Toubab.Beinder
                 // a bindable is attached if an object has been assigned to it.
                 // Note: the actual bindables are clones of the ones
                 // that are in valveParams.Bindables.
-                var bs = new List<IBindable>();
+                var outlets = new List<Outlet>();
                 foreach (var c in valveParams.Bindables)
-                {
-                    var b = (IBindable) c.Bindable.CloneWithoutObject();
-                    b.SetObject(c.Object);
-                    bs.Add(b);
-                }
-                    
+                    outlets.Add(new Outlet(c.Bindable, c.Object));
+
                 if (valveParams.ContainsState)
                 {
                     // if any of the bindables is a state bindable,
                     // all bindables go into a state valve
                     var v = new StateValve();
-                    foreach (var b in bs)
-                        v.Add(b);
+                    foreach (var outlet in outlets)
+                        v.Add(outlet);
 
                     // only state valves need activation
                     await v.Activate(activator);
@@ -213,8 +209,8 @@ namespace Toubab.Beinder
                 {
                     // otherwise, create a broadcast valve
                     var v = new Valve();
-                    foreach (var b in bs)
-                        v.Add(b);
+                    foreach (var outlet in outlets)
+                        v.Add(outlet);
                     newValve = v;
                 }
 
@@ -239,6 +235,11 @@ namespace Toubab.Beinder
         /// <param name="externalState">External state</param>
         async Task BindChildren(StateValve parentValve, object parentActivator, BinderState externalState)
         {
+            if (parentActivator == null) 
+            {
+                (new Action(() => {}))();
+            }
+
             Valve[] childValves = null;
 
             Action disposeChildValve = () =>
@@ -255,7 +256,7 @@ namespace Toubab.Beinder
             };
 
             childValves = await recursiveBind(parentActivator);
-            
+
             parentValve.ValueChanged += async (s, e) =>
             {
                 disposeChildValve();
@@ -601,9 +602,9 @@ namespace Toubab.Beinder
             }
 
 
-            public IEnumerator<IGrouping<Path, IBindable>> GetEnumerator()
+            public IEnumerator<IGrouping<Path, Outlet.Attachment>> GetEnumerator()
             {
-                return _valves.Cast<IGrouping<Path, IBindable>>().GetEnumerator();
+                return _valves.Cast<IGrouping<Path, Outlet.Attachment>>().GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()

@@ -9,29 +9,30 @@ namespace Toubab.Beinder.Valves
     using Paths;
     using Tools;
 
-    public class Valve : IDisposable, IGrouping<Path, IBindable>
+    public class Valve : IDisposable, IGrouping<Path, Outlet.Attachment>
     {
-        readonly LinkedList<WeakReference<IBindable>> _bindables = 
-            new LinkedList<WeakReference<IBindable>>();
+        readonly LinkedList<Outlet> _outlets =
+            new LinkedList<Outlet>();
 
         /// <summary>
         /// Add a bindable to the valve.
         /// </summary>
-        public void Add(IBindable bindable)
+        public void Add(Outlet outlet)
         {
             AssertNotDisposed();
-            lock (_bindables)
+            lock (_outlets)
             {             
-                _bindables.AddLast(new WeakReference<IBindable>(bindable));
-                var prod = bindable as IEvent;
-                if (prod != null)
-                    prod.SetBroadcastListener(payload => {
-                        HandleBroadcast(prod, payload);
-                    });
+                using (outlet.Attach())
+                {
+                    var @event = outlet.Bindable as IEvent;
+                    if (@event != null)
+                        @event.SetBroadcastListener(payload => HandleBroadcast(@event, payload));
+                }
+                _outlets.AddLast(outlet);
             }
         }
 
-        private async void HandleBroadcast(IEvent sender, object[] e)
+        async void HandleBroadcast(IEvent sender, object[] e)
         {
             await HandleBroadcastAsync(sender, e);
         }
@@ -42,7 +43,7 @@ namespace Toubab.Beinder.Valves
         }
 
         /// <summary>
-        /// Event that is raised just before the <see cref="BroadcastValve"/> is disposed.
+        /// Event that is raised just before the <see cref="Valve"/> is disposed.
         /// </summary>
         public event EventHandler Disposing;
 
@@ -72,12 +73,16 @@ namespace Toubab.Beinder.Valves
                 evt(this, EventArgs.Empty);
             Disposing = null;
 
-            foreach (var bindable in EnumerateLiveRefsAndRemoveDefuncts(_bindables))
+            foreach (var outlet in _outlets)
             {
-                var prod = bindable as IEvent;
-                if (prod != null)
+                using (var attachment = outlet.Attach())
                 {
-                    prod.SetBroadcastListener(null);
+                    if (attachment != null)
+                    {
+                        var @event = attachment.Outlet.Bindable as IEvent;
+                        if (@event != null)
+                            @event.SetBroadcastListener(null);
+                    }
                 }
             }
 
@@ -118,9 +123,9 @@ namespace Toubab.Beinder.Valves
         }
 
         /// <inheritdoc/>
-        public IEnumerator<IBindable> GetEnumerator()
+        public IEnumerator<Outlet.Attachment> GetEnumerator()
         {
-            return EnumerateLiveRefsAndRemoveDefuncts(_bindables).GetEnumerator();
+            return EnumerateLiveRefsAndRemoveDefuncts().GetEnumerator();
         }
 
         /// <inheritdoc/>
@@ -132,83 +137,71 @@ namespace Toubab.Beinder.Valves
         protected virtual async Task<bool> Push(IEvent source, object[] payload)
         {
             var handleTasks = new List<Task<bool>>();
-            lock (_bindables)
+            lock (_outlets)
             {
-                
-                foreach (var bnd in EnumerateLiveRefsAndRemoveDefuncts(_bindables))
+                foreach (var outlet in _outlets)
+                    handleTasks.Add(OutletTryHandleBroadcast(source, outlet, payload));
+            }
+            return (await Task.WhenAll(handleTasks)).Any();
+        }
+
+        static async Task<bool> OutletTryHandleBroadcast(IBindable source, Outlet outlet, object[] payload)
+        {
+            var cons = outlet.Bindable as IEventHandler;
+            if (cons != null && !ReferenceEquals(source, cons))
+            {
+                bool areParamsCompatible =
+                    source != null
+                    ? cons.ValueTypes.AreAssignableFromTypes(source.ValueTypes)
+                    : cons.ValueTypes.AreAssignableFromObjects(payload);
+                if (areParamsCompatible)
                 {
-                    var cons = bnd as IEventHandler;
-                    if (cons != null && !ReferenceEquals(source, cons))
+                    using (var attachment = outlet.Attach())
                     {
-                        bool areParamsCompatible =
-                            source != null
-                            ? cons.ValueTypes.AreAssignableFromTypes(source.ValueTypes)
-                                : cons.ValueTypes.AreAssignableFromObjects(payload);
-                        if (areParamsCompatible)
-                        {
-                            handleTasks.Add(cons.TryHandleBroadcast(payload));
-                        }
+                        if (attachment != null)
+                            return await cons.TryHandleBroadcast(payload);
                     }
                 }
             }
-            return (await Task.WhenAll(handleTasks)).Any();
+            return false;
         }
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            var first = this.FirstOrDefault();
-
-            return string.Format("{0}: {1}->{2} ({3})", 
-                GetType().Name,
-                first == null || first.Object == null ? "[?]" : first.Object.GetType().Name, 
-                first == null ? "?" : first.Path, 
-                first == null ? "(?)" : string.Join(",", first.ValueTypes.Select(vt => vt.Name))
-            );
+            Path path = _outlets.First?.Value.AbsolutePath;
+            return string.Format("{0}: {1}", GetType().Name, path?.ToString() ?? "..."); 
         }
 
         /// <summary>
         /// Enumerate the weak references that are still alive, and remove the ones that are "dead"
         /// </summary>
-        protected static IEnumerable<T> EnumerateLiveRefsAndRemoveDefuncts<T>(LinkedList<WeakReference<T>> list) 
-            where T : class
+        protected IEnumerable<Outlet.Attachment> EnumerateLiveRefsAndRemoveDefuncts()
         {
-            if (list == null)
+            var outlets = _outlets;
+            if (outlets == null)
                 yield break;
-            var node = list.First;
+            var node = outlets.First;
             while (node != null)
             {
-                T target;
-                while (!node.Value.TryGetTarget(out target))
-                {
-                    if (node.Next == null)
-                    {
-                        list.Remove(node);
-                        node = null;
-                    }
-                    else
-                    {
-                        node = node.Next;
-                        list.Remove(node.Previous);
-                    }
-                    if (node == null)
-                        yield break;
-                }
-                yield return target;
+                var attachment = node.Value.Attach();
+                var prev = node;
                 node = node.Next;
+                if (attachment == null)
+                    outlets.Remove(prev);
+                else
+                    yield return attachment;
             }
-
-
         }
 
         /// <summary>
-        /// Key of the grouping that this <see cref="BroadcastValve"/> represents.
+        /// Key of the grouping that this <see cref="Valve"/> represents.
         /// </summary>
-        Path IGrouping<Path, IBindable>.Key
+        Path IGrouping<Path, Outlet.Attachment>.Key
         {
             get
             {
-                return this.FirstOrDefault()?.Path;
+                return this.FirstOrDefault()?.Outlet.AbsolutePath;
             }
         }
     }

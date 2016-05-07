@@ -12,7 +12,7 @@ namespace Toubab.Beinder.Mocks
         public void SetObject(object newObject)
         {
             _mockView = ((MockView) newObject);
-            _specialProperty = _mockView.GetSpecialProperty();
+            _specialProperty = _mockView == null ? 0 : _mockView.GetSpecialProperty();
        }
 
         int _specialProperty;

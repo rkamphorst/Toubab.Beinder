@@ -92,6 +92,7 @@
     <Compile Include="Mixins\Mixin.cs" />
     <Compile Include="Mixins\IMixin.cs" />
     <Compile Include="Mixins\CommandMixin.cs" />
+    <Compile Include="Valves\Outlet.cs" />
     <Compile Include="Valves\Valve.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

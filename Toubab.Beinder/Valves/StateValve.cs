@@ -26,7 +26,7 @@ namespace Toubab.Beinder.Valves
     /// </remarks>
     public class StateValve : Valve
     {
-        // the secret object array. 
+        // the secret object array.
         // it is guaranteed that no object array outside this class
         // can hold the same array as this one; and that is what we want.
         static readonly object[] _secret = { new object() };
@@ -49,31 +49,57 @@ namespace Toubab.Beinder.Valves
         {
             if (toActivate == null)
                 return false;
-            var prop = this.FirstOrDefault(p => ReferenceEquals(toActivate, p.Object)) as IProperty;
-            if (prop != null)
+
+            // this is an ugly and temporary solution.
+            // in the near future, we want to activate by tag, not by object
+            // reference.
+
+            foreach (var attachment in this)
             {
-                var values = prop.Values;
-                await Push(prop, values);
-                OnValuesChanged(prop, values);
-                return true;
+                using (attachment)
+                {
+                    var prop = attachment.Outlet.Bindable as IProperty;
+                    if (prop != null && ReferenceEquals(toActivate, prop.Object))
+                    {
+                        var values = prop.Values;
+                        await Push(prop, values);
+                        OnValuesChanged(prop.Object, values);
+                        return true;
+                    }
+                }
             }
+
             return false;
         }
 
-        public object[][] GetChildValveObjects() {
+        public object[][] GetChildValveObjects()
+        {
             return this
-                .Where(p => p is IProperty)
-                .Select(p => ((IProperty)p).Values)
+                .Select(attachment =>
+                {
+                    using (attachment)
+                    {   
+                        return attachment == null ? null : ((IProperty)attachment.Outlet.Bindable).Values;
+                    }
+                })
+                .Where(values => values != null)
                 .TransposeWithPadding()
                 .Select(enu => enu.ToArray())
                 .ToArray();
         }
-            
-        public object[] GetValuesForObject(object ob) 
+
+        public object[] GetValuesForObject(object ob)
         {
             return this
-                .Where(p => p is IProperty && ReferenceEquals(ob, p.Object))
-                .Select(p => ((IProperty)p).Values)
+                .Select(a =>
+                {
+                    using (a)
+                    {
+                        var prop = a.Outlet.Bindable as IProperty;
+                        return prop != null && ReferenceEquals(ob, prop.Object) ? prop.Values : null;
+                    }
+                })
+                .Where(v => v != null)
                 .FirstOr(new object[0]);
         }
 
@@ -91,7 +117,18 @@ namespace Toubab.Beinder.Valves
         protected override async Task HandleBroadcastAsync(IEvent sender, object[] e)
         {
             await base.HandleBroadcastAsync(sender, e);
-            OnValuesChanged(sender.Object, e);
+            foreach (var attachment in this)
+            {
+                using (attachment)
+                {
+                    var bnd = attachment.Outlet.Bindable as IEvent;
+                    if (ReferenceEquals(sender, bnd))
+                    {
+                        OnValuesChanged(sender.Object, e);
+                        return;
+                    }
+                }
+            }
         }
 
         protected override async Task<bool> Push(IEvent source, object[] payload)
@@ -100,8 +137,18 @@ namespace Toubab.Beinder.Valves
             // interpreted as a property change. Therefore, the payload is 
             // replaced with the new value of the property; the original event 
             // arguments are discarded.
-            if (source is IProperty)
-                payload = ((IProperty)source).Values;
+            var prop = source as IProperty;
+            foreach (var attachment in this)
+            {
+                using (attachment)
+                {
+                    if (ReferenceEquals(prop, attachment.Outlet.Bindable))
+                    {
+                        payload = prop.Values;
+                        break;
+                    }
+                }
+            }
 
             lock (_secret)
             {
