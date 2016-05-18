@@ -22,6 +22,8 @@
             return f.EnumerateFixtures(Merge(objects.SelectMany((o, i) => f.ScanObject(o, null, i)), new LinkedList<Conduit>()));
         }
 
+        public bool ContainsState { get { return _conduits.Any(c => c.Bindable is IProperty); } }
+
         public LinkedList<Conduit> Conduits { get { return _conduits; } }
 
         public IEnumerable<Fixture> EnumerateChildren()
