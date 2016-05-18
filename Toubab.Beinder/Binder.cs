@@ -186,17 +186,17 @@ namespace Toubab.Beinder
                 // a bindable is attached if an object has been assigned to it.
                 // Note: the actual bindables are clones of the ones
                 // that are in valveParams.Bindables.
-                var outlets = new List<Conduit>();
+                var conduits = new List<Conduit>();
                 foreach (var c in valveParams.Bindables)
-                    outlets.Add(Conduit.Create(c.Bindable, c.Object));
+                    conduits.Add(Conduit.Create(c.Bindable, c.Object));
 
                 if (valveParams.ContainsState)
                 {
                     // if any of the bindables is a state bindable,
                     // all bindables go into a state valve
                     var v = new StateValve();
-                    foreach (var outlet in outlets)
-                        v.Add(outlet);
+                    foreach (var conduit in conduits)
+                        v.Add(conduit);
 
                     // only state valves need activation
                     await v.Activate(activator);
@@ -209,8 +209,8 @@ namespace Toubab.Beinder
                 {
                     // otherwise, create a broadcast valve
                     var v = new Valve();
-                    foreach (var outlet in outlets)
-                        v.Add(outlet);
+                    foreach (var conduit in conduits)
+                        v.Add(conduit);
                     newValve = v;
                 }
 

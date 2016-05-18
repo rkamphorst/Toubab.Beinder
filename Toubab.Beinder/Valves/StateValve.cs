@@ -58,7 +58,7 @@ namespace Toubab.Beinder.Valves
             {
                 using (attachment)
                 {
-                    var prop = attachment.Outlet.Bindable as IProperty;
+                    var prop = attachment.Conduit.Bindable as IProperty;
                     if (prop != null && ReferenceEquals(toActivate, prop.Object))
                     {
                         var values = prop.Values;
@@ -79,7 +79,7 @@ namespace Toubab.Beinder.Valves
                 {
                     using (attachment)
                     {   
-                        return attachment == null ? null : ((IProperty)attachment.Outlet.Bindable).Values;
+                        return attachment == null ? null : ((IProperty)attachment.Conduit.Bindable).Values;
                     }
                 })
                 .Where(values => values != null)
@@ -95,7 +95,7 @@ namespace Toubab.Beinder.Valves
                 {
                     using (a)
                     {
-                        var prop = a.Outlet.Bindable as IProperty;
+                        var prop = a.Conduit.Bindable as IProperty;
                         return prop != null && ReferenceEquals(ob, prop.Object) ? prop.Values : null;
                     }
                 })
@@ -121,7 +121,7 @@ namespace Toubab.Beinder.Valves
             {
                 using (attachment)
                 {
-                    var bnd = attachment.Outlet.Bindable as IEvent;
+                    var bnd = attachment.Conduit.Bindable as IEvent;
                     if (ReferenceEquals(sender, bnd))
                     {
                         OnValuesChanged(sender.Object, e);
@@ -142,7 +142,7 @@ namespace Toubab.Beinder.Valves
             {
                 using (attachment)
                 {
-                    if (ReferenceEquals(prop, attachment.Outlet.Bindable))
+                    if (ReferenceEquals(prop, attachment.Conduit.Bindable))
                     {
                         payload = prop.Values;
                         break;

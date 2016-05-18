@@ -11,24 +11,24 @@ namespace Toubab.Beinder.Valves
 
     public class Valve : IDisposable, IGrouping<Path, Conduit.Attachment>
     {
-        readonly LinkedList<Conduit> _outlets =
+        readonly LinkedList<Conduit> _conduits =
             new LinkedList<Conduit>();
 
         /// <summary>
         /// Add a bindable to the valve.
         /// </summary>
-        public void Add(Conduit outlet)
+        public void Add(Conduit conduit)
         {
             AssertNotDisposed();
-            lock (_outlets)
+            lock (_conduits)
             {             
-                using (outlet.Attach())
+                using (conduit.Attach())
                 {
-                    var @event = outlet.Bindable as IEvent;
+                    var @event = conduit.Bindable as IEvent;
                     if (@event != null)
                         @event.SetBroadcastListener(payload => HandleBroadcast(@event, payload));
                 }
-                _outlets.AddLast(outlet);
+                _conduits.AddLast(conduit);
             }
         }
 
@@ -73,13 +73,13 @@ namespace Toubab.Beinder.Valves
                 evt(this, EventArgs.Empty);
             Disposing = null;
 
-            foreach (var outlet in _outlets)
+            foreach (var conduit in _conduits)
             {
-                using (var attachment = outlet.Attach())
+                using (var attachment = conduit.Attach())
                 {
                     if (attachment != null)
                     {
-                        var @event = attachment.Outlet.Bindable as IEvent;
+                        var @event = attachment.Conduit.Bindable as IEvent;
                         if (@event != null)
                             @event.SetBroadcastListener(null);
                     }
@@ -137,17 +137,17 @@ namespace Toubab.Beinder.Valves
         protected virtual async Task<bool> Push(IEvent source, object[] payload)
         {
             var handleTasks = new List<Task<bool>>();
-            lock (_outlets)
+            lock (_conduits)
             {
-                foreach (var outlet in _outlets)
-                    handleTasks.Add(OutletTryHandleBroadcast(source, outlet, payload));
+                foreach (var conduit in _conduits)
+                    handleTasks.Add(ConduitTryHandleBroadcast(source, conduit, payload));
             }
             return (await Task.WhenAll(handleTasks)).Any();
         }
 
-        static async Task<bool> OutletTryHandleBroadcast(IBindable source, Conduit outlet, object[] payload)
+        static async Task<bool> ConduitTryHandleBroadcast(IBindable source, Conduit conduit, object[] payload)
         {
-            var cons = outlet.Bindable as IEventHandler;
+            var cons = conduit.Bindable as IEventHandler;
             if (cons != null && !ReferenceEquals(source, cons))
             {
                 bool areParamsCompatible =
@@ -156,7 +156,7 @@ namespace Toubab.Beinder.Valves
                     : cons.ValueTypes.AreAssignableFromObjects(payload);
                 if (areParamsCompatible)
                 {
-                    using (var attachment = outlet.Attach())
+                    using (var attachment = conduit.Attach())
                     {
                         if (attachment != null)
                             return await cons.TryHandleBroadcast(payload);
@@ -169,7 +169,7 @@ namespace Toubab.Beinder.Valves
         /// <inheritdoc/>
         public override string ToString()
         {
-            Path path = _outlets.First?.Value.AbsolutePath;
+            Path path = _conduits.First?.Value.AbsolutePath;
             return string.Format("{0}: {1}", GetType().Name, path?.ToString() ?? "..."); 
         }
 
@@ -178,17 +178,17 @@ namespace Toubab.Beinder.Valves
         /// </summary>
         protected IEnumerable<Conduit.Attachment> EnumerateLiveRefsAndRemoveDefuncts()
         {
-            var outlets = _outlets;
-            if (outlets == null)
+            var conduits = _conduits;
+            if (conduits == null)
                 yield break;
-            var node = outlets.First;
+            var node = conduits.First;
             while (node != null)
             {
                 var attachment = node.Value.Attach();
                 var prev = node;
                 node = node.Next;
                 if (attachment == null)
-                    outlets.Remove(prev);
+                    conduits.Remove(prev);
                 else
                     yield return attachment;
             }
@@ -201,7 +201,7 @@ namespace Toubab.Beinder.Valves
         {
             get
             {
-                return this.FirstOrDefault()?.Outlet.AbsolutePath;
+                return this.FirstOrDefault()?.Conduit.AbsolutePath;
             }
         }
     }

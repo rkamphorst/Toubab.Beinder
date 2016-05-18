@@ -56,18 +56,18 @@
 
         public class Attachment : IDisposable
         {
-            readonly Conduit _outlet;
+            readonly Conduit _conduit;
 
-            public Attachment(Conduit outlet)
+            public Attachment(Conduit conduit)
             {
-                _outlet = outlet;
+                _conduit = conduit;
             }
 
-            public Conduit Outlet { get { return _outlet; } }
+            public Conduit Conduit { get { return _conduit; } }
 
             public void Dispose()
             {
-                _outlet.Detach();
+                _conduit.Detach();
             }
         }
 

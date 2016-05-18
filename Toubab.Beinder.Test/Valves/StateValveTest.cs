@@ -12,9 +12,9 @@
         public void ValuesArePropagated()
         {
             // Arrange
-            var propa = CreateOutlet("a");
-            var propb = CreateOutlet("b");
-            var propc = CreateOutlet("c");
+            var propa = CreateConduit("a");
+            var propb = CreateConduit("b");
+            var propc = CreateConduit("c");
             var v = new StateValve();
             v.Add(propa);
             v.Add(propb);
@@ -32,9 +32,9 @@
         public void UnchangedValueIsNotChanged()
         {
             // Arrange
-            var propa = CreateOutlet("a");
-            var propb = CreateOutlet("b");
-            var propc = CreateOutlet("c");
+            var propa = CreateConduit("a");
+            var propb = CreateConduit("b");
+            var propc = CreateConduit("c");
             var v = new StateValve();
             v.Add(propa);
             v.Add(propb);
@@ -54,9 +54,9 @@
         public void PropertiesAreGarbageCollectedFromValve()
         {
             // Arrange
-            var propa = CreateOutlet("a");
-            var propb = CreateOutlet("b");
-            var propc = CreateOutlet("c");
+            var propa = CreateConduit("a");
+            var propb = CreateConduit("b");
+            var propc = CreateConduit("c");
             var v = new StateValve();
             v.Add(propa);
             v.Add(propb);
@@ -82,7 +82,7 @@
             Assert.AreEqual(2, v.Count());
         }
 
-        static Conduit CreateOutlet(string name)
+        static Conduit CreateConduit(string name)
         {
             return Conduit.Create(new MockProperty { Changed = 0, Name = name }, new object());
         }
