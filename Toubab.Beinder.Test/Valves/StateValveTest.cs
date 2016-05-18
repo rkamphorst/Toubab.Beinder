@@ -82,9 +82,9 @@
             Assert.AreEqual(2, v.Count());
         }
 
-        static Outlet CreateOutlet(string name)
+        static Conduit CreateOutlet(string name)
         {
-            return new Outlet(new MockProperty { Changed = 0, Name = name }, new object());
+            return Conduit.Create(new MockProperty { Changed = 0, Name = name }, new object());
         }
 
 

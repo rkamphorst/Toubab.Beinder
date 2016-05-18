@@ -186,9 +186,9 @@ namespace Toubab.Beinder
                 // a bindable is attached if an object has been assigned to it.
                 // Note: the actual bindables are clones of the ones
                 // that are in valveParams.Bindables.
-                var outlets = new List<Outlet>();
+                var outlets = new List<Conduit>();
                 foreach (var c in valveParams.Bindables)
-                    outlets.Add(new Outlet(c.Bindable, c.Object));
+                    outlets.Add(Conduit.Create(c.Bindable, c.Object));
 
                 if (valveParams.ContainsState)
                 {
@@ -602,9 +602,9 @@ namespace Toubab.Beinder
             }
 
 
-            public IEnumerator<IGrouping<Path, Outlet.Attachment>> GetEnumerator()
+            public IEnumerator<IGrouping<Path, Conduit.Attachment>> GetEnumerator()
             {
-                return _valves.Cast<IGrouping<Path, Outlet.Attachment>>().GetEnumerator();
+                return _valves.Cast<IGrouping<Path, Conduit.Attachment>>().GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()

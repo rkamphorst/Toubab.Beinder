@@ -5,19 +5,28 @@
     using Bindables;
     using Paths;
 
-    public class Outlet
+    public class Conduit
     {
         readonly WeakReference<object> _objectReference;
         readonly Path _absolutePath;
         readonly int _tag;
+        readonly IBindable _bindable;
 
-        IBindable _bindable;
-
-        public Outlet(IBindable bindable, object obj, Path basePath = null, int tag = -1)
+        public static Conduit Create(IBindable bindable, object obj, Path basePath = null, int tag = -1)
         {
-            _objectReference = new WeakReference<object>(obj);
-            _absolutePath = basePath == null ? bindable.Path : new Path(basePath, bindable.Path);
-            _bindable = (IBindable) bindable.CloneWithoutObject();
+            return new Conduit(
+                (IBindable)bindable.CloneWithoutObject(),
+                new WeakReference<object>(obj),
+                basePath == null ? bindable.Path : new Path(basePath, bindable.Path),
+                tag
+            );
+        }
+
+        protected Conduit(IBindable bindable,  WeakReference<object> objectReference, Path absolutePath, int tag)
+        {
+            _objectReference = objectReference;
+            _absolutePath = absolutePath;
+            _bindable = bindable;
             _tag = tag;
         }
 
@@ -47,14 +56,14 @@
 
         public class Attachment : IDisposable
         {
-            readonly Outlet _outlet;
+            readonly Conduit _outlet;
 
-            public Attachment(Outlet outlet)
+            public Attachment(Conduit outlet)
             {
                 _outlet = outlet;
             }
 
-            public Outlet Outlet { get { return _outlet; } }
+            public Conduit Outlet { get { return _outlet; } }
 
             public void Dispose()
             {

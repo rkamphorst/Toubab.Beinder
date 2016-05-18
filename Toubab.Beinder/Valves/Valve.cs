@@ -9,15 +9,15 @@ namespace Toubab.Beinder.Valves
     using Paths;
     using Tools;
 
-    public class Valve : IDisposable, IGrouping<Path, Outlet.Attachment>
+    public class Valve : IDisposable, IGrouping<Path, Conduit.Attachment>
     {
-        readonly LinkedList<Outlet> _outlets =
-            new LinkedList<Outlet>();
+        readonly LinkedList<Conduit> _outlets =
+            new LinkedList<Conduit>();
 
         /// <summary>
         /// Add a bindable to the valve.
         /// </summary>
-        public void Add(Outlet outlet)
+        public void Add(Conduit outlet)
         {
             AssertNotDisposed();
             lock (_outlets)
@@ -123,7 +123,7 @@ namespace Toubab.Beinder.Valves
         }
 
         /// <inheritdoc/>
-        public IEnumerator<Outlet.Attachment> GetEnumerator()
+        public IEnumerator<Conduit.Attachment> GetEnumerator()
         {
             return EnumerateLiveRefsAndRemoveDefuncts().GetEnumerator();
         }
@@ -145,7 +145,7 @@ namespace Toubab.Beinder.Valves
             return (await Task.WhenAll(handleTasks)).Any();
         }
 
-        static async Task<bool> OutletTryHandleBroadcast(IBindable source, Outlet outlet, object[] payload)
+        static async Task<bool> OutletTryHandleBroadcast(IBindable source, Conduit outlet, object[] payload)
         {
             var cons = outlet.Bindable as IEventHandler;
             if (cons != null && !ReferenceEquals(source, cons))
@@ -176,7 +176,7 @@ namespace Toubab.Beinder.Valves
         /// <summary>
         /// Enumerate the weak references that are still alive, and remove the ones that are "dead"
         /// </summary>
-        protected IEnumerable<Outlet.Attachment> EnumerateLiveRefsAndRemoveDefuncts()
+        protected IEnumerable<Conduit.Attachment> EnumerateLiveRefsAndRemoveDefuncts()
         {
             var outlets = _outlets;
             if (outlets == null)
@@ -197,7 +197,7 @@ namespace Toubab.Beinder.Valves
         /// <summary>
         /// Key of the grouping that this <see cref="Valve"/> represents.
         /// </summary>
-        Path IGrouping<Path, Outlet.Attachment>.Key
+        Path IGrouping<Path, Conduit.Attachment>.Key
         {
             get
             {
