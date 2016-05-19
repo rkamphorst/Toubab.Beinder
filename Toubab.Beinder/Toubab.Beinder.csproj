@@ -95,6 +95,10 @@
     <Compile Include="Valves\Valve.cs" />
     <Compile Include="Valves\Conduit.cs" />
     <Compile Include="Valves\Fixture.cs" />
+    <Compile Include="Valves\Valve2.cs" />
+    <Compile Include="Valves\StateValve2.cs" />
+    <Compile Include="Scanners\OnceScanner.cs" />
+    <Compile Include="Valves\ScannerUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

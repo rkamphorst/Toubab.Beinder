@@ -81,7 +81,40 @@
                 return iterator.MoveNext() ? iterator.Current : defaultValue;
             }
         }
-            
+         
+        public static LinkedList<T> MergeIntoSortedLinkedList<T, U>(this IEnumerable<T> enumerableToMerge, LinkedList<T> sortedListToMergeInto, Func<T, U> keySelector)
+        {
+            var comparer = Comparer<U>.Default;
+            var sortedEnumerableToMerge = enumerableToMerge.OrderBy(keySelector, comparer);
+
+            if (sortedListToMergeInto.Count == 0)
+            {
+                foreach (var b in sortedEnumerableToMerge)
+                    sortedListToMergeInto.AddLast(b);
+            }
+            else
+            {
+                var sortedListToMerge = new LinkedList<T>(sortedEnumerableToMerge);
+                LinkedListNode<T> nodeToMerge, mergeBeforeNode;
+                mergeBeforeNode = sortedListToMergeInto.First;
+                while ((nodeToMerge = sortedListToMerge.First) != null)
+                {
+                    sortedListToMerge.RemoveFirst();
+
+                    while (
+                        mergeBeforeNode != null
+                        && comparer.Compare(keySelector(nodeToMerge.Value), keySelector(mergeBeforeNode.Value)) > 0)
+                        mergeBeforeNode = mergeBeforeNode.Next;
+
+                    if (mergeBeforeNode != null)
+                        sortedListToMergeInto.AddBefore(mergeBeforeNode, nodeToMerge);
+                    else
+                        sortedListToMergeInto.AddLast(nodeToMerge);
+                }
+            }
+
+            return sortedListToMergeInto;
+        }
     }
 }
 

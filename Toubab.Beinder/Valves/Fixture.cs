@@ -8,40 +8,44 @@
     using Scanners;
     using Paths;
     using Bindables;
+    using Tools;
 
     public class Fixture
     {
-        readonly IScanner _scanner;
-        readonly ConditionalWeakTable<object,object> _scannedObjects;
+        readonly OnceScanner _scanner;
         readonly LinkedList<Conduit> _conduits;
         readonly LinkedList<Conduit> _descendants;
 
-        public static IEnumerable<Fixture> FromScan(IScanner scanner, object[] objects)
+        Fixture(OnceScanner scanner, LinkedList<Conduit> conduits, LinkedList<Conduit> descendants)
         {
-            var f = new Fixture(scanner, new ConditionalWeakTable<object, object>(), null, null);
-            return f.EnumerateFixtures(Merge(objects.SelectMany((o, i) => f.ScanObject(o, null, i)), new LinkedList<Conduit>()));
-        }
-
-        public bool ContainsState { get { return _conduits.Any(c => c.Bindable is IProperty); } }
-
-        public LinkedList<Conduit> Conduits { get { return _conduits; } }
-
-        public IEnumerable<Fixture> EnumerateChildren()
-        {
-            return EnumerateFixtures(
-                Merge(Conduits.SelectMany(ScanConduit), new LinkedList<Conduit>(_descendants))
-            );
-        }
-
-        Fixture(IScanner scanner, ConditionalWeakTable<object,object> scannedObjects, LinkedList<Conduit> conduits, LinkedList<Conduit> descendants)
-        {
-            _scannedObjects = scannedObjects;
             _scanner = scanner;
             _conduits = conduits;
             _descendants = descendants;
         }
 
-        IEnumerable<Fixture> EnumerateFixtures(LinkedList<Conduit> conduits)
+        public LinkedList<Conduit> Conduits { get { return _conduits; } }
+
+        public List<Fixture> CreateChildFixtures()
+        {
+            var childScanner = _scanner.NewScope();
+            var childConduits = 
+                Conduits
+                    .SelectMany(c => childScanner.ScanChildConduits(c))
+                    .MergeIntoSortedLinkedList(new LinkedList<Conduit>(_descendants), c => c.AbsolutePath);
+            return CreateFixtures(childScanner, childConduits);
+        }
+
+        public static List<Fixture> CreateAncestorFixtures(IScanner scanner, object[] objects)
+        {
+            var onceScanner = OnceScanner.Decorate(scanner);
+            var scannedConduits = 
+                objects
+                    .SelectMany((o, i) => onceScanner.ScanObjectToConduits(o, null, i))
+                    .MergeIntoSortedLinkedList(new LinkedList<Conduit>(), c => c.AbsolutePath);
+            return CreateFixtures(onceScanner, scannedConduits);
+        }
+
+        public static List<Fixture> CreateFixtures(OnceScanner scopedScanner, LinkedList<Conduit> conduits)
         {
             var result = new List<Fixture>();
             LinkedListNode<Conduit> first;
@@ -67,7 +71,7 @@
                     conduits.First != null &&
                     first.Value.AbsolutePath.MatchesStartOf(conduits.First.Value.AbsolutePath);
 
-                if (MembersQualifyForFixture(members))
+                if (ConduitsQualifyForFixture(members))
                 {
                     /**
                      * descendants" are all candidate bindables that have a path
@@ -85,109 +89,23 @@
 
                     // "members" contains bindables from more than one of
                     // the original objecs ("trees"): this warrants a valve.
-                    yield return new Fixture(_scanner, _scannedObjects, _conduits, _descendants);
+                    result.Add(new Fixture(scopedScanner, members, descendants));
                 }
                 else if (hasDescendants)
                 {
                     // otherwise, we recursively scan members for (child) bindables
                     // and put them into candidates.
-                    Merge(members.SelectMany(ScanConduit), conduits);
+                    members
+                        .SelectMany(m => scopedScanner.ScanChildConduits(m))
+                        .MergeIntoSortedLinkedList(conduits, c => c.AbsolutePath);
                 } 
                 // else: members do not qualify for valve, no descendants: 
                 // we can discard members! :-D
             }
+            return result;
         }
 
-        List<Conduit> ScanConduit(Conduit toScan)
-        {
-            var prop = toScan.Bindable as IProperty;
-            if (prop != null)
-            {
-                using (toScan.Attach())
-                {
-                    return prop.Values
-                        .SelectMany(v => ScanObject(v, toScan.AbsolutePath, toScan.Tag))
-                        .ToList();
-                }
-            }
-            return new List<Conduit>();
-        }
-
-        List<Conduit> ScanObject(object toScan, Path basePath, int tag)
-        {
-            if (toScan != null)
-            {
-                bool wasNotYetScanned;
-                CacheScannedObject(toScan, out wasNotYetScanned);
-                if (wasNotYetScanned)
-                {
-                    return _scanner
-                        .Scan(toScan)
-                        .Select(b => Conduit.Create(b, toScan, basePath, tag))
-                        .ToList();
-                }
-            }
-            return new List<Conduit>();
-        }
-
-        void CacheScannedObject(object o, out bool wasNotYetScanned)
-        {
-            if (o == null)
-            {
-                // never scan null objects
-                wasNotYetScanned = false;
-            }
-            if (o.GetType().GetTypeInfo().IsValueType || o is string)
-            {
-                // always scan value types and strings
-                wasNotYetScanned = true;
-            }
-            else
-            {
-                // other reference types: only scan if not scanned already
-                object isScanned;
-                wasNotYetScanned = !_scannedObjects.TryGetValue(o, out isScanned);
-
-                // about to scan, so add to the _scannedObjects table
-                if (wasNotYetScanned)
-                    _scannedObjects.Add(o, true);
-            }
-        }
-
-        static LinkedList<Conduit> Merge(IEnumerable<Conduit> enumerableToMerge, LinkedList<Conduit> sortedListToMergeInto)
-        {
-            var sortedEnumerableToMerge = enumerableToMerge.OrderBy(c => c.AbsolutePath);
-
-            if (sortedListToMergeInto.Count == 0)
-            {
-                foreach (var b in sortedEnumerableToMerge)
-                    sortedListToMergeInto.AddLast(b);
-            }
-            else
-            {
-                var sortedListToMerge = new LinkedList<Conduit>(sortedEnumerableToMerge);
-                LinkedListNode<Conduit> nodeToMerge, mergeBeforeNode;
-                mergeBeforeNode = sortedListToMergeInto.First;
-                while ((nodeToMerge = sortedListToMerge.First) != null)
-                {
-                    sortedListToMerge.RemoveFirst();
-
-                    while (
-                        mergeBeforeNode != null
-                        && nodeToMerge.Value.AbsolutePath.CompareTo(mergeBeforeNode.Value.AbsolutePath) > 0)
-                        mergeBeforeNode = mergeBeforeNode.Next;
-
-                    if (mergeBeforeNode != null)
-                        sortedListToMergeInto.AddBefore(mergeBeforeNode, nodeToMerge);
-                    else
-                        sortedListToMergeInto.AddLast(nodeToMerge);
-                }
-            }
-
-            return sortedListToMergeInto;
-        }
-
-        static bool MembersQualifyForFixture(LinkedList<Conduit> members)
+        public static bool ConduitsQualifyForFixture(IEnumerable<Conduit> members)
         {
             int distinctTrees =
                 members.Select(p => p.Tag).Distinct().Count();
