@@ -78,6 +78,7 @@
     <Compile Include="Mocks\Fruits\DisguisePearAndOrangeAsApple.cs" />
     <Compile Include="Bindables\BindableTest.cs" />
     <Compile Include="UsingPoc.cs" />
+    <Compile Include="Valves\ConduitTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
