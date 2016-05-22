@@ -29,9 +29,9 @@ namespace Toubab.Beinder.Valves
         // the secret object array.
         // it is guaranteed that no object array outside this class
         // can hold the same array as this one; and that is what we want.
-        static readonly object[] _secret = { new object() };
+        static readonly object _secret = new object();
        
-        object[] _values = _secret;
+        object _value = _secret;
 
         /// <summary>
         /// Activate one of the objects for which there is a bindable in the valve.
@@ -61,9 +61,9 @@ namespace Toubab.Beinder.Valves
                     var prop = attachment.Conduit.Bindable as IProperty;
                     if (prop != null && ReferenceEquals(toActivate, prop.Object))
                     {
-                        var values = prop.Values;
-                        await Push(prop, values);
-                        OnValuesChanged(prop.Object, values);
+                        var value = prop.Value;
+                        await Push(prop, new[] { value });
+                        OnValueChanged(prop.Object,  value);
                         return true;
                     }
                 }
@@ -72,23 +72,21 @@ namespace Toubab.Beinder.Valves
             return false;
         }
 
-        public object[][] GetChildValveObjects()
+        public object[] GetChildValveObjects()
         {
             return this
                 .Select(attachment =>
                 {
                     using (attachment)
                     {   
-                        return attachment == null ? null : ((IProperty)attachment.Conduit.Bindable).Values;
+                        return attachment == null ? null : ((IProperty)attachment.Conduit.Bindable).Value;
                     }
                 })
                 .Where(values => values != null)
-                .TransposeWithPadding()
-                .Select(enu => enu.ToArray())
                 .ToArray();
         }
 
-        public object[] GetValuesForObject(object ob)
+        public object GetValueForObject(object ob)
         {
             return this
                 .Select(a =>
@@ -96,21 +94,20 @@ namespace Toubab.Beinder.Valves
                     using (a)
                     {
                         var prop = a.Conduit.Bindable as IProperty;
-                        return prop != null && ReferenceEquals(ob, prop.Object) ? prop.Values : null;
+                        return prop != null && ReferenceEquals(ob, prop.Object) ? prop.Value : null;
                     }
                 })
-                .Where(v => v != null)
-                .FirstOr(new object[0]);
+                .FirstOrDefault(p => p != null);
         }
 
         public event EventHandler<BroadcastEventArgs> ValueChanged;
 
-        void OnValuesChanged(object sourceObject, object[] newValue)
+        void OnValueChanged(object sourceObject, object newValue)
         {
             var evt = ValueChanged;
             if (evt != null)
             {
-                evt(this, new BroadcastEventArgs(sourceObject, newValue));
+                evt(this, new BroadcastEventArgs(sourceObject, new[] { newValue }));
             }
         }
 
@@ -124,7 +121,7 @@ namespace Toubab.Beinder.Valves
                     var bnd = attachment.Conduit.Bindable as IEvent;
                     if (ReferenceEquals(sender, bnd))
                     {
-                        OnValuesChanged(sender.Object, e);
+                        OnValueChanged(sender.Object, e);
                         return;
                     }
                 }
@@ -144,7 +141,7 @@ namespace Toubab.Beinder.Valves
                 {
                     if (ReferenceEquals(prop, attachment.Conduit.Bindable))
                     {
-                        payload = prop.Values;
+                        payload = new[] { prop.Value };
                         break;
                     }
                 }
@@ -152,9 +149,9 @@ namespace Toubab.Beinder.Valves
 
             lock (_secret)
             {
-                if (!Equals(_values, payload) && !_values.SequenceEqual(payload))
+                if (payload.Length > 0 && !Equals(_value, payload[0]))
                 {
-                    _values = payload;
+                    _value = payload[0];
                 }
                 else
                 {

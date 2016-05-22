@@ -37,7 +37,7 @@ namespace Toubab.Beinder.Bindables
         public CombinedProperty(IProperty[] properties)
             : base(properties)
         {
-            _values = properties[0].Values;
+            _value = properties[0].Value;
             _cmbEvent = new CombinedEvent(properties);
         }
 
@@ -57,15 +57,15 @@ namespace Toubab.Beinder.Bindables
             _cmbEvent.SetBroadcastListener(listener);
         }
 
-        object[] _values;
+        object _value;
 
         /// <inheritdoc/>
-        public object[] Values
+        public object Value
         {
             get
             {
-                _values = Bindables[0].Values;
-                return _values;
+                _value = Bindables[0].Value;
+                return _value;
             }
         }
 
@@ -73,10 +73,10 @@ namespace Toubab.Beinder.Bindables
         public async Task<bool> TryHandleBroadcast(object[] argument)
         {
             // first, make sure _value is up to date
-            _values = Bindables[0].Values;
+            _value = Bindables[0].Value;
 
             // if new value equals old value, do nothing.
-            if (_values.SequenceEqual(argument))
+            if (argument.Length == 0 || Equals(_value, argument[0]))
                 return false;
 
             // prevent lots of events from propagating
@@ -84,7 +84,7 @@ namespace Toubab.Beinder.Bindables
             // That way, HandleContainedPropertyValueChanged won't call 
             // OnValueChanged (if TryHandleBroadcast further down raises
             // an event -- which it shouldn't btw)
-            _values = argument;
+            _value = argument[0];
 
             // write the property, try each one until one accepts
             foreach (var prop in Bindables)
@@ -94,7 +94,7 @@ namespace Toubab.Beinder.Bindables
                     return true;
                 }
             }
-            _values = Bindables[0].Values;
+            _value = Bindables[0].Value;
             return false;
         }
 

@@ -24,8 +24,8 @@
             ((IProperty)propa.Bindable).TryHandleBroadcast(new object [] { "banaan" });
 
             // Assert
-            Assert.AreEqual(new object[] { "banaan" }, ((IProperty)propb.Bindable).Values);
-            Assert.AreEqual(new object[] { "banaan" }, ((IProperty)propc.Bindable).Values);
+            Assert.AreEqual( "banaan", ((IProperty)propb.Bindable).Value);
+            Assert.AreEqual("banaan", ((IProperty)propc.Bindable).Value);
         }
 
         [Test]

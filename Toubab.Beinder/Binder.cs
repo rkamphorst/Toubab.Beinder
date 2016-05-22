@@ -251,8 +251,8 @@ namespace Toubab.Beinder
             Func<object, Task<Valve[]>> recursiveBind = async pa =>
             {
                 var childObjects = parentValve.GetChildValveObjects();
-                var activators = parentValve.GetValuesForObject(pa);
-                return await BindMultiple(childObjects, activators, pa, externalState);
+                var activator = GetChildActivator(pa, parentValve, externalState);
+                return await Bind(childObjects, activator, externalState);
             };
 
             childValves = await recursiveBind(parentActivator);
@@ -263,6 +263,14 @@ namespace Toubab.Beinder
                 childValves = await recursiveBind(e.SourceObject);
             };
             parentValve.Disposing += (s, e) => disposeChildValve();
+        }
+
+        object GetChildActivator(object parentActivator, StateValve parentValve, BinderState externalState) 
+        {
+            var activator = parentValve.GetValueForObject(parentActivator);
+            if (activator == null && externalState.ContainsPropertyForObject(parentActivator))
+                return parentActivator;
+            return activator;
         }
 
         /// <summary>
@@ -467,6 +475,10 @@ namespace Toubab.Beinder
                 }
             }
 
+            public bool ContainsPropertyForObject(object obj) 
+            {
+                return _list.Any(cb => ReferenceEquals(cb.Object, obj));
+            }
         }
 
         /// <summary>

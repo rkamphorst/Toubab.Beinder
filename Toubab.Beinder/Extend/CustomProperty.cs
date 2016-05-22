@@ -21,6 +21,6 @@ namespace Toubab.Beinder.Extend
     
         public abstract Task<bool> TryHandleBroadcast(object[] payload);
 
-        public abstract object[] Values { get; }
+        public abstract object Value { get; }
     }
 }

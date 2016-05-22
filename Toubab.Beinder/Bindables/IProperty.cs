@@ -22,16 +22,9 @@ namespace Toubab.Beinder.Bindables
     public interface IProperty : IEvent, IEventHandler
     {
         /// <summary>
-        /// Value(s) of the property.
+        /// Value of the property.
         /// </summary>
-        /// <remarks>
-        /// A property wil generally store only one value. The reason
-        /// that <see cref="Values"/> can contain zero or more values (it 
-        /// being an array) is to be consistent with the other
-        /// bindables (<see cref="IEvent"/>, <see cref="IEventHandler"/>)
-        /// which can broadcast or handle zero or more values.
-        /// </remarks>
-        object[] Values { get; }
+        object Value { get; }
     }
 
 }

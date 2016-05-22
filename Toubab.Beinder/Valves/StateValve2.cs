@@ -39,7 +39,7 @@ namespace Toubab.Beinder.Valves
             object[] payload;
             using (toActivate.Attach())
             {
-                payload = prop.Values;
+                payload = new[] { prop.Value };
             }
 
             await BroadcastAsync(toActivate, payload);
@@ -61,7 +61,7 @@ namespace Toubab.Beinder.Valves
             {
                 using (var attachment = sender.Attach())
                 {
-                    payload = prop.Values;
+                    payload = new[] { prop.Value };
                 }
             }
 

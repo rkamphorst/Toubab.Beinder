@@ -41,11 +41,11 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public object[] Values
+        public object Value
         {
             get
             {
-                return Delegate.Values;
+                return Delegate.Value;
             }
         }
 

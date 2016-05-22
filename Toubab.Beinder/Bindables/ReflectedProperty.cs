@@ -122,7 +122,7 @@ namespace Toubab.Beinder.Bindables
             if (argument.Length != 1 || t == null || !Member.CanWrite)
                 return Task.FromResult(false);
             
-            if (!Equals(argument[0], Values[0]))
+            if (!Equals(argument[0], Value))
             {
                 try
                 {
@@ -145,7 +145,7 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public object[] Values
+        public object Value
         {
             get
             {
@@ -153,7 +153,7 @@ namespace Toubab.Beinder.Bindables
                     return null;
 
                 var t = Object;
-                return t == null ? new object[]{ null } : new[] { Member.GetValue(t) };
+                return t == null ? null : Member.GetValue(t);
             }
         }
     }

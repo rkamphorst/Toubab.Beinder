@@ -24,16 +24,16 @@
             get { return new[] { typeof(object) }; }
         }
 
-        object[] _values;
+        object _value;
 
-        public object[] Values
+        public object Value
         {
-            get { return _values; }
+            get { return _value; }
         }
 
         public Task<bool> TryHandleBroadcast(object[] values)
         {
-            _values = values;
+            _value = values[0];
             Changed++;
             if (_broadcastListener != null)
                 _broadcastListener(values);
@@ -61,7 +61,7 @@
             return new MockProperty
             {
                 Name = Name,
-                _values = _values
+                _value = _value
             };
         }
 

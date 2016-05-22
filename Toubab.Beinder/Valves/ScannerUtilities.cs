@@ -16,9 +16,7 @@
             {
                 using (toScan.Attach())
                 {
-                    return prop.Values
-                        .SelectMany(v => ScanObjectToConduits(scanner, v, toScan.AbsolutePath, toScan.Tag))
-                        .ToList();
+                    return ScanObjectToConduits(scanner, prop.Value, toScan.AbsolutePath, toScan.Tag);
                 }
             }
             return new List<Conduit>();
