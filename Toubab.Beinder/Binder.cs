@@ -274,59 +274,6 @@ namespace Toubab.Beinder
         }
 
         /// <summary>
-        /// Bind multiple arrays of objects 
-        /// </summary>
-        /// <remarks>
-        /// <see cref="BindChildren"/> binds matching properties / bindables of child properties.
-        /// 
-        /// Because every instance of <see cref="IBindable"/> (and notably, <see cref="IProperty"/>)
-        /// advertises multiple values to bind, this results in *multiple* valves for each
-        /// property. <see cref="BindMultiple"/> is a helper method that takes care
-        /// of iterating over each set of parameters, calling <see cref="Bind(object[], object, BinderState)"/> 
-        /// and concatenating all results into a single array.
-        /// 
-        /// Note that <paramref name="parentActivator"/> is also passed as a parameter. This object
-        /// is substituted where <paramref name="activators"/> contains <c>null</c>, or where
-        /// activators does not provide a suitable activator because it does not contain enough
-        /// values.
-        /// 
-        /// Example.
-        /// 
-        /// <paramref name="objectss"/> (may contain <c>null</c> entries):
-        /// 
-        ///     [ [a,b,c], [d,e,f,g], [h,i] ]
-        /// 
-        /// <paramref name="activators"/> (may also contain <c>null</c> entries):
-        /// 
-        ///     [ c, f, null ]
-        /// 
-        /// <paramref name="parentActivator"/>; <paramref name="externalState"/>:
-        /// 
-        ///     p; x
-        /// 
-        /// <see cref="Bind(object[], object, BinderState)"/> is then called three times
-        /// with the following parameters:
-        /// 
-        ///    ( [a,b,c]  , c,  x )
-        ///    ( [d,e,f,g], f,  x )
-        ///    ( [h,i]    , p,  x )
-        /// 
-        /// All resulting arrays of BroadcastValves (StateValve is a subclass of BroadcastValve)
-        /// are concatenated and returned in an array.
-        /// 
-        /// </remarks>
-        async Task<Valve[]> BindMultiple(object[][] objectss, object[] activators, object parentActivator, BinderState externalState)
-        {
-            var results = new List<Valve[]>();
-            for (int i = 0; i < objectss.Length; i++)
-            {
-                var activator = (activators.Length > i ? activators[i] : parentActivator) ?? parentActivator;
-                results.Add(await Bind(objectss[i], activator, externalState));
-            }
-            return results.SelectMany(r => r).ToArray();
-        }
-
-        /// <summary>
         /// Binder state: an ordered list of <see cref="IBindable" /> instances
         /// </summary>
         /// <remarks>
@@ -602,6 +549,8 @@ namespace Toubab.Beinder
                 _valves = valves;
             }
 
+            public int Count { get { return _valves.Length; } }
+
             public void Dispose()
             {
                 if (_valves == null)
@@ -613,17 +562,6 @@ namespace Toubab.Beinder
                 _valves = null;
             }
 
-
-            public IEnumerator<IGrouping<Path, Conduit.Attachment>> GetEnumerator()
-            {
-                return _valves.Cast<IGrouping<Path, Conduit.Attachment>>().GetEnumerator();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
-                
         }
     }
 }

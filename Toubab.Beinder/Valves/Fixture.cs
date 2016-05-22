@@ -30,17 +30,17 @@
             var childScanner = _scanner.NewScope();
             var childConduits = 
                 Conduits
-                    .SelectMany(c => childScanner.ScanChildConduits(c))
+                    .SelectMany(c => childScanner.ScanForChildrenOnConduit(c))
                     .MergeIntoSortedLinkedList(new LinkedList<Conduit>(_descendants), c => c.AbsolutePath);
             return CreateFixtures(childScanner, childConduits);
         }
 
-        public static List<Fixture> CreateAncestorFixtures(IScanner scanner, object[] objects)
+        public static List<Fixture> CreateFixtures(IScanner scanner, object[] objects)
         {
             var onceScanner = OnceScanner.Decorate(scanner);
             var scannedConduits = 
                 objects
-                    .SelectMany((o, i) => onceScanner.ScanObjectToConduits(o, null, i))
+                    .SelectMany((o, i) => onceScanner.ScanObjectAndCreateConduits(o, null, i))
                     .MergeIntoSortedLinkedList(new LinkedList<Conduit>(), c => c.AbsolutePath);
             return CreateFixtures(onceScanner, scannedConduits);
         }
@@ -96,7 +96,7 @@
                     // otherwise, we recursively scan members for (child) bindables
                     // and put them into candidates.
                     members
-                        .SelectMany(m => scopedScanner.ScanChildConduits(m))
+                        .SelectMany(m => scopedScanner.ScanForChildrenOnConduit(m))
                         .MergeIntoSortedLinkedList(conduits, c => c.AbsolutePath);
                 } 
                 // else: members do not qualify for valve, no descendants: 

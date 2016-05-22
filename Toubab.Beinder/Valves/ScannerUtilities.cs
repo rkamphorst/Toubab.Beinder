@@ -9,20 +9,20 @@
 
     public static class ScannerUtilities
     {
-        public static List<Conduit> ScanChildConduits(this IScanner scanner, Conduit toScan)
+        public static List<Conduit> ScanForChildrenOnConduit(this IScanner scanner, Conduit toScan)
         {
             var prop = toScan.Bindable as IProperty;
             if (prop != null)
             {
                 using (toScan.Attach())
                 {
-                    return ScanObjectToConduits(scanner, prop.Value, toScan.AbsolutePath, toScan.Tag);
+                    return ScanObjectAndCreateConduits(scanner, prop.Value, toScan.AbsolutePath, toScan.Tag);
                 }
             }
             return new List<Conduit>();
         }
 
-        public static List<Conduit> ScanObjectToConduits(this IScanner scanner, object toScan, Path basePath, int tag)
+        public static List<Conduit> ScanObjectAndCreateConduits(this IScanner scanner, object toScan, Path basePath, int tag)
         {
             if (toScan != null)
             {

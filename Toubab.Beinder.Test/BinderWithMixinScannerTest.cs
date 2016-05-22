@@ -28,7 +28,7 @@
             ob2.SpecialProperty = 666;
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual(666, ob1.GetSpecialProperty());
         }
 
@@ -50,7 +50,7 @@
             ob2.SpecialProperty2 = "666";
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("666", ob1.GetSpecialProperty2());
         }
 

@@ -20,8 +20,9 @@ namespace Toubab.Beinder
     /// instances. Child bindables (i.e., "properties of properties") that are
     /// bound are not accessible.
     /// </remarks>
-    public interface IBindings : IDisposable, IEnumerable<IGrouping<Path,Conduit.Attachment>>
+    public interface IBindings : IDisposable
     {
+        int Count { get; }
     }
  
 

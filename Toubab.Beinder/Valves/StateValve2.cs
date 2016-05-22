@@ -22,13 +22,13 @@ namespace Toubab.Beinder.Valves
 
         #region Activate
 
-        public async Task<bool> Activate(int tagToActivate)
+        public async Task<bool> ActivateAsync(int tagToActivate)
         {
             var conduit = Fixture.Conduits.FirstOrDefault(c => Equals(c.Tag, tagToActivate));
-            return await Activate(conduit);
+            return await ActivateAsync(conduit);
         }
 
-        public async Task<bool> Activate(Conduit toActivate)
+        public async Task<bool> ActivateAsync(Conduit toActivate)
         {
             if (toActivate == null)
                 return false;
@@ -42,8 +42,7 @@ namespace Toubab.Beinder.Valves
                 payload = new[] { prop.Value };
             }
 
-            await BroadcastAsync(toActivate, payload);
-            return true;
+            return await BroadcastAsync(toActivate, payload);
         }
 
         #endregion
@@ -78,7 +77,7 @@ namespace Toubab.Beinder.Valves
             }
 
             var result = await base.BroadcastAsync(sender, payload);
-            OnUpdated();
+            OnUpdated(sender.Tag);
             return result;
         }
 
@@ -86,15 +85,46 @@ namespace Toubab.Beinder.Valves
 
         #region Updated event
 
-        public event EventHandler Updated;
+        public event EventHandler<int> Updated;
 
-        void OnUpdated()
+        void OnUpdated(int tag)
         {
             var evt = Updated;
             if (evt != null)
             {
+                evt(this, tag);
+            }
+        }
+
+        #endregion
+
+        #region Disposing event
+
+        public event EventHandler Disposing;
+
+        void OnDisposing()
+        {
+            var evt = Disposing;
+            if (evt != null)
+            {
                 evt(this, EventArgs.Empty);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                try
+                {
+                    OnDisposing();
+                }
+                catch
+                {
+                    /* catch-all, never crash on dispose */
+                }
+            }
+            base.Dispose(disposing);
         }
 
         #endregion

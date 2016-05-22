@@ -25,7 +25,7 @@
             ob2.Property = "a";
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("a", ob1.Property);
         }
 
@@ -45,7 +45,7 @@
                 ob1.Property = "a";
 
                 // Assert
-                Assert.Greater(_bindings.Count(), 0);
+                Assert.Greater(_bindings.Count, 0);
                 Assert.AreEqual("a", ob1.Property);
                 Assert.AreEqual("a", ob2.Property);
                 Assert.AreEqual("a", ob3.Property);
@@ -64,7 +64,7 @@
                 ob2.Property = "a";
 
                 // Assert
-                Assert.Greater(_bindings.Count(), 0);
+                Assert.Greater(_bindings.Count, 0);
                 Assert.AreEqual("a", ob1.Property);
                 Assert.AreEqual("a", ob2.Property);
                 Assert.AreEqual("a", ob3.Property);
@@ -83,7 +83,7 @@
                 ob3.Property = "a";
 
                 // Assert
-                Assert.Greater(_bindings.Count(), 0);
+                Assert.Greater(_bindings.Count, 0);
                 Assert.AreEqual("a", ob1.Property);
                 Assert.AreEqual("a", ob2.Property);
                 Assert.AreEqual("a", ob3.Property);
@@ -105,7 +105,7 @@
             ob2.Property = "a";
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("a", ob1.Property);
         }
 
@@ -124,7 +124,7 @@
             ob2.Property = "a";
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("a", ob1.Property);
         }
 
@@ -143,7 +143,7 @@
             ob2.Property = "a";
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("a", ob1.Property);
         }
 
@@ -164,7 +164,7 @@
 
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("x", ob2.AaaBee.CeeDee.Eee);
             Assert.AreEqual("x", ob3.Aaa.BeeCee.Dee.Eee);
         }
@@ -194,7 +194,7 @@
 
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("y", ob1.Aaa.Bee.Cee.Dee.Eee);
             Assert.AreEqual("y", ob3.Aaa.BeeCee.Dee.Eee);
             Assert.AreEqual("x", oldAaaBee.CeeDee.Eee);
@@ -226,7 +226,7 @@
             ob2.Property = "a";
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual(1, ob1cnt);
             Assert.AreEqual(1, ob2cnt);
         }
@@ -247,7 +247,7 @@
             vm.ControlSize = 11;
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("banaan", view.Control.Text);
             Assert.AreEqual(11, view.Control.Size);
         }
@@ -268,7 +268,7 @@
             view.Control.Size = 11;
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("banaan", vm.ControlText);
             Assert.AreEqual(11, vm.ControlSize);
         }
@@ -292,7 +292,7 @@
             };
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("banaan", vm.ControlText);
             Assert.AreEqual(11, vm.ControlSize);
         }
@@ -316,7 +316,7 @@
             };
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreEqual("banaan", vm.Control.Text);
             Assert.AreEqual(11, vm.Control.Size);
         }
@@ -342,7 +342,7 @@
             };
 
             // Assert
-            Assert.Greater(_bindings.Count(), 0);
+            Assert.Greater(_bindings.Count, 0);
             Assert.AreSame(view.Control, vm.Control);
             Assert.AreEqual("Appel", viewCtl.Text);
             Assert.AreEqual(100, viewCtl.Size);
