@@ -49,11 +49,6 @@
             return null;
         }
 
-        public void Detach()
-        {
-            _bindable.SetObject(null);
-        }
-
         public class Attachment : IDisposable
         {
             readonly Conduit _conduit;
@@ -67,7 +62,7 @@
 
             public void Dispose()
             {
-                _conduit.Detach();
+                _conduit._bindable.SetObject(null);
             }
         }
 
