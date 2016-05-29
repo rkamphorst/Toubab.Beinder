@@ -159,7 +159,7 @@ namespace Toubab.Beinder.Valves
                     using (var attachment = conduit.Attach())
                     {
                         if (attachment != null)
-                            return await cons.TryHandleBroadcast(payload);
+                            return await cons.TryHandleBroadcastAsync(payload);
                     }
                 }
             }

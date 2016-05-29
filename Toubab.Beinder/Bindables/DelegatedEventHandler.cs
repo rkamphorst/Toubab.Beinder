@@ -28,9 +28,9 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public async Task<bool> TryHandleBroadcast(object[] argument)
+        public async Task<bool> TryHandleBroadcastAsync(object[] argument)
         {
-            return await Delegate.TryHandleBroadcast(argument);
+            return await Delegate.TryHandleBroadcastAsync(argument);
         }
 
         /// <inheritdoc/>

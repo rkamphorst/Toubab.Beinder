@@ -77,8 +77,9 @@
     <Compile Include="Mocks\Fruits\DisguisePearAsBadApple.cs" />
     <Compile Include="Mocks\Fruits\DisguisePearAndOrangeAsApple.cs" />
     <Compile Include="Bindables\BindableTest.cs" />
-    <Compile Include="UsingPoc.cs" />
     <Compile Include="Valves\ConduitTest.cs" />
+    <Compile Include="Poc\UsingPoc.cs" />
+    <Compile Include="Poc\CallContextPoc.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -93,5 +94,8 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Poc\" />
   </ItemGroup>
 </Project>

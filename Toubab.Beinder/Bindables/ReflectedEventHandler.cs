@@ -54,7 +54,7 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public Task<bool> TryHandleBroadcast(object[] argument)
+        public Task<bool> TryHandleBroadcastAsync(object[] argument)
         {
             if (argument.Length > ValueTypes.Length) 
             {

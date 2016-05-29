@@ -188,7 +188,7 @@ namespace Toubab.Beinder
                 // that are in valveParams.Bindables.
                 var conduits = new List<Conduit>();
                 foreach (var c in valveParams.Bindables)
-                    conduits.Add(Conduit.Create(c.Bindable, c.Object));
+                    conduits.Add(Conduit.Create(c.Bindable, c.Object, null, 0));
 
                 if (valveParams.ContainsState)
                 {

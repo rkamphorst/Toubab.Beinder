@@ -17,14 +17,14 @@ namespace Toubab.Beinder.Paths
             _fragments = fragments;
         }
 
-        public bool MatchesStartOf(Path other)
+        public bool StartsWith(Path other) 
         {
-            return CalculateMatchSize(this, other) == _fragments.Length;
+            return CalculateMatchSize(this, other) == other._fragments.Length;
         }
 
         public Path RelativeTo(Path other)
         {
-            if (other.MatchesStartOf(this))
+            if (StartsWith(other))
             {
                 return new Path(_fragments.Skip(other._fragments.Length).ToArray());
             }

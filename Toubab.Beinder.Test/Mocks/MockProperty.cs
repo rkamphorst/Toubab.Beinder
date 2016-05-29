@@ -31,7 +31,7 @@
             get { return _value; }
         }
 
-        public Task<bool> TryHandleBroadcast(object[] values)
+        public Task<bool> TryHandleBroadcastAsync(object[] values)
         {
             _value = values[0];
             Changed++;

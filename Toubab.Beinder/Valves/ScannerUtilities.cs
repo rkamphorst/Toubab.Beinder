@@ -16,19 +16,19 @@
             {
                 using (toScan.Attach())
                 {
-                    return ScanObjectAndCreateConduits(scanner, prop.Value, toScan.AbsolutePath, toScan.Tag);
+                    return ScanObjectAndCreateConduits(scanner, prop.Value, toScan.AbsolutePath, toScan.Family);
                 }
             }
             return new List<Conduit>();
         }
 
-        public static List<Conduit> ScanObjectAndCreateConduits(this IScanner scanner, object toScan, Path basePath, int tag)
+        public static List<Conduit> ScanObjectAndCreateConduits(this IScanner scanner, object toScan, Path basePath, int family)
         {
             if (toScan != null)
             {
                 return scanner
                     .Scan(toScan)
-                    .Select(b => Conduit.Create(b, toScan, basePath, tag))
+                    .Select(b => Conduit.Create(b, toScan, basePath, family))
                     .ToList();
             }
             return new List<Conduit>();

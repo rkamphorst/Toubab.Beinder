@@ -46,11 +46,11 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public async Task<bool> TryHandleBroadcast(object[] argument)
+        public async Task<bool> TryHandleBroadcastAsync(object[] argument)
         {
             foreach (var eventHandler in Bindables)
             {
-                if (await eventHandler.TryHandleBroadcast(argument))
+                if (await eventHandler.TryHandleBroadcastAsync(argument))
                 {
                     return true;
                 }

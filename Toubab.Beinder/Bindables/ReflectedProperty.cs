@@ -116,7 +116,7 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public Task<bool> TryHandleBroadcast(object[] argument)
+        public Task<bool> TryHandleBroadcastAsync(object[] argument)
         {
             var t = Object;
             if (argument.Length != 1 || t == null || !Member.CanWrite)

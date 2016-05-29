@@ -46,13 +46,13 @@
 
         #endregion
 
-        bool WasScanned(object obj)
+        bool IsScanned(object obj)
         {
             object isScanned;
             if (_scannedObjects.TryGetValue(obj, out isScanned))
                 return true;
             if (_parent != null)
-                return _parent.WasScanned(obj);
+                return _parent.IsScanned(obj);
             return false;
         }
 
@@ -62,13 +62,21 @@
             if (obj == null) 
                 return false;
 
-            // always scan value types and strings.
-            // no need to add them to cache.
-            if (obj.GetType().GetTypeInfo().IsValueType || obj is string) 
+            var typeinfo = obj.GetType().GetTypeInfo();
+
+            // never scan primitive types (bool, char, int, ...) and enums
+            if (typeinfo.IsPrimitive || typeinfo.IsEnum)
+                return false;
+
+            // always scan other value types and strings.
+            // no need to add them to cache, as we will never encounter
+            // the same reference twice (value types are passed by 
+            // reference, strings are immutable and might be interned)
+            if (typeinfo.IsValueType || obj is string) 
                 return true;
 
             // don't scan objects we scanned before
-            if (WasScanned(obj)) 
+            if (IsScanned(obj)) 
                 return false;
 
             // ok, let's scan the object. first, add it to cache

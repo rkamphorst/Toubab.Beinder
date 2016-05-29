@@ -45,7 +45,7 @@ namespace Toubab.Beinder.Scanners
             property.SetBroadcastListener(payload => newValue = payload);
 
             // Act
-            property.TryHandleBroadcast(new[] { "fdsa" });
+            property.TryHandleBroadcastAsync(new[] { "fdsa" });
 
             // Assert
             Assert.AreEqual("fdsa", ob.Property);
@@ -206,7 +206,7 @@ namespace Toubab.Beinder.Scanners
             method.SetObject(ob);
 
             // Act
-            method.TryHandleBroadcast(new object[0]);
+            method.TryHandleBroadcastAsync(new object[0]);
 
             // Assert
             Assert.AreEqual(1, eventHappened);
@@ -225,10 +225,10 @@ namespace Toubab.Beinder.Scanners
             method.SetObject(ob);
 
             // Act
-            method.TryHandleBroadcast(new object[0]);
-            method.TryHandleBroadcast(new object[0]);
-            method.TryHandleBroadcast(new object[0]);
-            method.TryHandleBroadcast(new object[0]);
+            method.TryHandleBroadcastAsync(new object[0]);
+            method.TryHandleBroadcastAsync(new object[0]);
+            method.TryHandleBroadcastAsync(new object[0]);
+            method.TryHandleBroadcastAsync(new object[0]);
 
             // Assert
             Assert.AreEqual(4, eventHappened);
@@ -262,7 +262,7 @@ namespace Toubab.Beinder.Scanners
             method.SetObject(ob);
 
             // Act
-            method.TryHandleBroadcast(bcArgs);
+            method.TryHandleBroadcastAsync(bcArgs);
 
             // Assert
             Assert.IsNotNull(eventArgs);
@@ -298,10 +298,10 @@ namespace Toubab.Beinder.Scanners
             method.SetObject(ob);
 
             // Act
-            method.TryHandleBroadcast(bcArgs);
-            method.TryHandleBroadcast(bcArgs);
-            method.TryHandleBroadcast(bcArgs);
-            method.TryHandleBroadcast(bcArgs);
+            method.TryHandleBroadcastAsync(bcArgs);
+            method.TryHandleBroadcastAsync(bcArgs);
+            method.TryHandleBroadcastAsync(bcArgs);
+            method.TryHandleBroadcastAsync(bcArgs);
 
             // Assert
             Assert.IsNotNull(eventArgs);

@@ -1,11 +1,10 @@
-using System.Threading;
-
 namespace Toubab.Beinder.Valves
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using Bindables;
     using Paths;
@@ -14,112 +13,99 @@ namespace Toubab.Beinder.Valves
     public class Valve2 : IDisposable
     {
         readonly Fixture _fixture;
+        readonly ICollection<int> _broadcastingTo;
+        readonly ICollection<Valve2> _childValves;
 
         public Valve2(Fixture fixture)
         {
             _fixture = fixture;
-            SetBroadcastListeners();
+            _broadcastingTo = new LinkedList<int>();
+            _childValves = new List<Valve2>();
+        }
+
+        public virtual async Task InitializeAsync(int familyToActivate)
+        {
+            foreach (var sender in _fixture.Conduits)
+                TrySetBroadcastListener(sender, CreateBroadcastListenerCallback(sender));
+
+            var conduitToActivate = 
+                Fixture.Conduits.FirstOrDefault(c => c.Family == familyToActivate);
+
+            await BroadcastAsync(conduitToActivate, null);
         }
 
         public Fixture Fixture { get { return _fixture; } }
 
-        #region Dispose
-
-        bool _disposed = false;
-
-        /// <summary>
-        /// Disposes of this instance.
-        /// </summary>
-        /// <remarks>
-        /// Consists of the following parts:
-        /// 
-        /// 1. Unregistering of broadcast event handlers from <see cref="IEvent"/> instances in the valve
-        /// 2. Calling <see cref="Dispose(bool)"/> with a <c>true</c> parameter.
-        /// 
-        /// Just before these steps, the <see cref="Disposing"/> event is raised.
-        /// 
-        /// Note to subclass implementors: use <see cref="Dispose(bool)"/> to implement disposal.
-        /// </remarks>
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                _disposed = true;
-                SetBroadcastListeners(makeNull: true);
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
-        }
-
-        /// <summary>
-        /// Finalizer
-        /// </summary>
-        ~Valve2()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
-        /// Overridable dispose
-        /// </summary>
-        /// <remarks>
-        /// Override this method to add disposal logic in a subclass.
-        /// </remarks>
-        /// <param name="disposing">If set to <c>true</c> disposing.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-        }
-
-        /// <summary>
-        /// Throw an exception if this instance is disposed.
-        /// </summary>
-        /// <exception cref="System.ObjectDisposedException">If this object is disposed.</exception>
-        protected void AssertNotDisposed()
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(GetType().Name);
-        }
-
-        #endregion
-
         #region Broadcast
 
-        protected virtual async Task<bool> BroadcastAsync(Conduit sender, object[] payload)
+        async Task BroadcastAsync(Conduit sender, object[] payload)
         {
-            var handleTasks = new List<Task<bool>>();
+            if (sender == null)
+                return;
+
+            var prop = sender.Bindable as IProperty;
+            if (prop != null)
+            {
+                using (var attachment = sender.Attach())
+                {
+                    payload = new[] { prop.Value };
+                }
+            }
+
+            if (payload == null)
+                return;
+
+            var handleTasks = new List<Task>();
             lock (_fixture)
             {
                 foreach (var receiver in _fixture.Conduits)
-                    handleTasks.Add(ConduitTryHandleBroadcast(sender, receiver, payload));
+                    handleTasks.Add(SendBroadcastPayloadAsync(sender, receiver, payload));
             }
-            return (await Task.WhenAll(handleTasks)).Any();
+
+            await Task.WhenAll(handleTasks);
+            await UpdateChildValvesAsync(sender.Family);
         }
 
-        static async Task<bool> ConduitTryHandleBroadcast(Conduit sender, Conduit receiver, object[] payload)
+        async Task SendBroadcastPayloadAsync(Conduit sender, Conduit receiver, object[] payload)
         {
-            if (Equals(sender.Tag, receiver.Tag))
-                return false;
+            if (Equals(sender.Family, receiver.Family))
+                return;
             
-            var cons = receiver.Bindable as IEventHandler;
-            if (cons == null)
-                return false;
+            var eventHandler = receiver.Bindable as IEventHandler;
+            if (eventHandler == null)
+                return;
             
             bool areParamsCompatible =
                 sender != null
-                ? cons.ValueTypes.AreAssignableFromTypes(sender.Bindable.ValueTypes)
-                : cons.ValueTypes.AreAssignableFromObjects(payload);
+                ? eventHandler.ValueTypes.AreAssignableFromTypes(sender.Bindable.ValueTypes)
+                : eventHandler.ValueTypes.AreAssignableFromObjects(payload);
             if (!areParamsCompatible)
-                return false;
+                return;
             
             using (var attachment = receiver.Attach())
             {
                 if (attachment != null)
-                    return await cons.TryHandleBroadcast(payload);
+                {
+                    try
+                    {
+                        lock (_broadcastingTo)
+                        {
+                            _broadcastingTo.Add(receiver.Family);
+                        }
+                        await eventHandler.TryHandleBroadcastAsync(payload);
+                    }
+                    finally
+                    {
+                        lock (_broadcastingTo)
+                        {
+                            _broadcastingTo.Remove(receiver.Family);
+                        }
+                    }
+                }
             }
-            return false;
         }
 
-        bool TrySetBroadcastListener(Conduit sender, bool makeNull = false)
+        void TrySetBroadcastListener(Conduit sender, Action<object[]> listenerCallback)
         {
             var @event = sender.Bindable as IEvent;
             if (@event != null)
@@ -128,31 +114,54 @@ namespace Toubab.Beinder.Valves
                 {
                     if (attachment != null)
                     {
-                        if (makeNull)
-                        {
-                            @event.SetBroadcastListener(null);
-
-                        }
-                        else
-                        {
-                            @event.SetBroadcastListener(async payload => await BroadcastAsync(sender, payload));
-                        }
-                        return true;
+                        @event.SetBroadcastListener(listenerCallback);
                     }
                 }
             }
-            return false;
         }
 
-        void SetBroadcastListeners(bool makeNull = false)
+        Action<object[]> CreateBroadcastListenerCallback(Conduit sender)
         {
-            foreach (var conduit in _fixture.Conduits)
-                TrySetBroadcastListener(conduit, makeNull);
+            return async payload =>
+            {
+                lock (_broadcastingTo)
+                {
+                    if (_broadcastingTo.Contains(sender.Family))
+                        return;
+                }
+                await BroadcastAsync(sender, payload);
+            };
         }
 
         #endregion
 
-        /// <inheritdoc/>
+        async Task UpdateChildValvesAsync(int familyToActivate)
+        {
+            foreach (var valve in _childValves)
+                valve.Dispose();
+            _childValves.Clear();
+
+            Fixture.UpdateChildFixtures();
+
+            // create child valves
+            var tasks = new List<Task>();
+            foreach (var valve in Fixture.ChildFixtures.Select(f => new Valve2(f)))
+            {
+                _childValves.Add(valve);
+                tasks.Add(valve.InitializeAsync(familyToActivate));
+            }
+            await Task.WhenAll(tasks);
+        }
+
+        public void Dispose()
+        {
+            foreach (var conduit in _fixture.Conduits)
+                TrySetBroadcastListener(conduit, null);
+            
+            foreach (var valve in _childValves)
+                valve.Dispose();
+        }
+
         public override string ToString()
         {
             Path path = _fixture.Conduits.First?.Value.AbsolutePath;

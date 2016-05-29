@@ -37,7 +37,7 @@
             property.SetBroadcastListener(payload => newValue = payload);
 
             // Act
-            property.TryHandleBroadcast(new object[] { "asdf" });
+            property.TryHandleBroadcastAsync(new object[] { "asdf" });
 
             // Assert
             Assert.AreEqual("asdf", ob.Property);

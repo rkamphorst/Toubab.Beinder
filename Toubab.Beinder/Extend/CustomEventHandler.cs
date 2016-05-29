@@ -16,6 +16,6 @@ namespace Toubab.Beinder.Extend
         {
         }
 
-        public abstract Task<bool> TryHandleBroadcast(object[] payload);
+        public abstract Task<bool> TryHandleBroadcastAsync(object[] payload);
     }
 }

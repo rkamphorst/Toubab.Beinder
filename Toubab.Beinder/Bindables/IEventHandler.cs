@@ -29,7 +29,7 @@ namespace Toubab.Beinder.Bindables
         /// <returns><c>true</c>, if the broadcast could be handled by this <see cref="IEventHandler"/>, 
         /// <c>false</c> otherwise.</returns>
         /// <param name="payload">Payload from the event.</param>
-        Task<bool> TryHandleBroadcast(object[] payload);
+        Task<bool> TryHandleBroadcastAsync(object[] payload);
     }
 
 }

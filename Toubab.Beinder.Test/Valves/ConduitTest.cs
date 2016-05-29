@@ -11,17 +11,17 @@
     public class ConduitTest
     {
         [Test, TestCaseSource("CreateWithParametersTestCase")]
-        public void CreateWithParameters(Path basePath, Path mockPath, Path expectAbsolutePath, int tag, int expectTag)
+        public void CreateWithParameters(Path basePath, Path mockPath, Path expectAbsolutePath, int family, int expectFamily)
         {
             var mockBindable = new MockBindable(mockPath);
             var obj = new object();
 
-            var conduit = Conduit.Create(mockBindable, obj, basePath, tag);
+            var conduit = Conduit.Create(mockBindable, obj, basePath, family);
 
             Assert.IsFalse(ReferenceEquals(mockBindable, conduit.Bindable));
             Assert.IsTrue(conduit.Bindable is MockBindable);
             Assert.AreEqual(mockPath, conduit.Bindable.Path);
-            Assert.AreEqual(expectTag, conduit.Tag);
+            Assert.AreEqual(expectFamily, conduit.Family);
             Assert.AreEqual(expectAbsolutePath, conduit.AbsolutePath);
         }
 

@@ -21,7 +21,7 @@
             v.Add(propc);
 
             // Act
-            ((IProperty)propa.Bindable).TryHandleBroadcast(new object [] { "banaan" });
+            ((IProperty)propa.Bindable).TryHandleBroadcastAsync(new object [] { "banaan" });
 
             // Assert
             Assert.AreEqual( "banaan", ((IProperty)propb.Bindable).Value);
@@ -41,8 +41,8 @@
             v.Add(propc);
 
             // Act
-            ((IProperty)propa.Bindable).TryHandleBroadcast(new object[] { "banaan" });
-            ((IProperty)propb.Bindable).TryHandleBroadcast(new object[] { "banaan" });
+            ((IProperty)propa.Bindable).TryHandleBroadcastAsync(new object[] { "banaan" });
+            ((IProperty)propb.Bindable).TryHandleBroadcastAsync(new object[] { "banaan" });
 
             // Assert
             Assert.AreEqual(1, ((MockProperty)propa.Bindable).Changed);
@@ -84,7 +84,7 @@
 
         static Conduit CreateConduit(string name)
         {
-            return Conduit.Create(new MockProperty { Changed = 0, Name = name }, new object());
+            return Conduit.Create(new MockProperty { Changed = 0, Name = name }, new object(), null, 0);
         }
 
 

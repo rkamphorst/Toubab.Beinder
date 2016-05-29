@@ -19,7 +19,7 @@ namespace Toubab.Beinder.Extend
 
         public abstract void SetBroadcastListener(Action<object[]> listener);
     
-        public abstract Task<bool> TryHandleBroadcast(object[] payload);
+        public abstract Task<bool> TryHandleBroadcastAsync(object[] payload);
 
         public abstract object Value { get; }
     }

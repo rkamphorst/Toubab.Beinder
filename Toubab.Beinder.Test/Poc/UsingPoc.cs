@@ -1,4 +1,4 @@
-﻿namespace Toubab.Beinder
+﻿namespace Toubab.Beinder.Poc
 {
     using System;
     using NUnit.Framework;

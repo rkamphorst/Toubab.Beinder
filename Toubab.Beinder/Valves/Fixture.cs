@@ -1,46 +1,50 @@
 ﻿namespace Toubab.Beinder.Valves
 {
-    using System;
     using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
     using System.Linq;
-    using System.Reflection;
     using Scanners;
-    using Paths;
-    using Bindables;
     using Tools;
 
     public class Fixture
     {
         readonly OnceScanner _scanner;
         readonly LinkedList<Conduit> _conduits;
-        readonly LinkedList<Conduit> _descendants;
+        readonly LinkedList<Conduit> _descendantConduits;
 
-        Fixture(OnceScanner scanner, LinkedList<Conduit> conduits, LinkedList<Conduit> descendants)
+        List<Fixture> _childFixtures;
+
+        Fixture(OnceScanner scanner, LinkedList<Conduit> conduits, LinkedList<Conduit> descendantConduits)
         {
             _scanner = scanner;
             _conduits = conduits;
-            _descendants = descendants;
+            _descendantConduits = descendantConduits;
+            _childFixtures = null;
         }
+            
 
         public LinkedList<Conduit> Conduits { get { return _conduits; } }
 
-        public List<Fixture> CreateChildFixtures()
+        public List<Fixture> ChildFixtures { get { return _childFixtures; } }
+
+        public void UpdateChildFixtures()
         {
             var childScanner = _scanner.NewScope();
             var childConduits = 
                 Conduits
                     .SelectMany(c => childScanner.ScanForChildrenOnConduit(c))
-                    .MergeIntoSortedLinkedList(new LinkedList<Conduit>(_descendants), c => c.AbsolutePath);
-            return CreateFixtures(childScanner, childConduits);
+                    .MergeIntoSortedLinkedList(new LinkedList<Conduit>(_descendantConduits), c => c.AbsolutePath);
+
+            _childFixtures = CreateFixtures(childScanner, childConduits);
         }
 
         public static List<Fixture> CreateFixtures(IScanner scanner, object[] objects)
         {
+            const int generation = 0; // we create a first generation here
+            Paths.Path path = null; // path of first generation is empty
             var onceScanner = OnceScanner.Decorate(scanner);
             var scannedConduits = 
                 objects
-                    .SelectMany((o, i) => onceScanner.ScanObjectAndCreateConduits(o, null, i))
+                    .SelectMany((ancestor, family) => onceScanner.ScanObjectAndCreateConduits(ancestor, path, family))
                     .MergeIntoSortedLinkedList(new LinkedList<Conduit>(), c => c.AbsolutePath);
             return CreateFixtures(onceScanner, scannedConduits);
         }
@@ -51,45 +55,21 @@
             LinkedListNode<Conduit> first;
             while ((first = conduits.First) != null)
             {
-                var members = new LinkedList<Conduit>();
-                conduits.RemoveFirst();
-                members.AddLast(first);
-
-                /**
-                 * "members" are all candidate bindables that have the exact
-                 * same path as the first candidate
-                 */
-                while (conduits.First != null
-                       && Equals(first.Value.AbsolutePath, conduits.First.Value.AbsolutePath))
-                {
-                    var item = conduits.First;
-                    conduits.RemoveFirst();
-                    members.AddLast(item);
-                }
+                LinkedList<Conduit> members = 
+                    conduits.Shift(c => Equals(first.Value.AbsolutePath, c.AbsolutePath));
 
                 bool hasDescendants =
                     conduits.First != null &&
-                    first.Value.AbsolutePath.MatchesStartOf(conduits.First.Value.AbsolutePath);
+                    conduits.First.Value.AbsolutePath.StartsWith(first.Value.AbsolutePath);
 
                 if (ConduitsQualifyForFixture(members))
                 {
-                    /**
-                     * descendants" are all candidate bindables that have a path
-                     * that starts with the same path as the first candidate
-                     */
-                    var descendants = new LinkedList<Conduit>();
-                    while (
-                        conduits.First != null &&
-                        first.Value.AbsolutePath.MatchesStartOf(conduits.First.Value.AbsolutePath))
-                    {
-                        var item = conduits.First;
-                        conduits.RemoveFirst();
-                        descendants.AddLast(item);
-                    }
+                    LinkedList<Conduit> descendants = 
+                        conduits.Shift(c => c.AbsolutePath.StartsWith(first.Value.AbsolutePath));
 
-                    // "members" contains bindables from more than one of
-                    // the original objecs ("trees"): this warrants a valve.
-                    result.Add(new Fixture(scopedScanner, members, descendants));
+                    var fixture = new Fixture(scopedScanner, members, descendants);
+                    fixture.UpdateChildFixtures();
+                    result.Add(fixture);
                 }
                 else if (hasDescendants)
                 {
@@ -108,9 +88,10 @@
         public static bool ConduitsQualifyForFixture(IEnumerable<Conduit> members)
         {
             int distinctTrees =
-                members.Select(p => p.Tag).Distinct().Count();
+                members.Select(p => p.Family).Distinct().Count();
             return distinctTrees > 0;
         }
+            
     }
 }
 

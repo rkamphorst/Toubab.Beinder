@@ -70,7 +70,7 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public async Task<bool> TryHandleBroadcast(object[] argument)
+        public async Task<bool> TryHandleBroadcastAsync(object[] argument)
         {
             // first, make sure _value is up to date
             _value = Bindables[0].Value;
@@ -89,7 +89,7 @@ namespace Toubab.Beinder.Bindables
             // write the property, try each one until one accepts
             foreach (var prop in Bindables)
             {
-                if (await prop.TryHandleBroadcast(argument))
+                if (await prop.TryHandleBroadcastAsync(argument))
                 {
                     return true;
                 }

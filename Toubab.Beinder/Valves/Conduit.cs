@@ -9,28 +9,28 @@
     {
         readonly WeakReference<object> _objectReference;
         readonly Path _absolutePath;
-        readonly int _tag;
+        readonly int _family;
         readonly IBindable _bindable;
 
-        public static Conduit Create(IBindable bindable, object obj, Path basePath = null, int tag = -1)
+        public static Conduit Create(IBindable bindable, object obj, Path basePath, int family)
         {
             return new Conduit(
                 (IBindable)bindable.CloneWithoutObject(),
                 new WeakReference<object>(obj),
                 basePath == null ? bindable.Path : new Path(basePath, bindable.Path),
-                tag
+                family
             );
         }
 
-        protected Conduit(IBindable bindable,  WeakReference<object> objectReference, Path absolutePath, int tag)
+        protected Conduit(IBindable bindable,  WeakReference<object> objectReference, Path absolutePath, int family)
         {
             _objectReference = objectReference;
             _absolutePath = absolutePath;
             _bindable = bindable;
-            _tag = tag;
+            _family = family;
         }
 
-        public int Tag { get { return _tag; } }
+        public int Family { get { return _family; } }
 
         public Path AbsolutePath { get { return _absolutePath; } }
 
