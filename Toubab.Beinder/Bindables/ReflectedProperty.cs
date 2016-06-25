@@ -63,6 +63,32 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <summary>
+        /// Capabilities of this bindable
+        /// </summary>
+        /// <remarks>
+        /// A property is always readable (has state), so capability <see cref="BindingOperations.Read"/> 
+        /// is always set.
+        /// 
+        /// <see cref="BindingOperations.HandleBroadcast"/> is set if the property is writable.
+        /// 
+        /// <see cref="BindingOperations.Broadcast"/> is set if the event info set with the constructor is
+        /// non-null.
+        /// 
+        /// </remarks>
+        public override BindingOperations Capabilities
+        {
+            get
+            {
+                var result = BindingOperations.Read;
+                if (Member.CanWrite)
+                    result |= BindingOperations.HandleBroadcast;
+                if (_rflEvent != null)
+                    result |= BindingOperations.Broadcast;
+                return result;
+            }
+        }
+
+        /// <summary>
         /// Copy constructor (used by <see cref="CloneWithoutObject"/>).
         /// The object this bindable belongs to is not copied.
         /// </summary>

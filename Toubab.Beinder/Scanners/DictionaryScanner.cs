@@ -52,6 +52,15 @@ namespace Toubab.Beinder.Scanners
                 _key = toCopy._key;
             }
 
+            /// <inheritdoc />
+            public override BindingOperations Capabilities
+            {
+                get
+                {
+                    return BindingOperations.Read | BindingOperations.HandleBroadcast;
+                }
+            }
+
             void HandleDictionaryChanged(object sender, NotifyCollectionChangedEventArgs e)
             {
                 if (

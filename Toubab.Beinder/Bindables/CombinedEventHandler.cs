@@ -45,6 +45,14 @@ namespace Toubab.Beinder.Bindables
         {
         }
 
+        public override BindingOperations Capabilities
+        {
+            get
+            {
+                return BindingOperations.HandleBroadcast;
+            }
+        }
+
         /// <inheritdoc/>
         public async Task<bool> TryHandleBroadcastAsync(object[] argument)
         {

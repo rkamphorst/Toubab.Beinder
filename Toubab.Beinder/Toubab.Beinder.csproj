@@ -32,6 +32,8 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Bindables\BindableUtilities.cs" />
+    <Compile Include="Bindables\BindingOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Binder.cs" />
     <Compile Include="IBindings.cs" />

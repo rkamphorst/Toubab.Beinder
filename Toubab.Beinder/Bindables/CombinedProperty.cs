@@ -51,6 +51,18 @@ namespace Toubab.Beinder.Bindables
         {
         }
 
+        /// <inheritdoc />
+        public override BindingOperations Capabilities
+        {
+            get
+            {
+                var result = BindingOperations.None;
+                foreach (var p in Bindables)
+                    result |= p.Capabilities;
+                return result;
+            }
+        }
+
         /// <inheritdoc/>
         public void SetBroadcastListener(Action<object[]> listener) 
         {

@@ -44,6 +44,15 @@ namespace Toubab.Beinder.Bindables
             _parameterTypes = toCopy._parameterTypes;
         }
 
+        /// <inheritdoc />
+        public override BindingOperations Capabilities
+        {
+            get
+            {
+                return BindingOperations.HandleBroadcast;
+            }
+        }
+
         /// <inheritdoc/>
         public override Type[] ValueTypes
         {

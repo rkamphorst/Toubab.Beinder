@@ -8,6 +8,11 @@
 
     class MockProperty : IProperty
     {
+        public BindingOperations Capabilities
+        {
+            get { return BindingOperations.All;  }
+        }
+
         public int Changed { get; set; }
 
         public string Name { get; set; }

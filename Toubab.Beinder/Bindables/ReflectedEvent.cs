@@ -90,6 +90,15 @@ namespace Toubab.Beinder.Bindables
             _broadcastFilter = toCopy._broadcastFilter;
         }
 
+        /// <inheritdoc />
+        public override BindingOperations Capabilities
+        {
+            get
+            {
+                return BindingOperations.Broadcast;
+            }
+        }
+
         /// <inheritdoc/>
         public override Type[] ValueTypes
         {

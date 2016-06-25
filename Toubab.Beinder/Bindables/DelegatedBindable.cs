@@ -49,6 +49,15 @@
             Delegate.SetObject(((IMixin)toCopy.Delegate.Object).CloneWithoutObject());
         }
 
+        /// <inheritdoc />
+        public sealed override BindingOperations Capabilities
+        {
+            get
+            {
+                return Delegate.Capabilities;
+            }
+        }
+
         /// <inheritdoc/>
         public override void SetObject(object value)
         {

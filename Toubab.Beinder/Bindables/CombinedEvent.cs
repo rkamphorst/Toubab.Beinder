@@ -51,6 +51,15 @@ namespace Toubab.Beinder.Bindables
             
         }
 
+        /// <inheritdoc />
+        public override BindingOperations Capabilities
+        {
+            get
+            {
+                return BindingOperations.Broadcast;
+            }
+        }
+
         void SetContainedBroadcastListener(int index, Action<object[]> listener)
         {
             if (listener == null)

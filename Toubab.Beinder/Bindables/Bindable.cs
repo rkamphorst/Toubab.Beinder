@@ -34,6 +34,9 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
+        public abstract BindingOperations Capabilities { get; }
+
+        /// <inheritdoc/>
         public object Object 
         { 
             get 

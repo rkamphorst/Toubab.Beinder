@@ -16,6 +16,14 @@
         {
         }
 
+        public override BindingOperations Capabilities
+        {
+            get
+            {
+                return BindingOperations.Broadcast;
+            }
+        }
+
         public abstract void SetBroadcastListener(Action<object[]> listener);
     }
 

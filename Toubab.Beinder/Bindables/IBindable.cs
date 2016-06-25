@@ -25,6 +25,18 @@
     public interface IBindable : IMixin
     {
         /// <summary>
+        /// The capabilities of this bindable.
+        /// </summary>
+        /// <remarks>
+        /// A combination of:
+        /// 
+        ///     - read the binding value (i.e., bindable has state)
+        ///     - broadcast a value ("event")
+        ///     - handle broadcasted value ("event handler")
+        /// </summary>
+        BindingOperations Capabilities { get; }
+
+        /// <summary>
         /// Types of values this bindable can bind to
         /// </summary>
         Type[] ValueTypes { get; } 

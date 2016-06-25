@@ -353,11 +353,11 @@ namespace Toubab.Beinder
                 while (first != null && first.Value.RelativePath.CompareTo(firstPath) == 0)
                 {
                     _list.RemoveFirst();
-                    if (first.Value.Bindable is IEventHandler)
+                    if (first.Value.Bindable.CanHandleBroadcast())
                         numConsumers++;
-                    if (first.Value.Bindable is IEvent)
+                    if (first.Value.Bindable.CanBroadcast())
                         numProducers++;
-                    if (first.Value.Bindable is IProperty)
+                    if (first.Value.Bindable.CanRead())
                         numStates++;
                     bindables.AddLast(first);
                     first = _list.First;

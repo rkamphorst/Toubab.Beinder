@@ -21,14 +21,14 @@ namespace Toubab.Beinder.Scanners
 
             // Assert
             Assert.AreEqual(8, result.Length);
-            Assert.IsTrue(result.Any(p => p is IProperty && p.Path.Equals((Path)"property")));
-            Assert.IsTrue(result.Any(p => p is IProperty && p.Path.Equals((Path)new[] { "second", "property" })));
-            Assert.IsTrue(result.Any(p => p is IEvent && p.Path.Equals((Path)new[] { "property", "changed" })));
-            Assert.IsTrue(result.Any(p => p is IEvent && p.Path.Equals((Path)new[] { "second", "property", "changed" })));
-            Assert.IsTrue(result.Any(p => p is IEvent && p.Path.Equals((Path)new[] { "simple", "event" })));
-            Assert.IsTrue(result.Any(p => p is IEvent && p.Path.Equals((Path)new[] { "complex", "event" })));
-            Assert.IsTrue(result.Any(p => p is IEventHandler && p.Path.Equals((Path)new[] { "on", "simple", "event" })));
-            Assert.IsTrue(result.Any(p => p is IEventHandler && p.Path.Equals((Path)new[] { "on", "complex", "event" })));
+            Assert.IsTrue(result.Any(p => p is IProperty && p.Capabilities == BindingOperations.All && p.Path.Equals(new Path("property"))));
+            Assert.IsTrue(result.Any(p => p is IProperty && p.Capabilities == BindingOperations.All && p.Path.Equals(new Path("second", "property" ))));
+            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.Path.Equals(new Path("property", "changed" ))));
+            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.Path.Equals(new Path("second", "property", "changed" ))));
+            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.Path.Equals(new Path("simple", "event" ))));
+            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.Path.Equals(new Path("complex", "event" ))));
+            Assert.IsTrue(result.Any(p => p is IEventHandler && p.Capabilities == BindingOperations.HandleBroadcast && p.Path.Equals(new Path("on", "simple", "event" ))));
+            Assert.IsTrue(result.Any(p => p is IEventHandler && p.Capabilities == BindingOperations.HandleBroadcast && p.Path.Equals(new Path("on", "complex", "event" ))));
         }
 
         [Test]
