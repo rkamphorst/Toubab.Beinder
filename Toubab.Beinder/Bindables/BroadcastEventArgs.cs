@@ -3,8 +3,9 @@ namespace Toubab.Beinder.Bindables
     using System;
 
     /// <summary>
-    /// Event arguments for the <see cref="IEvent.Broadcast"/> event.
+    /// Event arguments for broadcasts
     /// </summary>
+    [Obsolete]
     public class BroadcastEventArgs : EventArgs
     {
         /// <summary>
