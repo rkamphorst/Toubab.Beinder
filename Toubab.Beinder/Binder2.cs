@@ -42,19 +42,19 @@ namespace Toubab.Beinder
         public Binder2(params IScanner[] scanners)
         {
             var combinedScanner = new CombinedScanner();
-            foreach (var ps in scanners)
+            foreach (var s in scanners)
             {
-                var cps = ps as CombinedScanner;
-                if (cps != null)
+                var cs = s as CombinedScanner;
+                if (cs != null)
                 {
-                    foreach (var ps2 in cps)
+                    foreach (var s2 in cs)
                     {
-                        combinedScanner.Add(ps2);
+                        combinedScanner.Add(s2);
                     }
                 }
                 else
                 {
-                    combinedScanner.Add(ps);
+                    combinedScanner.Add(s);
                 }
             }
             _propertyScanner = combinedScanner;

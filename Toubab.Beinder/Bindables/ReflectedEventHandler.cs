@@ -14,9 +14,12 @@ namespace Toubab.Beinder.Bindables
     /// Adapts a reflected event handler (<see cref="MethodInfo"/>) to the <see cref="IEventHandler"/>
     /// interface.
     /// 
-    /// <see cref="TryHandleBroadcast"/> will be called in response to a <see cref="IEvent.Broadcast"/>
-    /// event. When this happens, the parameters in <see cref="BroadcastEventArgs.Payload"/> are passed
-    /// to the method represented by <see cref="ReflectedBindable{T}.Member"/>.
+    /// <see cref="TryHandleBroadcastAsync(object[])"/> will be called in response to a broadcast from an
+    /// <see cref="IEvent"/>: the parameters passed to the listener installed with 
+    /// <see cref="IEvent.SetBroadcastListener(Action{object[]})"/> are passed to 
+    /// <see cref="TryHandleBroadcastAsync(object[])"/> by <see cref="Valves.Valve2"/>.
+    /// <see cref="TryHandleBroadcastAsync(object[])"/> in turn passes them as arguments to the method 
+    /// represented by <see cref="ReflectedBindable{T}.Member"/>.
     /// </remarks>    
     public class ReflectedEventHandler : ReflectedBindable<MethodInfo>, IEventHandler
     {
