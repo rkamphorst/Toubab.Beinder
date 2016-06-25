@@ -30,7 +30,7 @@
 
         public async Task NestedCall()
         {
-            Task.Delay(TimeSpan.FromMilliseconds(10));
+            await Task.Delay(TimeSpan.FromMilliseconds(10));
             AssertContextIs(_parentContext);
 
             CallContext.LogicalSetData(_key, _childContext);
@@ -39,9 +39,10 @@
             await NestedNestedCall();
         }
 
-        public async Task NestedNestedCall() 
+        public Task NestedNestedCall() 
         {
             AssertContextIs(_childContext);
+            return Task.FromResult(0);
         }
 
         void AssertContextIs(string context)

@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinderWithReflectionScannersTest.cs" />
+    <Compile Include="Mocks\MockBindable.cs" />
     <Compile Include="ReadmeTests.cs" />
     <Compile Include="BinderWithMixinScannerTest.cs" />
     <Compile Include="Tools\TypeAdapterRegistryTest.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="Paths\UnderscorePathParserTest.cs" />
     <Compile Include="Paths\CamelCasePathParserTest.cs" />
     <Compile Include="Paths\PathTest.cs" />
+    <Compile Include="Valves\FixtureTest.cs" />
     <Compile Include="Valves\StateValveTest.cs" />
     <Compile Include="Mocks\ClassWithPropertyAndEvents.cs" />
     <Compile Include="Mocks\NotifyPropertyChangedClass.cs" />
@@ -95,7 +97,5 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Poc\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
