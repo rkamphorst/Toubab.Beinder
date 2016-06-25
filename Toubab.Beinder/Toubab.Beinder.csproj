@@ -47,6 +47,7 @@
     <Compile Include="Extend\ICustomMixin.cs" />
     <Compile Include="Extend\CustomMixin.cs" />
     <Compile Include="Extend\ICustomBindable.cs" />
+    <Compile Include="Scanners\IScopedScanner.cs" />
     <Compile Include="Tools\ICommandSource.cs" />
     <Compile Include="Tools\Command.cs" />
     <Compile Include="Tools\CommandCanExecuteArgs.cs" />

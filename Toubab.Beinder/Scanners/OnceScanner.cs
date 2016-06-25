@@ -7,7 +7,7 @@
     using System.Runtime.CompilerServices;
     using Bindables;
 
-    public class OnceScanner : IScanner
+    public class OnceScanner : IScopedScanner
     {
         readonly ConditionalWeakTable<object,object> _scannedObjects;
         readonly IScanner _scanner;
@@ -30,7 +30,7 @@
             _parent = parent;
         }
 
-        public OnceScanner NewScope() 
+        public IScopedScanner NewScope() 
         {
             return new OnceScanner(this);
         }
