@@ -1,19 +1,23 @@
 ﻿namespace Toubab.Beinder.Valves
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using Scanners;
     using Tools;
+    using Bindables;
+    using Paths;
 
     public class Fixture
     {
-        readonly OnceScanner _scanner;
+        readonly IScopedScanner _scanner;
         readonly LinkedList<Conduit> _conduits;
         readonly LinkedList<Conduit> _descendantConduits;
 
         List<Fixture> _childFixtures;
 
-        Fixture(OnceScanner scanner, LinkedList<Conduit> conduits, LinkedList<Conduit> descendantConduits)
+        Fixture(IScopedScanner scanner, LinkedList<Conduit> conduits, LinkedList<Conduit> descendantConduits)
         {
             _scanner = scanner;
             _conduits = conduits;
@@ -21,7 +25,6 @@
             _childFixtures = null;
         }
             
-
         public LinkedList<Conduit> Conduits { get { return _conduits; } }
 
         public List<Fixture> ChildFixtures { get { return _childFixtures; } }
@@ -37,19 +40,17 @@
             _childFixtures = CreateFixtures(childScanner, childConduits);
         }
 
-        public static List<Fixture> CreateFixtures(IScanner scanner, object[] objects)
+        public static List<Fixture> CreateFixtures(IScopedScanner scanner, object[] objects)
         {
-            const int generation = 0; // we create a first generation here
             Paths.Path path = null; // path of first generation is empty
-            var onceScanner = OnceScanner.Decorate(scanner);
             var scannedConduits = 
                 objects
-                    .SelectMany((ancestor, family) => onceScanner.ScanObjectAndCreateConduits(ancestor, path, family))
+                    .SelectMany((ancestor, family) => scanner.ScanObjectAndCreateConduits(ancestor, path, family))
                     .MergeIntoSortedLinkedList(new LinkedList<Conduit>(), c => c.AbsolutePath);
-            return CreateFixtures(onceScanner, scannedConduits);
+            return CreateFixtures(scanner, scannedConduits);
         }
 
-        public static List<Fixture> CreateFixtures(OnceScanner scopedScanner, LinkedList<Conduit> conduits)
+        public static List<Fixture> CreateFixtures(IScopedScanner scopedScanner, LinkedList<Conduit> conduits)
         {
             var result = new List<Fixture>();
             LinkedListNode<Conduit> first;
@@ -85,13 +86,48 @@
             return result;
         }
 
+   
         public static bool ConduitsQualifyForFixture(IEnumerable<Conduit> members)
         {
-            int distinctTrees =
-                members.Select(p => p.Family).Distinct().Count();
-            return distinctTrees > 0;
+            // if the collection of members is empty, they do not qualify
+            var firstMember = members.FirstOrDefault();
+            if (firstMember == null)
+                return false;
+
+            // now, there should be at least two families involved
+            bool distinctFamilies =
+                members.Skip(1).Any(m => m.Family != firstMember.Family);
+            if (!distinctFamilies)
+                return false;
+
+            // if one of the conduits represents a bindable that has state (i.e., is a property),
+            // the members qualify ('cause we might need child fixtures)
+            bool hasState =
+                members.Any(m => m.Bindable.CanRead());
+            if (hasState)
+                return true;
+
+            // a fixture should consist of at least one conduit that can broadcast / can be read,
+            // and a different conduit (from a different family) that can receive the broadcast / read value.
+            bool hasSenderAndReceiver =
+                members
+                    .Where(m => m.Bindable.CanBroadcastOrRead())
+                    .SelectMany(
+                        m1 => members.Where(
+                            m2 => m1.Family != m2.Family && m2.Bindable.CanHandleBroadcast()
+                            ))
+                    .Any();
+            return hasSenderAndReceiver;
         }
+
+        public override string ToString()
+        {
             
+            return string.Format("{0}@{{{1}}}", _conduits.First().AbsolutePath, string.Join(",", _conduits.Select(c => c.Family)));
+        }
+
+
+        
     }
 }
 

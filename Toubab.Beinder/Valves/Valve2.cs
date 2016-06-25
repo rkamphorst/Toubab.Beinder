@@ -26,12 +26,13 @@ namespace Toubab.Beinder.Valves
         public virtual async Task InitializeAsync(int familyToActivate)
         {
             foreach (var sender in _fixture.Conduits)
-                TrySetBroadcastListener(sender, CreateBroadcastListenerCallback(sender));
+                SetBroadcastListenerIfApplicable(sender, CreateBroadcastListenerCallback(sender));
 
             var conduitToActivate = 
                 Fixture.Conduits.FirstOrDefault(c => c.Family == familyToActivate);
 
-            await BroadcastAsync(conduitToActivate, null);
+            if (conduitToActivate != null)
+                await BroadcastAsync(conduitToActivate, null);
         }
 
         public Fixture Fixture { get { return _fixture; } }
@@ -40,15 +41,13 @@ namespace Toubab.Beinder.Valves
 
         async Task BroadcastAsync(Conduit sender, object[] payload)
         {
-            if (sender == null)
-                return;
-
             var prop = sender.Bindable as IProperty;
             if (prop != null)
             {
                 using (var attachment = sender.Attach())
                 {
-                    payload = new[] { prop.Value };
+                    if (attachment != null)
+                        payload = new[] { prop.Value };
                 }
             }
 
@@ -59,29 +58,34 @@ namespace Toubab.Beinder.Valves
             lock (_fixture)
             {
                 foreach (var receiver in _fixture.Conduits)
-                    handleTasks.Add(SendBroadcastPayloadAsync(sender, receiver, payload));
+                    handleTasks.Add(SendBroadcastPayloadIfApplicableAsync(sender, receiver, payload));
             }
 
             await Task.WhenAll(handleTasks);
             await UpdateChildValvesAsync(sender.Family);
         }
 
-        async Task SendBroadcastPayloadAsync(Conduit sender, Conduit receiver, object[] payload)
+        async Task SendBroadcastPayloadIfApplicableAsync(Conduit sender, Conduit receiver, object[] payload)
         {
             if (Equals(sender.Family, receiver.Family))
                 return;
-            
+
             var eventHandler = receiver.Bindable as IEventHandler;
             if (eventHandler == null)
                 return;
-            
+
             bool areParamsCompatible =
                 sender != null
                 ? eventHandler.ValueTypes.AreAssignableFromTypes(sender.Bindable.ValueTypes)
                 : eventHandler.ValueTypes.AreAssignableFromObjects(payload);
             if (!areParamsCompatible)
                 return;
-            
+
+            await SendBroadcastPayloadAsync(sender, receiver, payload);
+        }
+
+        async Task SendBroadcastPayloadAsync(Conduit sender, Conduit receiver, object[] payload)
+        {
             using (var attachment = receiver.Attach())
             {
                 if (attachment != null)
@@ -92,7 +96,7 @@ namespace Toubab.Beinder.Valves
                         {
                             _broadcastingTo.Add(receiver.Family);
                         }
-                        await eventHandler.TryHandleBroadcastAsync(payload);
+                        await ((IEventHandler)receiver.Bindable).TryHandleBroadcastAsync(payload);
                     }
                     finally
                     {
@@ -105,7 +109,7 @@ namespace Toubab.Beinder.Valves
             }
         }
 
-        void TrySetBroadcastListener(Conduit sender, Action<object[]> listenerCallback)
+        void SetBroadcastListenerIfApplicable(Conduit sender, Action<object[]> listenerCallback)
         {
             var @event = sender.Bindable as IEvent;
             if (@event != null)
@@ -113,9 +117,7 @@ namespace Toubab.Beinder.Valves
                 using (var attachment = sender.Attach())
                 {
                     if (attachment != null)
-                    {
                         @event.SetBroadcastListener(listenerCallback);
-                    }
                 }
             }
         }
@@ -156,7 +158,7 @@ namespace Toubab.Beinder.Valves
         public void Dispose()
         {
             foreach (var conduit in _fixture.Conduits)
-                TrySetBroadcastListener(conduit, null);
+                SetBroadcastListenerIfApplicable(conduit, null);
             
             foreach (var valve in _childValves)
                 valve.Dispose();
