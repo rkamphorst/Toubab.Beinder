@@ -38,7 +38,7 @@ namespace Toubab.Beinder.Scanners
             var scanner = new ReflectionScanner();
             object newValue = null;
             var property = (IProperty)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, (Path)"property"));
+                .FirstOrDefault(p => Equals(p.Path, new Path("property")));
             var ob = new ClassWithPropertyAndEvents();
             ob.Property = "banaan";
             property.SetObject(ob);
@@ -60,7 +60,7 @@ namespace Toubab.Beinder.Scanners
             object[] eventArgs = null;
             int eventHappened = 0;
             var evt = (IEvent)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "simple", "event" }));
+                .FirstOrDefault(p => Equals(p.Path, new Path("simple", "event")));
             var ob = new ClassWithPropertyAndEvents();
             evt.SetObject(ob);
             evt.SetBroadcastListener(payload => 
@@ -87,7 +87,7 @@ namespace Toubab.Beinder.Scanners
             object[] eventArgs = null;
             int eventHappened = 0;
             var evt = (IEvent)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "simple", "event" }));
+                .FirstOrDefault(p => Equals(p.Path, new Path("simple", "event" )));
             var ob = new ClassWithPropertyAndEvents();
             evt.SetObject(ob);
             evt.SetBroadcastListener(payload => 
@@ -117,7 +117,7 @@ namespace Toubab.Beinder.Scanners
             object[] eventArgs = null;
             int eventHappened = 0;
             var evt = (IEvent)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "complex", "event" }));
+                .FirstOrDefault(p => Equals(p.Path, new Path("complex", "event" )));
             var ob = new ClassWithPropertyAndEvents();
 
             var cwpae = new ClassWithPropertyAndEvents();
@@ -157,7 +157,7 @@ namespace Toubab.Beinder.Scanners
             object[] eventArgs = null;
             int eventHappened = 0;
             var evt = (IEvent)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "complex", "event" }));
+                .FirstOrDefault(p => Equals(p.Path, new Path("complex", "event" )));
             var ob = new ClassWithPropertyAndEvents();
 
             var cwpae = new ClassWithPropertyAndEvents();
@@ -200,7 +200,7 @@ namespace Toubab.Beinder.Scanners
             var scanner = new ReflectionScanner();
             int eventHappened = 0;
             var method = (IEventHandler)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "on", "simple", "event" }));
+                .FirstOrDefault(p => Equals(p.Path, new Path("on", "simple", "event" )));
             var ob = new ClassWithPropertyAndEvents();
             ob.SimpleEvent += (sender, e) => eventHappened++;
             method.SetObject(ob);
@@ -219,7 +219,7 @@ namespace Toubab.Beinder.Scanners
             var scanner = new ReflectionScanner();
             int eventHappened = 0;
             var method = (IEventHandler)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "on", "simple", "event" }));
+                .FirstOrDefault(p => Equals(p.Path, new Path("on", "simple", "event" )));
             var ob = new ClassWithPropertyAndEvents();
             ob.SimpleEvent += (sender, e) => eventHappened++;
             method.SetObject(ob);
@@ -242,7 +242,7 @@ namespace Toubab.Beinder.Scanners
             int eventHappened = 0;
             object[] eventArgs = null;
             var method = (IEventHandler)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "on", "complex", "event" }));
+                .FirstOrDefault(p => Equals(p.Path, new Path("on", "complex", "event")));
             var ob = new ClassWithPropertyAndEvents();
 
             var cwpae = new ClassWithPropertyAndEvents();
@@ -278,7 +278,7 @@ namespace Toubab.Beinder.Scanners
             int eventHappened = 0;
             object[] eventArgs = null;
             var method = (IEventHandler)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, (Path)new[] { "on", "complex", "event" }));
+                .FirstOrDefault(p => Equals(p.Path, new Path("on", "complex", "event")));
             var ob = new ClassWithPropertyAndEvents();
 
             var cwpae = new ClassWithPropertyAndEvents();

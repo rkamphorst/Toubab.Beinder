@@ -67,7 +67,7 @@
         /// the given default value.
         /// </summary>
         public static TSource FirstOr<TSource>(
-            this IEnumerable<TSource> source, 
+            this IEnumerable<TSource> source,
             TSource defaultValue
         )
         {
@@ -81,7 +81,7 @@
                 return iterator.MoveNext() ? iterator.Current : defaultValue;
             }
         }
-         
+
         public static LinkedList<T> MergeIntoSortedLinkedList<T, U>(this IEnumerable<T> enumerableToMerge, LinkedList<T> sortedListToMergeInto, Func<T, U> keySelector)
         {
             var comparer = Comparer<U>.Default;
@@ -115,6 +115,135 @@
 
             return sortedListToMergeInto;
         }
+
+        public static IEnumerable<T> Prepend<T>(this IEnumerable<T> self, params T[] items)
+        {
+            foreach (var item in items)
+                yield return item;
+            foreach (var item in self)
+                yield return item;
+        }
+
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> self, params T[] items)
+        {
+            foreach (var item in self)
+                yield return item;
+            foreach (var item in items)
+                yield return item;
+        }
+
+        public static bool StartsWith<T>(this IEnumerable<T> self, IEnumerable<T> other, Func<T, T, bool> equals = null)
+        {
+            IEnumerable<T> rest = null;
+            try
+            {
+                rest = SkipIfStartsWith(self, other, equals);
+                return rest != null;
+            }
+            finally
+            {
+                var disp = rest as IDisposable;
+                if (disp != null) disp.Dispose();
+            }
+        }
+
+        public static IEnumerable<T> SkipIfStartsWith<T>(this IEnumerable<T> self, IEnumerable<T> other, Func<T, T, bool> equals = null)
+        {
+            var selfEnu = self.GetEnumerator();
+            bool returnNull = false;
+            foreach (var item in other)
+            {
+                if (!selfEnu.MoveNext())
+                {
+                    returnNull = true;
+                    break;
+                }
+
+                if (equals != null)
+                {
+                    if (!equals(item, selfEnu.Current))
+                    {
+                        returnNull = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (!Equals(item, selfEnu.Current))
+                    {
+                        returnNull = true;
+                        break;
+                    }
+                }
+            }
+
+            if (returnNull)
+            {
+                var disp = selfEnu as IDisposable;
+                if (disp != null)
+                    disp.Dispose();
+                return null;
+            }
+            else
+            {
+                return selfEnu.ToEnumerable(false);
+            }
+        }
+
+        public static IEnumerable<T> ToEnumerable<T>(this IEnumerator<T> self, bool yieldCurrent)
+        {
+            try
+            {
+                if (yieldCurrent)
+                    yield return self.Current;
+                while (self.MoveNext())
+                    yield return self.Current;
+            }
+            finally
+            {
+                var disp = self as IDisposable;
+                if (disp != null)
+                    disp.Dispose();
+            }
+        }
+
+        public static int SequenceCompareTo<T>(this IEnumerable<T> self, IEnumerable<T> other, Func<T, T, int> compare = null)
+        {
+            if (compare == null)
+            {
+                var cmp = Comparer<T>.Default;
+                compare = (a, b) => cmp.Compare(a, b);
+            }
+
+            var selfEnu = self.GetEnumerator();
+            var otherEnu = other.GetEnumerator();
+            try
+            {
+                bool selfHasCurrent, otherHasCurrent;
+                while (
+                    (selfHasCurrent = selfEnu.MoveNext()) |
+                    (otherHasCurrent = otherEnu.MoveNext()))
+                {
+                    if (selfHasCurrent && !otherHasCurrent)
+                        return 1;
+                    if (!selfHasCurrent && otherHasCurrent)
+                        return -1;
+                    var cmpResult = compare(selfEnu.Current, otherEnu.Current);
+                    if (cmpResult != 0)
+                        return cmpResult;
+                }
+
+                return 0;
+            }
+            finally
+            {
+                var disp = selfEnu as IDisposable;
+                if (disp != null) disp.Dispose();
+                disp = otherEnu as IDisposable;
+                if (disp != null) disp.Dispose();
+            }
+        }
+
     }
 }
 

@@ -12,8 +12,8 @@
         public void CompareSameStartFragments()
         {
             // Arrange
-            var path1 = (Path)new[] { "banaan", "appel", "meloen" };
-            var path2 = (Path)new[] { "banaan", "appel" };
+            var path1 = new Path("banaan", "appel", "meloen");
+            var path2 = new Path("banaan", "appel");
 
             {
                 // Act
@@ -34,12 +34,37 @@
         }
 
         [Test]
+        public void CompareSameFragmentsDifferentDistribution()
+        {
+            // Arrange
+            var path1 = new Path("banaan", "appel", "meloen");
+            var path2 = new Path(new Path("banaan"), new Path("appel", "meloen"));
+
+            {
+                // Act
+                var cmp = path1.CompareTo(path2);
+
+                // Assert
+                Assert.IsTrue(cmp == 0);
+
+            }
+
+            {
+                // Act
+                var cmp = path2.CompareTo(path1);
+
+                // Assert
+                Assert.IsTrue(cmp == 0);
+            }
+        }
+
+        [Test]
         public void OrderSameStartFragments()
         {
             // Arrange
-            var path1 = (Path)new[] { "banaan", "appel", "peer" };
-            var path2 = (Path)new[] { "banaan", "appel" };
-            var path3 = (Path)new[] { "banaan", "appel", "meloen" };
+            var path1 = new Path("banaan", "appel", "peer");
+            var path2 = new Path("banaan", "appel");
+            var path3 = new Path("banaan", "appel", "meloen");
             var lst = new List<Path> { path1, path2, path3 };
 
             // Act

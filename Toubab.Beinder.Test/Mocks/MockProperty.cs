@@ -58,7 +58,7 @@
 
         public Path Path
         {
-            get { return "abc"; }
+            get { return new Path("abc"); }
         }
 
         public IMixin CloneWithoutObject()

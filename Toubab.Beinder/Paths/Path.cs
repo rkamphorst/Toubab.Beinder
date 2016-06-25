@@ -2,14 +2,23 @@ namespace Toubab.Beinder.Paths
 {
     using System;
     using System.Linq;
+    using System.Collections.Generic;
+    using System.Collections;
+    using Tools;
 
-    public class Path : IComparable<Path>
+    public class Path : IComparable<Path>, IFormattable
     {
+        const string FORMAT_CAMELCASE = "C";
+        const string FORMAT_PASCALCASE = "P";
+        const string FORMAT_UNDERSCORE = "U";
+        const string FORMAT_SLASH = "/";
+
         readonly string[] _fragments;
+        readonly Path[] _paths;
 
         public Path(params Path[] paths)
         {
-            _fragments = paths.SelectMany(p => p._fragments).ToArray();
+            _paths = paths.SelectMany(p => p.Paths).ToArray();
         }
 
         public Path(params string[] fragments)
@@ -19,19 +28,13 @@ namespace Toubab.Beinder.Paths
 
         public bool StartsWith(Path other) 
         {
-            return CalculateMatchSize(this, other) == other._fragments.Length;
+            return Fragments.StartsWith(other.Fragments);
         }
 
         public Path RelativeTo(Path other)
         {
-            if (StartsWith(other))
-            {
-                return new Path(_fragments.Skip(other._fragments.Length).ToArray());
-            }
-            else
-            {
-                return null;
-            }
+            var frags = Fragments.SkipIfStartsWith(other.Fragments);
+            return frags == null ? null : new Path(frags.ToArray());
         }
 
         public int CompareTo(Path other)
@@ -41,35 +44,7 @@ namespace Toubab.Beinder.Paths
 
         public static int Compare(Path path1, Path path2)
         {
-            int len1 = path1._fragments.Length;
-            int len2 = path2._fragments.Length;
-            int len =
-                len1 == len2 ? len1 : len1 < len2 ? len1 : len2;
-            for (int i = 0; i < len; i++)
-            {
-                int cmp = string.Compare(path1._fragments[i], path2._fragments[i], StringComparison.Ordinal);
-                if (cmp != 0)
-                    return cmp;
-            }
-            if (len1 > len2)
-                return 1;
-            if (len2 > len1)
-                return -1;
-            return 0;
-        }
-
-        static int CalculateMatchSize(Path path1, Path path2)
-        {
-            // fIdx: fragment index
-            int fIdx;
-            var frags1 = path1._fragments;
-            var frags2 = path2._fragments;
-            for (fIdx = 0; fIdx < frags1.Length && fIdx < frags2.Length; fIdx++)
-            {
-                if (!Equals(frags1[fIdx], frags2[fIdx]))
-                    break;
-            }
-            return fIdx;
+            return path1.Fragments.SequenceCompareTo(path2.Fragments);
         }
 
         public override bool Equals(object obj)
@@ -77,7 +52,7 @@ namespace Toubab.Beinder.Paths
             var other = obj as Path;
             if (other != null)
             {
-                return this.CompareTo(other) == 0;
+                return CompareTo(other) == 0;
             }
             return false;
         }
@@ -87,39 +62,126 @@ namespace Toubab.Beinder.Paths
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + _fragments.Length.GetHashCode();
-                for (int i = 0; i < _fragments.Length; i++)
-                {
-                    hash = hash * 23 + _fragments[i].GetHashCode();
-                }
+                foreach (var frag in Fragments)
+                    hash = hash * 23 + frag.GetHashCode();
                 return hash;
             }
         }
 
         public override string ToString()
         {
-            return string.Join("/", _fragments);
+            return ToString(FORMAT_SLASH, null);
         }
 
-        public static Path Add(Path path1, Path path2)
+        public string ToString(string format, IFormatProvider formatProvider)
         {
-            return new Path(path1, path2);
+            switch (format)
+            {
+                case FORMAT_CAMELCASE:
+                    return string.Join(".",
+                        Paths.Select(
+                            p => string.Join(string.Empty,
+                                p.Fragments.Select((f, i) => i == 0 ? f.ToLowerInvariant() : f.Substring(0, 1).ToUpperInvariant() + f.Substring(1).ToLowerInvariant())
+                                )
+                            )
+                         );
+                case FORMAT_UNDERSCORE:
+                    return string.Join(".", Paths.Select(p => string.Join("_", p.Fragments.Select(f => f.ToLowerInvariant()))));
+                case FORMAT_SLASH:
+                    return string.Join(".", Paths.Select(p => string.Join("/", p.Fragments.Select(f => f.ToLowerInvariant()))));
+                case FORMAT_PASCALCASE:
+                default:
+                    return string.Join(".",
+                        Paths.Select(
+                            p => string.Join(string.Empty,
+                                p.Fragments.Select(f => f.Substring(0, 1).ToUpperInvariant() + f.Substring(1).ToLowerInvariant())
+                                )
+                            )
+                         );
+            }
         }
 
-        public static Path operator +(Path path1, Path path2)
+        public int FragmentCount
         {
-            return Add(path1, path2);
+            get
+            {
+                return Paths.Sum(p => p._fragments.Length);
+            }
         }
 
-        public static implicit operator Path(string[] fragments)
+        public int PathCount
         {
-            return new Path(fragments);
+            get
+            {
+                return Paths.Count();
+            }
         }
 
-        public static implicit operator Path(string fragment)
+        public IEnumerable<string> Fragments
         {
-            return new Path(fragment);
+            get { return new EnumerableFragments(this); }
         }
+
+        public IEnumerable<Path> Paths
+        {
+            get { return new EnumerablePaths(this); }
+        }
+
+        class EnumerableFragments : IEnumerable<string>
+        {
+            readonly Path _path;
+
+            public EnumerableFragments(Path path)
+            {
+                _path = path;
+            }
+
+            public IEnumerator<string> GetEnumerator()
+            {
+                var frags = _path._fragments;
+                var paths = _path._paths;
+                if (frags != null)
+                    foreach (var frag in frags)
+                        yield return frag;
+                else if (paths != null)
+                    foreach (var path in paths)
+                        foreach (var frag in new EnumerableFragments(path))
+                            yield return frag;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
+        class EnumerablePaths : IEnumerable<Path>
+        {
+            readonly Path _path;
+
+            public EnumerablePaths(Path path)
+            {
+                _path = path;
+            }
+
+            public IEnumerator<Path> GetEnumerator()
+            {
+                var paths = _path._paths;
+                if (paths != null)
+                    foreach (var path in paths)
+                        foreach (var partpath in new EnumerablePaths(path))
+                            yield return partpath;
+                else
+                    yield return _path;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
+
     }
 
 }
