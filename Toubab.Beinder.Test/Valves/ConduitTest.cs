@@ -33,12 +33,40 @@
             yield return new TestCaseData(new Path("a", "b"), new Path("c"), new Path("a", "b", "c"), -1, -1);
         }
 
+        class ObjectContainer
+        {
+            object _obj;
+
+            public void SetObject()
+            {
+                _obj = new object();
+            }
+
+            public void ClearObject()
+            {
+                _obj = null;
+            }
+
+            public Conduit CreateConduitWithObject(IBindable mockBindable, int family = -1)
+            {
+                return Conduit.Create(mockBindable, _obj, null, family);
+            }
+
+            public void AssertReferenceEqualToObject(object obj)
+            {
+                Assert.IsTrue(ReferenceEquals(obj, _obj));
+            }
+        }
+
+
+
         [Test]
         public void AttachAndDisposeAttachment()
         {
             var mockBindable = new MockBindable(new Path("a"));
-            var obj = new object();
-            var conduit = Conduit.Create(mockBindable, obj, null, -1);
+            var container = new ObjectContainer();
+            container.SetObject();
+            var conduit = container.CreateConduitWithObject(mockBindable);
 
             // after creation, conduit should be in detached state
             Assert.IsNull(conduit.Bindable.Object);
@@ -48,7 +76,7 @@
 
             // now, attachment should be non-null, and bindable.object should be set
             Assert.IsNotNull(attachment);
-            Assert.IsTrue(ReferenceEquals(obj, conduit.Bindable.Object));
+            container.AssertReferenceEqualToObject(conduit.Bindable.Object);
 
             // act: dispose attachment
             attachment.Dispose();
@@ -62,8 +90,9 @@
         public void ObjectIsCollectedIfConduitIsDetached()
         {
             var mockBindable = new MockBindable(new Path("a"));
-            var obj = new object();
-            var conduit = Conduit.Create(mockBindable, obj, null, -1);
+            var container = new ObjectContainer();
+            container.SetObject();
+            var conduit = container.CreateConduitWithObject(mockBindable);
 
             // act: first do a gc collect and then attach
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
@@ -75,7 +104,7 @@
             // arrange: dispose of attachment, set to null, *and* set obj to null
             attachment.Dispose();
             attachment = null;
-            obj = null;
+            container.ClearObject();
 
             // act: do a gc collect again, try to attach
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
@@ -90,8 +119,9 @@
         public void ObjectIsNotCollectedIfConduitIsAttached()
         {
             var mockBindable = new MockBindable(new Path("a"));
-            var obj = new object();
-            var conduit = Conduit.Create(mockBindable, obj, null, -1);
+            var container = new ObjectContainer();
+            container.SetObject();
+            var conduit = container.CreateConduitWithObject(mockBindable);
 
             // now, do a forced GC collect
 
@@ -104,7 +134,7 @@
 
             // set obj and attachment to null. note: we don't dispose attachment, just set it to null
             attachment = null;
-            obj = null;
+            container.ClearObject();
 
             // act: do a gc collect again, try to attach
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
