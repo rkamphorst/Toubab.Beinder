@@ -33,30 +33,6 @@
             yield return new TestCaseData(new Path("a", "b"), new Path("c"), new Path("a", "b", "c"), -1, -1);
         }
 
-        class ObjectContainer
-        {
-            object _obj;
-
-            public void SetObject()
-            {
-                _obj = new object();
-            }
-
-            public void ClearObject()
-            {
-                _obj = null;
-            }
-
-            public Conduit CreateConduitWithObject(IBindable mockBindable, int family = -1)
-            {
-                return Conduit.Create(mockBindable, _obj, null, family);
-            }
-
-            public void AssertReferenceEqualToObject(object obj)
-            {
-                Assert.IsTrue(ReferenceEquals(obj, _obj));
-            }
-        }
 
 
 
@@ -145,7 +121,35 @@
             Assert.IsNotNull(attachment);
         }
 
+        /// <summary>
+        /// Class ObjectContainer, needed to make sure no references to _obj appear in
+        /// stack frames. A conservative GC will not collect objects that linger in stack frames,
+        /// apparently: http://stackoverflow.com/questions/11417283/strange-weakreference-behavior-on-mono
+        /// </summary>
+        class ObjectContainer
+        {
+            object _obj;
 
+            public void SetObject()
+            {
+                _obj = new object();
+            }
+
+            public void ClearObject()
+            {
+                _obj = null;
+            }
+
+            public Conduit CreateConduitWithObject(IBindable mockBindable, int family = -1)
+            {
+                return Conduit.Create(mockBindable, _obj, null, family);
+            }
+
+            public void AssertReferenceEqualToObject(object obj)
+            {
+                Assert.IsTrue(ReferenceEquals(obj, _obj));
+            }
+        }
 
 
     }
