@@ -33,7 +33,7 @@
         ///     - read the binding value (i.e., bindable has state)
         ///     - broadcast a value ("event")
         ///     - handle broadcasted value ("event handler")
-        /// </summary>
+        /// </remarks>
         BindingOperations Capabilities { get; }
 
         /// <summary>
@@ -48,7 +48,7 @@
         /// Gives the "path" of this bindable, i.e., starting at <see cref="Object"/>, follow
         /// this path to get access to the bindable property, event or event handler.
         /// </remarks>
-        /// <seealso cref="Path.Path"/>
+        /// <seealso cref="Path"/>
         Path Path { get; }
 
         /// <summary>

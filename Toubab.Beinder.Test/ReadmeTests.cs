@@ -150,13 +150,13 @@
             * Store the bindings in this._bindings to make sure it is not garbage collected.
             * This is typically done when the view appears (*not* when it is created!)
             */
-            this._bindings = await binder.Bind(viewModel, view);
+            _bindings = await binder.Bind(viewModel, view);
 
             /* Destroy bindings.
              * Typically when the view disappears.
              */
-            this._bindings.Dispose();
-            this._bindings = null;
+            _bindings.Dispose();
+            _bindings = null;
         }
 
         [Test]
@@ -170,7 +170,7 @@
             var view = new ViewClass { MyProperty = "aaa" };
             var viewModel = new ViewModelClass { MyProperty = "bbb" };
 
-            this._bindings = await binder.Bind(viewModel, view);
+            _bindings = await binder.Bind(viewModel, view);
 
             //  viewModel.MyProperty is now bound to view.MyProperty.
             //  view.MyProperty will have the value "bbb".
@@ -194,10 +194,10 @@
             /* ViewModelClass, ViewClass, ControlModelClass and ControlClass all 
              * implement interface INotifyPropertyChanged.
              */
-            var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
-            var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb" } };
+            var view = new ViewClass { MyControl = new ControlClass { Label = "aaa" } };
+            var viewModel = new ViewModelClass { MyControl = new ControlModelClass { Label = "bbb" } };
 
-            this._bindings = await binder.Bind(viewModel, view);
+            _bindings = await binder.Bind(viewModel, view);
 
             //  viewModel.MyControl.Label is now bound to view.MyControl.Label.
             //  both will have the value "bbb".
@@ -220,10 +220,10 @@
             /* ViewModelClass, ViewClass, and ControlClass all implement interface 
              * INotifyPropertyChanged.
              */
-            var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
+            var view = new ViewClass { MyControl = new ControlClass { Label = "aaa" } };
             var viewModel = new ViewModelClass { MyControlLabel = "bbb" };
 
-            this._bindings = await binder.Bind(viewModel, view);
+            _bindings = await binder.Bind(viewModel, view);
 
             //  viewModel.MyControlLabel is now bound to view.MyControl.Label.
             //  both will have the value "bbb".
@@ -246,10 +246,10 @@
             /* ViewModelClass, ViewClass, ControlModelClass, ControlClass and TextControlClass all 
              * implement interface INotifyPropertyChanged.
              */
-            var view = new ViewClass() { MyControl = new ControlClass { Label = "aaa" } };
-            var viewModel = new ViewModelClass() { MyControl = new ControlModelClass { Label = "bbb", Text = "ccc" } };
+            var view = new ViewClass { MyControl = new ControlClass { Label = "aaa" } };
+            var viewModel = new ViewModelClass { MyControl = new ControlModelClass { Label = "bbb", Text = "ccc" } };
 
-            this._bindings = await binder.Bind(viewModel, view);
+            _bindings = await binder.Bind(viewModel, view);
 
             //  viewModel.MyControl.Label is now bound to view.MyControl.Label.
             //  Both will have the value "bbb".

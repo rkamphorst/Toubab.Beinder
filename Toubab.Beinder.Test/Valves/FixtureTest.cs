@@ -19,7 +19,7 @@
         public void CreateFixture(object ob1, object ob2, int expectNumberOfFixtures)
         {
 
-            var fixtures = Fixture.CreateFixtures(_scanner, new object[] { ob1, ob2 });
+            var fixtures = Fixture.CreateFixtures(_scanner, new [] { ob1, ob2 });
 
             Assert.AreEqual(expectNumberOfFixtures, fixtures.Count);
             AssertFixturesAreSane(fixtures);
@@ -36,9 +36,6 @@
             foreach (var f in fixtures)
             {
                 Assert.Greater(f.Conduits.Count, 1);
-            }
-            foreach (var f in fixtures)
-            {
                 if (f.ChildFixtures != null)
                     AssertFixturesAreSane(f.ChildFixtures);
             }

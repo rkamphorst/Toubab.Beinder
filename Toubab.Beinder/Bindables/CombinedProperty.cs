@@ -9,7 +9,7 @@ namespace Toubab.Beinder.Bindables
     /// Combines multiple <see cref="IProperty"/> instances into one
     /// </summary>
     /// <remarks>
-    /// This class is used by <see cref="Scanner.CombinedScanner"/> in case two (or more)
+    /// This class is used by <see cref="Scanners.CombinedScanner"/> in case two (or more)
     /// scanners return an <see cref="IProperty"/> instance with the same name for the same
     /// object scan. 
     /// 
@@ -17,10 +17,10 @@ namespace Toubab.Beinder.Bindables
     /// 
     /// **Broadcasts**: All contained properties' broadcast events can result in a broadcast
     /// event from this combined property. The combined property only fires
-    /// a broadcast when a contained broadcast carries a changed set of <see cref="Values"/>.
+    /// a broadcast when a contained broadcast carries a changed <see cref="Value"/>.
     /// 
     /// **Handle Broadcasts**: The combined property handles broadcasts that are received by calling 
-    /// <see cref="TryHandleBroadcast"/> on all contained properties (in order), until 
+    /// <see cref="TryHandleBroadcastAsync"/> on all contained properties (in order), until 
     /// one signals that the broadcast has been handled (by returning <c>true</c>).
     /// 
     /// See <see cref="CombinedBindable{T}"/> documentation for more information on how 

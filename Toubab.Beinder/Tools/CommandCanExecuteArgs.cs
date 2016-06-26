@@ -4,7 +4,7 @@ namespace Toubab.Beinder.Tools
     /// Arguments used to capture the result of <see cref="System.Windows.Input.ICommand.CanExecute"/>.
     /// </summary>
     /// <remarks>
-    /// See also <see cref="Mixin.CommandMixin.CanExecuteQuery"/>,
+    /// See also <see cref="Mixins.CommandMixin.CanExecuteQuery"/>,
     /// <see cref="ICommandSource.CanExecuteQuery"/> and <see cref="CommandSource.CanExecuteQuery"/>.
     /// </remarks>
     public class CommandCanExecuteArgs

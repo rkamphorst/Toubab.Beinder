@@ -79,7 +79,6 @@
 
             // arrange: dispose of attachment, set to null, *and* set obj to null
             attachment.Dispose();
-            attachment = null;
             container.ClearObject();
 
             // act: do a gc collect again, try to attach
@@ -109,7 +108,6 @@
             Assert.IsNotNull(attachment);
 
             // set obj and attachment to null. note: we don't dispose attachment, just set it to null
-            attachment = null;
             container.ClearObject();
 
             // act: do a gc collect again, try to attach

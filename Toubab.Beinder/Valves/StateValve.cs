@@ -19,7 +19,7 @@ namespace Toubab.Beinder.Valves
     /// for example by setting this property to the changed value announced
     /// by the other propety.
     /// 
-    /// The difference between the <see cref="StateValve"/> and the <see cref="BroadcastValve"/>
+    /// The difference between the <see cref="StateValve"/> and the <see cref="Valve"/>
     /// is that (a) consumed events result in a state change, and (b) not every consumed event
     /// has effect: *only* if it may cause a state change, an event from one of the bindables
     /// in the valve is propagated to the other bindables in the valve.

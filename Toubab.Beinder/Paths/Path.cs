@@ -89,7 +89,6 @@ namespace Toubab.Beinder.Paths
                     return string.Join(".", Paths.Select(p => string.Join("_", p.Fragments.Select(f => f.ToLowerInvariant()))));
                 case FORMAT_SLASH:
                     return string.Join(".", Paths.Select(p => string.Join("/", p.Fragments.Select(f => f.ToLowerInvariant()))));
-                case FORMAT_PASCALCASE:
                 default:
                     return string.Join(".",
                         Paths.Select(

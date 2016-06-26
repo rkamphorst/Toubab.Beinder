@@ -14,15 +14,13 @@ namespace Toubab.Beinder.Bindables
     /// Adapts a reflected proeprty (<see cref="PropertyInfo"/>) to the <see cref="IProperty"/>
     /// interface.
     /// 
-    /// The property's value can be accessed through <see cref="Values"/> at index 0.
-    /// In the case of <see cref="ReflectedProperty"/>, <see cref="Values"/> will always 
-    /// have a length of 1.
+    /// The property's value can be accessed through <see cref="Value"/>.
     /// 
     /// If the property's value changes, an event might be raised to indicate this. This event
     /// can be specified in the constructor. 
     /// 
     /// <see cref="ReflectedProperty"/> can also react to <see cref="IEvent"/> broadcast 
-    /// events through <see cref="TryHandleBroadcast"/>: it sets the value of the underlying property
+    /// events through <see cref="TryHandleBroadcastAsync"/>: it sets the value of the underlying property
     /// accordingly. While setting the property, the "change event" handler is temporarily
     /// disconnected to prevent a broadcast listener of this instance to react to the change,
     /// which could result in an endless loop.

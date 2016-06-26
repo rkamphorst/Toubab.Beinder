@@ -8,17 +8,17 @@ namespace Toubab.Beinder.Bindables
     /// Combines multiple <see cref="IEventHandler"/> instances into one
     /// </summary>
     /// <remarks>
-    /// This class is used by <see cref="Scanner.CombinedScanner"/> in case two (or more)
+    /// This class is used by <see cref="Scanners.CombinedScanner"/> in case two (or more)
     /// scanners return an <see cref="IEventHandler"/> instance with the same name for the same
     /// object scan. 
     /// 
     /// Multiple <see cref="IEventHandler"/> instances are combined as follows.
     /// 
     /// **Handle Broadcasts**: The combined property handles broadcasts that are received by calling 
-    /// <see cref="TryHandleBroadcast"/> on all contained properties (in order), until 
+    /// <see cref="TryHandleBroadcastAsync"/> on all contained properties (in order), until 
     /// one signals that the broadcast has been handled (by returning <c>true</c>).
     /// If <see cref="IBindable.ValueTypes"/> of a contained event handler are not compatible
-    /// with the arguments supplied to <see cref="TryHandleBroadcast"/>, that method is not 
+    /// with the arguments supplied to <see cref="TryHandleBroadcastAsync"/>, that method is not 
     /// called on that instance.
     /// 
     /// See <see cref="CombinedBindable{T}"/> documentation for more information on how 

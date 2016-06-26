@@ -7,7 +7,7 @@
     /// Base class for a bindable that delegates to another bindable.
     /// </summary>
     /// <remarks>
-    /// Concrete subclasses of this class are used by <see cref="Scanner.CustomMixinScanner"/>
+    /// Concrete subclasses of this class are used by <see cref="Scanners.CustomMixinScanner"/>
     /// to delegate to propeties, events and event handlers (methods) on mix-ins.
     /// </remarks>
     /// <seealso cref="DelegatedEvent"/>

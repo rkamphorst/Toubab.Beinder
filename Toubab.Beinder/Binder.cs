@@ -147,18 +147,6 @@ namespace Toubab.Beinder
         /// <summary>
         /// Bind properties of given objects.
         /// </summary>
-        /// <remarks>
-        /// The <paramref name="activator"/> is the object of which the property values are
-        /// propagated to the bound property values.
-        /// 
-        /// The <paramref name="externalState"/> contains a list of <see cref="IBindable"/> 
-        /// instances that "cross object boundaries": they were defined on a parent object, 
-        /// but need to be bound to a <see cref="IBindable"/> of child (or descendant) object.
-        /// 
-        /// This method is called by <see cref="Bind(IEnumerable{object})"/> to do the
-        /// initial binding, and by <see cref="BindChildren"/> via <see cref="BindMultiple"/>
-        /// to do the recursive (re)binding.
-        /// </remarks>
         async Task<Valve[]> Bind(object[] objects, object activator, BinderState externalState)
         {
             var resultList = new List<Valve>();
@@ -265,7 +253,7 @@ namespace Toubab.Beinder
             parentValve.Disposing += (s, e) => disposeChildValve();
         }
 
-        object GetChildActivator(object parentActivator, StateValve parentValve, BinderState externalState) 
+        static object GetChildActivator(object parentActivator, StateValve parentValve, BinderState externalState) 
         {
             var activator = parentValve.GetValueForObject(parentActivator);
             if (activator == null && externalState.ContainsPropertyForObject(parentActivator))
@@ -314,7 +302,7 @@ namespace Toubab.Beinder
 
             /// <summary>
             /// Get the next set of parameters with which a valve (either <see cref="StateValve"/>
-            /// or <see cref="BroadcastValve"/>) can be instantiated.
+            /// or <see cref="Valve"/>) can be instantiated.
             /// </summary>
             /// <remarks>
             /// The parameters are the following:
@@ -514,12 +502,12 @@ namespace Toubab.Beinder
             /// </summary>
             /// <remarks>
             /// If this property is true, a <see cref="StateValve"/> should be created;
-            /// otherwise, a <see cref="BroadcastValve"/>.
+            /// otherwise, a <see cref="Valve"/>.
             /// </remarks>
             public bool ContainsState { get; set; }
 
             /// <summary>
-            /// Bindables to be grouped together into a <see cref="BroadcastValve"/> or a <see cref="StateValve"/>
+            /// Bindables to be grouped together into a <see cref="Valve"/> or a <see cref="StateValve"/>
             /// </summary>
             public IEnumerable<CandidateBindable> Bindables { get; private set; }
 

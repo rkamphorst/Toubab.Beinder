@@ -179,9 +179,8 @@
 
             if (returnNull)
             {
-                var disp = selfEnu as IDisposable;
-                if (disp != null)
-                    disp.Dispose();
+                if (selfEnu != null)
+                    selfEnu.Dispose();
                 return null;
             }
             else
@@ -201,9 +200,8 @@
             }
             finally
             {
-                var disp = self as IDisposable;
-                if (disp != null)
-                    disp.Dispose();
+                if (self != null)
+                    self.Dispose();
             }
         }
 
@@ -212,7 +210,7 @@
             if (compare == null)
             {
                 var cmp = Comparer<T>.Default;
-                compare = (a, b) => cmp.Compare(a, b);
+                compare = cmp.Compare;
             }
 
             var selfEnu = self.GetEnumerator();
@@ -237,10 +235,8 @@
             }
             finally
             {
-                var disp = selfEnu as IDisposable;
-                if (disp != null) disp.Dispose();
-                disp = otherEnu as IDisposable;
-                if (disp != null) disp.Dispose();
+                if (selfEnu != null) selfEnu.Dispose();
+                if (otherEnu != null) otherEnu.Dispose();
             }
         }
 

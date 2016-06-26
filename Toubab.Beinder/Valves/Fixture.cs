@@ -42,7 +42,7 @@
 
         public static List<Fixture> CreateFixtures(IScopedScanner scanner, object[] objects)
         {
-            Paths.Path path = null; // path of first generation is empty
+            Path path = null; // path of first generation is empty
             var scannedConduits = 
                 objects
                     .SelectMany((ancestor, family) => scanner.ScanObjectAndCreateConduits(ancestor, path, family))
@@ -90,30 +90,31 @@
         public static bool ConduitsQualifyForFixture(IEnumerable<Conduit> members)
         {
             // if the collection of members is empty, they do not qualify
-            var firstMember = members.FirstOrDefault();
+            var memArray = members as Conduit[] ?? members.ToArray();
+            var firstMember = memArray.FirstOrDefault();
             if (firstMember == null)
                 return false;
 
             // now, there should be at least two families involved
             bool distinctFamilies =
-                members.Skip(1).Any(m => m.Family != firstMember.Family);
+                memArray.Skip(1).Any(m => m.Family != firstMember.Family);
             if (!distinctFamilies)
                 return false;
 
             // if one of the conduits represents a bindable that has state (i.e., is a property),
             // the members qualify ('cause we might need child fixtures)
             bool hasState =
-                members.Any(m => m.Bindable.CanRead());
+                memArray.Any(m => m.Bindable.CanRead());
             if (hasState)
                 return true;
 
             // a fixture should consist of at least one conduit that can broadcast / can be read,
             // and a different conduit (from a different family) that can receive the broadcast / read value.
             bool hasSenderAndReceiver =
-                members
+                memArray
                     .Where(m => m.Bindable.CanBroadcastOrRead())
                     .SelectMany(
-                        m1 => members.Where(
+                        m1 => memArray.Where(
                             m2 => m1.Family != m2.Family && m2.Bindable.CanHandleBroadcast()
                             ))
                     .Any();

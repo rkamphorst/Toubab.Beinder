@@ -14,7 +14,7 @@ namespace Toubab.Beinder.Tools
 
             bool handler1Called = false;
             bool handler1CanExecute = false;
-            Action<CommandCanExecuteArgs> handler1 = (args) =>
+            Action<CommandCanExecuteArgs> handler1 = args =>
             {
                 handler1Called = true;      
                 args.Respond(handler1CanExecute);
@@ -31,7 +31,6 @@ namespace Toubab.Beinder.Tools
             Assert.IsTrue(handler1Called);
 
             // Arrange
-            canExecute = false;
             handler1Called = false;
             handler1CanExecute = true;
 
@@ -49,30 +48,28 @@ namespace Toubab.Beinder.Tools
             var cmds = new CommandSource((bool b) => {});
 
             bool handler1Called = false;
-            bool handler1CanExecute = false;
-            Action<CommandCanExecuteArgs> handler1 = (args) =>
-                {
-                    handler1Called = true;      
-                    args.Respond(handler1CanExecute);
-                };
+            Action<CommandCanExecuteArgs> handler1 = args =>
+            {
+                handler1Called = true;      
+                args.Respond(false);
+            };
 
             bool handler2Called = false;
             bool handler2CanExecute = false;
-            Action<CommandCanExecuteArgs> handler2 = (args) =>
-                {
-                    handler2Called = true;
-                    args.Respond(handler2CanExecute);
-                };
+            Action<CommandCanExecuteArgs> handler2 = args =>
+            {
+                handler2Called = true;
+                args.Respond(handler2CanExecute);
+            };
 
             bool handler3Called = false;
-            bool handler3CanExecute = false;
-            Action<CommandCanExecuteArgs> handler3 = (args) =>
-                {
-                    handler3Called = true;
-                    args.Respond(handler3CanExecute);
-                };
+            Action<CommandCanExecuteArgs> handler3 = args =>
+            {
+                handler3Called = true;
+                args.Respond(false);
+            };
 
-            bool canExecute = false;
+            bool canExecute;
 
             cmds.CanExecuteQuery += handler1;
             cmds.CanExecuteQuery += handler2;
@@ -89,7 +86,6 @@ namespace Toubab.Beinder.Tools
 
             // Arrange
             handler2CanExecute = true;
-            canExecute = false;
             handler1Called = false;
             handler2Called = false;
             handler3Called = false;

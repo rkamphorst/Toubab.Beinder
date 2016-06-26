@@ -62,12 +62,12 @@ namespace Toubab.Beinder.Tools
         /// Event used to execute a query by <see cref="CanExecute"/>
         /// </summary>
         /// <remarks>
-        /// This event will be bound to the <see cref="Mixin.CommandMixin.CanExecuteQuery"/>
+        /// This event will be bound to the <see cref="Mixins.CommandMixin.CanExecuteQuery"/>
         /// method. That method will update the <see cref="CommandCanExecuteArgs"/>, which is then 
         /// read by <see cref="CanExecute"/> to determine whether any bound 
         /// <see cref="System.Windows.Input.ICommand"/> can execute.
         /// 
-        /// Whenever this event occurs, <see cref="Mixin.CommandMixin.CanExecuteQuery"/> will
+        /// Whenever this event occurs, <see cref="Mixins.CommandMixin.CanExecuteQuery"/> will
         /// be called (if bound).
         /// 
         /// </remarks>
@@ -77,7 +77,7 @@ namespace Toubab.Beinder.Tools
         /// Event used to execute the command
         /// </summary>
         /// <remarks>
-        /// This event will be bound to the <see cref="Mixin.CommandMixin.Execute"/> method
+        /// This event will be bound to the <see cref="Mixins.CommandMixin.Execute"/> method
         /// (note: that method effectively hides the <see cref="System.Windows.Input.ICommand.Execute"/> method).
         /// Whenever this event is raised, that method will be called.
         /// </remarks>

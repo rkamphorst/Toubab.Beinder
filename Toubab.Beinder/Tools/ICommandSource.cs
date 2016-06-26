@@ -8,7 +8,7 @@ namespace Toubab.Beinder.Tools
     /// <remarks>
     /// All events on <see cref="System.Windows.Input.ICommand"/> have method counterparts here,
     /// and vice versa. Except for <see cref="CanExecuteQuery"/>, which has a counterpart 
-    /// <see cref="Mixin.CommandMixin.CanExecuteQuery"/>, which is a method.
+    /// <see cref="Mixins.CommandMixin.CanExecuteQuery"/>, which is a method.
     /// </remarks>
     public interface ICommandSource
     {
@@ -16,11 +16,11 @@ namespace Toubab.Beinder.Tools
         /// Event used to execute a query.
         /// </summary>
         /// <remarks>
-        /// This event will be bound to the <see cref="Mixin.CommandMixin.CanExecuteQuery"/>
+        /// This event will be bound to the <see cref="Mixins.CommandMixin.CanExecuteQuery"/>
         /// method. That method will update the <see cref="CommandCanExecuteArgs"/>, which can then 
         /// read by the code that raised the event.
         /// 
-        /// Whenever this event occurs, <see cref="Mixin.CommandMixin.CanExecuteQuery"/> will
+        /// Whenever this event occurs, <see cref="Mixins.CommandMixin.CanExecuteQuery"/> will
         /// be called (if bound).
         /// </remarks>
         event Action<CommandCanExecuteArgs> CanExecuteQuery;
@@ -29,10 +29,10 @@ namespace Toubab.Beinder.Tools
         /// Event used to execute the command
         /// </summary>
         /// <remarks>
-        /// This event will be bound to the <see cref="Mixin.CommandMixin.Execute"/> method
+        /// This event will be bound to the <see cref="Mixins.CommandMixin.Execute"/> method
         /// (note: that method effectively hides the <see cref="System.Windows.Input.ICommand.Execute"/> method).
         /// 
-        /// Whenever this event is raised, the <see cref="Mixin.CommandMixin.Execute"/> method will be called.
+        /// Whenever this event is raised, the <see cref="Mixins.CommandMixin.Execute"/> method will be called.
         /// </remarks>
         event Action<object> Execute;
 

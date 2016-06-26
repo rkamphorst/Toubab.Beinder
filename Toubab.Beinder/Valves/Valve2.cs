@@ -81,10 +81,10 @@ namespace Toubab.Beinder.Valves
             if (!areParamsCompatible)
                 return;
 
-            await SendBroadcastPayloadAsync(sender, receiver, payload);
+            await SendBroadcastPayloadAsync(receiver, payload);
         }
 
-        async Task SendBroadcastPayloadAsync(Conduit sender, Conduit receiver, object[] payload)
+        async Task SendBroadcastPayloadAsync(Conduit receiver, object[] payload)
         {
             using (var attachment = receiver.Attach())
             {

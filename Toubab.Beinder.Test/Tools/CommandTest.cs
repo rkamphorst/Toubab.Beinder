@@ -8,28 +8,28 @@
     [TestFixture]
     public class CommandTest
     {
-        [Test, ExpectedException(typeof(ArgumentNullException))]
-        public void ArgumentExceptionWhenSyncNoExecuteCallback() 
+        [Test]
+        public void ArgumentExceptionWhenSyncNoExecuteCallback()
         {
-            var cmd = new Command(
-                (Action<object>) null,
-                (o) => true, 
-                new object[0]
+            Assert.Throws<ArgumentNullException>(() =>
+                    new Command(
+                    (Action<object>)null,
+                    o => true, 
+                    new object[0]
+                )
             );
-
-            cmd.Dispose();
         }
 
-        [Test, ExpectedException(typeof(ArgumentNullException))]
-        public void ArgumentExceptionWhenAsyncNoExecuteCallback() 
+        [Test]
+        public void ArgumentExceptionWhenAsyncNoExecuteCallback()
         {
-            var cmd = new Command(
-                (Func<object,Task>) null,
-                (o) => true, 
-                new object[0]
+            Assert.Throws<ArgumentNullException>(() =>
+                new Command(
+                    (Func<object,Task>)null,
+                    o => true, 
+                    new object[0]
+                )
             );
-
-            cmd.Dispose();
         }
 
 
@@ -40,10 +40,16 @@
             bool called = false;
             bool expectResult = false;
             var cmd = new Command(
-                (o) => {},
-                (o) => { called = true; return expectResult; }, 
-                new object[0]
-            );
+                          o =>
+                {
+                },
+                          o =>
+                        {
+                            called = true;
+                            return expectResult;
+                        }, 
+                          new object[0]
+                      );
 
             // Act
             var result = cmd.CanExecute(null);
@@ -69,13 +75,17 @@
         {
             // Arrange
             bool called = false;
-            object expectedParam  = new object();
+            object expectedParam = new object();
             object parameter = null;
             var cmd = new Command(
-                (o) => { called = true; parameter = o; },
-                (o) => true, 
-                new object[0]
-            );
+                          o =>
+                {
+                    called = true;
+                    parameter = o;
+                },
+                          o => true, 
+                          new object[0]
+                      );
 
             // Act
             cmd.Execute(expectedParam);
@@ -92,10 +102,10 @@
             // create a command that awaits a task completion source when it executes
             var tcs = new TaskCompletionSource<int>();
             var cmd = new Command(
-                async (o) => { await tcs.Task; },
-                (o) => true, 
-                new object[0]
-            );
+                          async o => await tcs.Task,
+                          o => true, 
+                          new object[0]
+                      );
             bool canExecuteChanged = false;
             cmd.CanExecuteChanged += (o, e) => canExecuteChanged = true;
 
@@ -137,20 +147,21 @@
             var cmdTcs = new TaskCompletionSource<int>();
             var procTcs = new TaskCompletionSource<int>();
             var cmd = new Command(
-                async (o) => { 
+                          async o =>
+                { 
                     cnt++; // increment count
                     cmdTcs.SetResult(0); // signal that count has been incremented
                     await procTcs.Task; // wait for signal that new count has been processed
                     procTcs = new TaskCompletionSource<int>(); // create a new task completion source
                 },
-                null,
-                new object[0]
-            );
+                          null,
+                          new object[0]
+                      );
 
             // now, execute the command a large number of times. 
             // execution will occur asynchronously in this case because of the 
             // async callback in command (which contains an await)
-            for (int i = 0; i < 100; i++) 
+            for (int i = 0; i < 100; i++)
             {
                 cmd.Execute(null);
             }
@@ -159,7 +170,8 @@
             // cnt would increase uncrontrollably. 
             // here, we show that at each time we check the count, we can predict it 
             // because command executions occur sequentially.
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 100; i++)
+            {
                 await cmdTcs.Task; // wait for signal that count has been incremented
                 Assert.AreEqual(i + 1, cnt); // check that count has been incremented
                 cmdTcs = new TaskCompletionSource<int>(); // create new task completion source for command execution
@@ -174,10 +186,12 @@
             bool canExecute = false;
             var viewModel = new MockViewModel();
             var cmd = new Command(
-                (o) => { },
-                (o) => Equals(viewModel.ControlText, "banaan"), 
-                new [] { viewModel }
-            );
+                          o =>
+                {
+                },
+                          o => Equals(viewModel.ControlText, "banaan"), 
+                          new [] { viewModel }
+                      );
             cmd.CanExecuteChanged += (s, e) => canExecute = cmd.CanExecute(null);
 
             // Act
@@ -201,10 +215,12 @@
             bool didCallBack = false;
             var viewModel = new MockViewModel();
             var cmd = new Command(
-                (o) => { },
-                null,
-                new [] { viewModel }
-            );
+                          o =>
+                {
+                },
+                          null,
+                          new [] { viewModel }
+                      );
             cmd.CanExecuteChanged += (s, e) => didCallBack = true;
 
             // Act

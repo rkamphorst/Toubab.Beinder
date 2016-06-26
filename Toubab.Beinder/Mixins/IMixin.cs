@@ -10,10 +10,10 @@
     /// In other words, a mix-in is a way of separately specifying extensions for
     /// another class.
     /// 
-    /// In the context of Beinder, the <see cref="Scanner.CustomMixinScanner"/> class
-    /// can scan for mix-ins (actually, it scans vor <see cref="Mixin{T}"/> implementations).
+    /// In the context of Beinder, the <see cref="Scanners.CustomMixinScanner"/> class
+    /// can scan for mix-ins (actually, it scans for <see cref="Mixin"/> implementations).
     /// The mix-ins are themselves scanned as if they were normal objects; the 
-    /// <see cref="Scanner.CustomMixinScanner"/> then transforms the resulting <see cref="Bindable.IBindable"/>
+    /// <see cref="Scanners.CustomMixinScanner"/> then transforms the resulting <see cref="Bindables.IBindable"/>
     /// objects into bindables that "pretend" to live on the type the mix-ins are
     /// for.
     /// </remarks>
