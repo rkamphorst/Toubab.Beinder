@@ -12,8 +12,8 @@
         public void CompareSameStartFragments()
         {
             // Arrange
-            var path1 = new Path("banaan", "appel", "meloen");
-            var path2 = new Path("banaan", "appel");
+            var path1 = new Path(new Syllables("banaan", "appel", "meloen"));
+            var path2 = new Path(new Syllables("banaan", "appel"));
 
             {
                 // Act
@@ -37,8 +37,8 @@
         public void CompareSameFragmentsDifferentDistribution()
         {
             // Arrange
-            var path1 = new Path("banaan", "appel", "meloen");
-            var path2 = new Path(new Path("banaan"), new Path("appel", "meloen"));
+            var path1 = new Path(new Syllables("banaan", "appel", "meloen"));
+            var path2 = new Path(new Path(new Syllables("banaan")), new Syllables( "appel", "meloen" ));
 
             {
                 // Act
@@ -62,9 +62,9 @@
         public void OrderSameStartFragments()
         {
             // Arrange
-            var path1 = new Path("banaan", "appel", "peer");
-            var path2 = new Path("banaan", "appel");
-            var path3 = new Path("banaan", "appel", "meloen");
+            var path1 = new Path(new Path(new Syllables("banaan", "appel")), new Syllables( "peer"));
+            var path2 = new Path(new Syllables("banaan", "appel"));
+            var path3 = new Path(new Path(new Syllables("banaan")), new Syllables("appel", "meloen"));
             var lst = new List<Path> { path1, path2, path3 };
 
             // Act

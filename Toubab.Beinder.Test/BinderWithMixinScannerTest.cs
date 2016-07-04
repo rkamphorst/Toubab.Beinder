@@ -6,6 +6,7 @@
     using Scanners;
     using Mixins;
 
+    #if TODO 
     [TestFixture]
     public class BinderWithMixinScannerTest
     {
@@ -196,5 +197,6 @@
             Assert.IsFalse(canExecute);
         }
     }
+    #endif
 }
 

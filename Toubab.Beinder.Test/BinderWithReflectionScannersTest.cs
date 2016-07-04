@@ -6,6 +6,8 @@
     using Mocks.Abcd;
     using Scanners;
 
+    #if TODO
+
     [TestFixture]
     public class BinderWithReflectionScannersTest
     {
@@ -389,6 +391,6 @@
         }
 
     }
-
+    #endif
 }
 

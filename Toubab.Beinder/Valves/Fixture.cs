@@ -9,6 +9,10 @@
     using Bindables;
     using Paths;
 
+
+    /// <summary>
+    /// Groups <see cref="Conduit"/>s with corresponding <see cref="Path"/>s.
+    /// </summary>
     public class Fixture
     {
         readonly IScopedScanner _scanner;
@@ -45,7 +49,7 @@
             Path path = null; // path of first generation is empty
             var scannedConduits = 
                 objects
-                    .SelectMany((ancestor, family) => scanner.ScanObjectAndCreateConduits(ancestor, path, family))
+                    .SelectMany((ancestor, family) => scanner.ScanObjectAndCreateConduits(ancestor, path, family, 0))
                     .MergeIntoSortedLinkedList(new LinkedList<Conduit>(), c => c.AbsolutePath);
             return CreateFixtures(scanner, scannedConduits);
         }
@@ -127,8 +131,16 @@
             return string.Format("{0}@{{{1}}}", _conduits.First().AbsolutePath, string.Join(",", _conduits.Select(c => c.Family)));
         }
 
+        public LinkedList<LinkedList<Conduit>> GetLines(Path parentPath) 
+        {
+            var line = new LinkedList<Conduit>(Conduits
+                .OrderBy(c => c.Family)
+                .ThenBy(c => c.Generation)
+                .ThenBy(c => c.Bindable.NameSyllables)
+            );
+            throw new NotImplementedException();       
+        }
 
-        
     }
 }
 

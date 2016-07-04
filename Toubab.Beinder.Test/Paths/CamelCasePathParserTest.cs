@@ -1,16 +1,17 @@
 ﻿namespace Toubab.Beinder.Paths
 {
+    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
     public class CamelCasePathParserTest
     {
-        CamelCasePathParser _parser;
+        CamelCaseSyllableParser _parser;
 
         [SetUp]
         public void Setup()
         {
-            _parser = new CamelCasePathParser();    
+            _parser = new CamelCaseSyllableParser();    
         }
 
         [Test]
@@ -18,18 +19,18 @@
         {
             {
                 // Act
-                Path result = _parser.Parse("Property");
+                Syllables result = _parser.Parse("Property");
 
                 // Assert
-                Assert.AreEqual("property", result.ToString());
+                Assert.IsTrue(result.Equals(new Syllables( "property" )));
             }
 
             {
                 // Act
-                Path result = _parser.Parse("property");
+                Syllables result = _parser.Parse("property");
 
                 // Assert
-                Assert.AreEqual("property", result.ToString());
+                Assert.IsTrue(result.Equals(new Syllables( "property" )));
             }
         }
 
@@ -37,20 +38,20 @@
         public void ParsePropertyCamelCased()
         {
             // Act
-            Path result = _parser.Parse("PropertyPropertyProperty");
+            Syllables result = _parser.Parse("PropertyPropertyProperty");
 
             // Assert
-            Assert.AreEqual("property/property/property", result.ToString());
+            Assert.IsTrue(result.Equals(new Syllables( "property", "property", "property"  )));
         }
 
         [Test]
         public void ParsePropertyUpperAndCamelCased()
         {
             // Act
-            Path result = _parser.Parse("XYZPropertyPropertyProperty");
+            Syllables result = _parser.Parse("XYZPropertyPropertyProperty");
 
             // Assert
-            Assert.AreEqual("xyzproperty/property/property", result.ToString());
+            Assert.IsTrue(result.Equals(new Syllables( "xyzproperty", "property", "property"  )));
         }
     }
 }

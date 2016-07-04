@@ -12,25 +12,26 @@
     public class ConduitTest
     {
         [Test, TestCaseSource("CreateWithParametersTestCase")]
-        public void CreateWithParameters(Path basePath, Path mockPath, Path expectAbsolutePath, int family, int expectFamily)
+        public void CreateWithParameters(Path basePath, Syllables mockSyllables, Path expectAbsolutePath, int family, int expectFamily, int generation, int expectGeneration)
         {
-            var mockBindable = new MockBindable(mockPath);
+            var mockBindable = new MockBindable(mockSyllables);
             var obj = new object();
 
-            var conduit = Conduit.Create(mockBindable, obj, basePath, family);
+            var conduit = Conduit.Create(mockBindable, obj, basePath, family, generation);
 
             Assert.IsFalse(ReferenceEquals(mockBindable, conduit.Bindable));
             Assert.IsTrue(conduit.Bindable is MockBindable);
-            Assert.AreEqual(mockPath, conduit.Bindable.Path);
+            Assert.AreEqual(mockSyllables, conduit.Bindable.NameSyllables);
             Assert.AreEqual(expectFamily, conduit.Family);
+            Assert.AreEqual(expectGeneration, conduit.Generation);
             Assert.AreEqual(expectAbsolutePath, conduit.AbsolutePath);
         }
 
         public IEnumerable<TestCaseData> CreateWithParametersTestCase()
         {
-            yield return new TestCaseData(null, new Path("a"), new Path("a"), 1, 1);
-            yield return new TestCaseData(new Path("a"), new Path("b"), new Path("a", "b"), 2, 2);
-            yield return new TestCaseData(new Path("a", "b"), new Path("c"), new Path("a", "b", "c"), -1, -1);
+            yield return new TestCaseData(null, new Syllables("a"), new Path(new Syllables("a")), 1, 1, 1, 1);
+            yield return new TestCaseData(new Path(new Syllables("a")), new Syllables("b"), new Path(new Path(new Syllables("a")), new Syllables("b")), 2, 2, 3, 3);
+            yield return new TestCaseData(new Path(new Syllables("a", "b")), new Syllables("c"), new Path(new Path(new Syllables("a", "b")), new Syllables("c")), -1, -1, -1, -1);
         }
 
 
@@ -39,7 +40,7 @@
         [Test]
         public void AttachAndDisposeAttachment()
         {
-            var mockBindable = new MockBindable(new Path("a"));
+            var mockBindable = new MockBindable(new Syllables("a"));
             var container = new ObjectContainer();
             container.SetObject();
             var conduit = container.CreateConduitWithObject(mockBindable);
@@ -65,7 +66,7 @@
         [Test]
         public void ObjectIsCollectedIfConduitIsDetached()
         {
-            var mockBindable = new MockBindable(new Path("a"));
+            var mockBindable = new MockBindable(new Syllables("a"));
             var container = new ObjectContainer();
             container.SetObject();
             var conduit = container.CreateConduitWithObject(mockBindable);
@@ -93,7 +94,7 @@
         [Test]
         public void ObjectIsNotCollectedIfConduitIsAttached()
         {
-            var mockBindable = new MockBindable(new Path("a"));
+            var mockBindable = new MockBindable(new Syllables("a"));
             var container = new ObjectContainer();
             container.SetObject();
             var conduit = container.CreateConduitWithObject(mockBindable);
@@ -138,9 +139,9 @@
                 _obj = null;
             }
 
-            public Conduit CreateConduitWithObject(IBindable mockBindable, int family = -1)
+            public Conduit CreateConduitWithObject(IBindable mockBindable, int family = -1, int generation = -1)
             {
-                return Conduit.Create(mockBindable, _obj, null, family);
+                return Conduit.Create(mockBindable, _obj, null, family, generation);
             }
 
             public void AssertReferenceEqualToObject(object obj)

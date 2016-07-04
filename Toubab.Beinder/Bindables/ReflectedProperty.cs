@@ -39,7 +39,7 @@ namespace Toubab.Beinder.Bindables
         /// also raised when other things happen, specify <paramref name="broadcastFilter"/>
         /// to filter out the events that don't signal a change in this property.
         /// </remarks>
-        /// <param name="path">Set the <see cref="Path"/> of the bindable to this value</param>
+        /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
         /// <param name="propertyInfo">Property to bind to</param>
         /// <param name="eventInfo">Event that indicates a property change</param>
         /// <param name="broadcastFilter">Filter applied on an event by <paramref name="eventInfo"/>,
@@ -47,16 +47,16 @@ namespace Toubab.Beinder.Bindables
         /// Given a <see cref="BroadcastEventArgs"/> parameter, it should return <c>true</c>
         /// if this is an event that should result in setting the property, <c>false</c> otherwise.</param>
         public ReflectedProperty(
-            Path path, 
+            Syllables nameSyllables, 
             PropertyInfo propertyInfo, 
             EventInfo eventInfo = null,
             Func<object[], bool> broadcastFilter = null
         )
-            : base(path, propertyInfo)
+            : base(nameSyllables, propertyInfo)
         {
             if (eventInfo != null)
             {
-                _rflEvent = new ReflectedEvent(path, eventInfo, broadcastFilter);
+                _rflEvent = new ReflectedEvent(nameSyllables, eventInfo, broadcastFilter);
             }
         }
 

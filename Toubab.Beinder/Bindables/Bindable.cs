@@ -13,15 +13,15 @@ namespace Toubab.Beinder.Bindables
     /// <seealso cref="ReflectedBindable{T}"/>
     public abstract class Bindable : Mixin, IBindable
     {
-        readonly Path _path;
+        readonly Syllables _nameSyllables;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="path">Set the <see cref="Path"/> of the bindable to this value</param>
-        protected Bindable(Path path)
+        /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
+        protected Bindable(Syllables nameSyllables)
         {
-            _path = path;
+            _nameSyllables = nameSyllables;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Toubab.Beinder.Bindables
         /// <param name="toCopy">To copy.</param>
         protected Bindable(Bindable toCopy)
         {
-            _path = toCopy._path;
+            _nameSyllables = toCopy._nameSyllables;
         }
 
         /// <inheritdoc/>
@@ -46,11 +46,11 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public Path Path
+        public Syllables NameSyllables
         {
             get
             { 
-                return _path;
+                return _nameSyllables;
             }
         }
 
@@ -63,7 +63,7 @@ namespace Toubab.Beinder.Bindables
             return string.Format("{0}: {1}->{2} ({3})", 
                 GetType().Name,
                 Object == null ? "[?]" : Object.GetType().Name, 
-                Path, 
+                NameSyllables, 
                 string.Join(",", ValueTypes.Select(vt => vt.Name))
             );
         }

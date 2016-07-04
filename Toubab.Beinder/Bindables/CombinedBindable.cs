@@ -33,7 +33,7 @@
         /// </summary>
         /// <param name="bindables">The bindables this bindable is a combination of.</param>
         protected CombinedBindable(TBindable[] bindables)
-            : base(bindables[0].Path)
+            : base(bindables[0].NameSyllables)
         {
             Bindables = bindables;
         }

@@ -56,9 +56,9 @@
             Object = value;
         }
 
-        public Path Path
+        public Syllables NameSyllables
         {
-            get { return new Path("abc"); }
+            get { return new Syllables("abc"); }
         }
 
         public IMixin CloneWithoutObject()

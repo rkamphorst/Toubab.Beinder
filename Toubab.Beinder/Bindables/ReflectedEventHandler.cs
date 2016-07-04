@@ -28,10 +28,10 @@ namespace Toubab.Beinder.Bindables
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="path">Set the <see cref="Path"/> of the bindable to this value</param>
+        /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
         /// <param name="methodInfo">The reflected event handler (method).</param>
-        public ReflectedEventHandler(Path path, MethodInfo methodInfo)
-            : base(path, methodInfo)
+        public ReflectedEventHandler(Syllables nameSyllables, MethodInfo methodInfo)
+            : base(nameSyllables, methodInfo)
         {
             _parameterTypes = Member.GetParameters().Select(p => p.ParameterType).ToArray();
         }

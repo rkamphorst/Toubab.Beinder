@@ -7,9 +7,9 @@
     public class MockBindable : IBindable
     {
 
-        public MockBindable(Path path)
+        public MockBindable(Syllables nameSyllables)
         {
-            Path = path;
+            NameSyllables = nameSyllables;
         }
 
         public BindingOperations Capabilities
@@ -26,7 +26,7 @@
 
         public IMixin CloneWithoutObject()
         {
-            return new MockBindable(Path);
+            return new MockBindable(NameSyllables);
         }
 
         #endregion
@@ -41,7 +41,7 @@
             }
         }
 
-        public Path Path
+        public Syllables NameSyllables
         {
             get;
             private set;

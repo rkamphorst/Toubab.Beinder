@@ -7,8 +7,8 @@ namespace Toubab.Beinder.Bindables
     /// Base class for bindables that were harvested through reflection
     /// </summary>
     /// <remarks>
-    /// Subclasses are used by <see cref="Scanner.NotifyPropertyChangedScanner"/> and 
-    /// <see cref="Scanner.ReflectionScanner"/>.
+    /// Subclasses are used by <see cref="Scanners.NotifyPropertyChangedScanner"/> and 
+    /// <see cref="Scanners.ReflectionScanner"/>.
     /// </remarks>
     /// <seealso cref="ReflectedEvent"/>
     /// <seealso cref="ReflectedEventHandler"/>
@@ -19,10 +19,10 @@ namespace Toubab.Beinder.Bindables
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="path">Set the <see cref="Path"/> of the bindable to this value</param>
+        /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
         /// <param name="memberInfo">The reflected member.</param>
-        protected ReflectedBindable(Path path, T memberInfo)
-            : base(path)
+        protected ReflectedBindable(Syllables nameSyllables, T memberInfo)
+            : base(nameSyllables)
         {
             Member = memberInfo;
         }

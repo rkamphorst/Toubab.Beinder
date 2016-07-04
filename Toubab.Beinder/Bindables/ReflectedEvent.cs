@@ -47,7 +47,7 @@ namespace Toubab.Beinder.Bindables
         ///     Thrown if <paramref name="eventInfo"/> has more than 32 parameters or a 
         ///     non-void return type.
         /// </exception>
-        /// <param name="path">Set the <see cref="Path"/> of the bindable to this value</param>
+        /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
         /// <param name="eventInfo">The reflected event.</param>
         /// <param name="broadcastFilter">If <paramref name="eventInfo"/> refers to an event that is
         /// overloaded (e.g. this is the case with <see cref="System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/>),
@@ -55,8 +55,8 @@ namespace Toubab.Beinder.Bindables
         /// The broadcastFilter is a callback that takes the broadcast payload and returns true
         /// if this is an event that should be broadcast. If not supplied, default is to let all
         /// events through.</param>
-        public ReflectedEvent(Path path, EventInfo eventInfo, Func<object[], bool> broadcastFilter)
-            : base(path, eventInfo)
+        public ReflectedEvent(Syllables nameSyllables, EventInfo eventInfo, Func<object[], bool> broadcastFilter)
+            : base(nameSyllables, eventInfo)
         {
             var invokeMethod = Member.EventHandlerType
                 .GetRuntimeMethods().First(m => Equals(m.Name, DelegateInvokeMethod));

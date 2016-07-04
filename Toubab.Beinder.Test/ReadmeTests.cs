@@ -6,6 +6,8 @@
     using NUnit.Framework;
     using Tools;
 
+    #if TODO
+
     [TestFixture]
     public class ReadmeTests
     {
@@ -269,5 +271,7 @@
 
         }
     }
+
+    #endif
 }
 

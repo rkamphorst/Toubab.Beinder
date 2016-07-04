@@ -7,10 +7,10 @@
     /// <summary>
     /// Represents a bindable property, event or method
     /// </summary>
-    /// A bindable can be a C# property, event or method; but it can also be
-    /// anything else that has a name and is associated to an object, and can
+    /// A bindable can be a C# property, event or method. But it can be
+    /// anything that has a name and is associated to an object, and can
     /// *act* as a property, event or method. For example, it can be a
-    /// dictionary entry or a named child view. 
+    /// dictionary entry or a (named) child view. 
     /// 
     /// The object that holds the property can be retrieved through 
     /// <see cref="Object"/>, and can be set with <see cref="IMixin.SetObject"/>. 
@@ -42,14 +42,20 @@
         Type[] ValueTypes { get; } 
 
         /// <summary>
-        /// Property path
+        /// Name fragment
         /// </summary>
         /// <remarks>
-        /// Gives the "path" of this bindable, i.e., starting at <see cref="Object"/>, follow
-        /// this path to get access to the bindable property, event or event handler.
+        /// Gives the syllables of the name of this bindable.
+        /// 
+        /// Syllables of names are normally separated through camel-casing / 
+        /// pascal casing, underscores or dots. Normally, they are words
+        /// that would be separated by a space in human-readable language.
+        /// 
+        /// In this representation, each member of the array is such a word
+        /// (or syllable).
         /// </remarks>
         /// <seealso cref="Path"/>
-        Path Path { get; }
+        Syllables NameSyllables { get; }
 
         /// <summary>
         /// Object this bindable is associated with.

@@ -6,8 +6,8 @@ namespace Toubab.Beinder.Extend
 
     public abstract class CustomEventHandler<T> : Bindable, ICustomEventHandler<T>
     {
-        protected CustomEventHandler(Path path)
-            : base(path)
+        protected CustomEventHandler(Syllables nameSyllables)
+            : base(nameSyllables)
         {
         }
 

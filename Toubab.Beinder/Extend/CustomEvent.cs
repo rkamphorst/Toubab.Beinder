@@ -6,8 +6,8 @@
 
     public abstract class CustomEvent<T> : Bindable, ICustomEvent<T>
     {
-        protected CustomEvent(Path path)
-            : base(path)
+        protected CustomEvent(Syllables nameSyllables)
+            : base(nameSyllables)
         {
         }
 

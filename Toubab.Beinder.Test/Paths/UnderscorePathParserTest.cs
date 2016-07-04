@@ -1,16 +1,17 @@
 ﻿namespace Toubab.Beinder.Paths
 {
+    using System.Linq;
     using NUnit.Framework;
 
     [TestFixture]
     public class UnderscorePathParserTest
     {
-        UnderscorePathParser _parser;
+        UnderscoreSyllableParser _parser;
 
         [SetUp]
         public void Setup()
         {
-            _parser = new UnderscorePathParser();    
+            _parser = new UnderscoreSyllableParser();    
         }
 
         [Test]
@@ -18,18 +19,18 @@
         {
             {
                 // Act
-                Path result = _parser.Parse("Property");
+                Syllables result = _parser.Parse("Property");
 
                 // Assert
-                Assert.AreEqual("property", result.ToString());
+                Assert.IsTrue(result.Equals(new Syllables( "property" )));
             }
 
             {
                 // Act
-                Path result = _parser.Parse("property");
+                Syllables result = _parser.Parse("property");
 
                 // Assert
-                Assert.AreEqual("property", result.ToString());
+                Assert.IsTrue(result.Equals(new Syllables( "property" )));
             }
         }
 
@@ -38,18 +39,18 @@
         {
             {
                 // Act
-                Path result = _parser.Parse("Property_Property_Property");
+                Syllables result = _parser.Parse("Property_Property_Property");
 
                 // Assert
-                Assert.AreEqual("property/property/property", result.ToString());
+                Assert.IsTrue(result.Equals(new Syllables( "property", "property", "property"  )));
             }
 
             {
                 // Act
-                Path result = _parser.Parse("property_property_property");
+                Syllables result = _parser.Parse("property_property_property");
 
                 // Assert
-                Assert.AreEqual("property/property/property", result.ToString());
+                Assert.IsTrue(result.Equals(new Syllables( "property", "property", "property"  )));
             }
         }
 
@@ -58,10 +59,11 @@
         {
             {
                 // Act
-                Path result = _parser.Parse("XYZProperty_Property_Property");
+                Syllables result = _parser.Parse("XYZProperty_Property_Property");
 
                 // Assert
-                Assert.AreEqual("xyzproperty/property/property", result.ToString());
+                Assert.IsTrue(result.Equals(new Syllables( "xyzproperty", "property", "property"  )));
+
             }
         }
     }

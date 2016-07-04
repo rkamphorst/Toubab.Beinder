@@ -1,6 +1,7 @@
 ﻿namespace Toubab.Beinder.Valves
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using Bindables;
     using Paths;
@@ -9,30 +10,39 @@
     {
         readonly WeakReference<object> _objectReference;
         readonly Path _absolutePath;
+        readonly Path _basePath;
         readonly int _family;
+        readonly int _generation;
         readonly IBindable _bindable;
 
-        public static Conduit Create(IBindable bindable, object obj, Path basePath, int family)
+        public static Conduit Create(IBindable bindable, object obj, Path basePath, int family, int generation)
         {
             return new Conduit(
                 (IBindable)bindable.CloneWithoutObject(),
                 new WeakReference<object>(obj),
-                basePath == null ? bindable.Path : new Path(basePath, bindable.Path),
-                family
+                basePath,
+                new Path(basePath, bindable.NameSyllables),
+                family, generation
             );
         }
 
-        protected Conduit(IBindable bindable,  WeakReference<object> objectReference, Path absolutePath, int family)
+        protected Conduit(IBindable bindable,  WeakReference<object> objectReference, Path basePath, Path absolutePath, int family, int generation)
         {
             _objectReference = objectReference;
             _absolutePath = absolutePath;
+            _basePath = basePath;
             _bindable = bindable;
             _family = family;
+            _generation = generation;
         }
 
         public int Family { get { return _family; } }
 
+        public int Generation { get { return _generation; } }
+
         public Path AbsolutePath { get { return _absolutePath; } }
+
+        public Path BasePath { get { return _absolutePath; } }
 
         public IBindable Bindable { get { return _bindable; } }
 

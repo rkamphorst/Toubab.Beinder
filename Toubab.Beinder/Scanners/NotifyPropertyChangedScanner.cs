@@ -11,12 +11,12 @@ namespace Toubab.Beinder.Scanners
     public class NotifyPropertyChangedScanner : TypeScanner
     {
      
-        IPathParser _pathParser = new CamelCasePathParser();
+        ISyllableParser _syllableParser = new CamelCaseSyllableParser();
 
-        public IPathParser PathParser
+        public ISyllableParser PathParser
         { 
-            get { return _pathParser; }
-            set { _pathParser = value; }
+            get { return _syllableParser; }
+            set { _syllableParser = value; }
         }
 
         public override IEnumerable<IBindable> Scan(Type type)
@@ -39,7 +39,7 @@ namespace Toubab.Beinder.Scanners
                         (info.SetMethod != null && info.SetMethod.IsPublic))
             )
                     .Select(prop => new ReflectedProperty(
-                        _pathParser.Parse(prop.Name), 
+                        _syllableParser.Parse(prop.Name), 
                         prop, 
                         evt, 
                         CreateBroadcastFilter(prop.Name))

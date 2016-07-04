@@ -21,14 +21,14 @@ namespace Toubab.Beinder.Scanners
 
             // Assert
             Assert.AreEqual(8, result.Length);
-            Assert.IsTrue(result.Any(p => p is IProperty && p.Capabilities == BindingOperations.All && p.Path.Equals(new Path("property"))));
-            Assert.IsTrue(result.Any(p => p is IProperty && p.Capabilities == BindingOperations.All && p.Path.Equals(new Path("second", "property" ))));
-            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.Path.Equals(new Path("property", "changed" ))));
-            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.Path.Equals(new Path("second", "property", "changed" ))));
-            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.Path.Equals(new Path("simple", "event" ))));
-            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.Path.Equals(new Path("complex", "event" ))));
-            Assert.IsTrue(result.Any(p => p is IEventHandler && p.Capabilities == BindingOperations.HandleBroadcast && p.Path.Equals(new Path("on", "simple", "event" ))));
-            Assert.IsTrue(result.Any(p => p is IEventHandler && p.Capabilities == BindingOperations.HandleBroadcast && p.Path.Equals(new Path("on", "complex", "event" ))));
+            Assert.IsTrue(result.Any(p => p is IProperty && p.Capabilities == BindingOperations.All && p.NameSyllables.Equals(new Syllables("property"))));
+            Assert.IsTrue(result.Any(p => p is IProperty && p.Capabilities == BindingOperations.All && p.NameSyllables.Equals(new Syllables("second", "property" ))));
+            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.NameSyllables.Equals(new Syllables("property", "changed" ))));
+            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.NameSyllables.Equals(new Syllables("second", "property", "changed" ))));
+            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.NameSyllables.Equals(new Syllables("simple", "event" ))));
+            Assert.IsTrue(result.Any(p => p is IEvent && p.Capabilities == BindingOperations.Broadcast && p.NameSyllables.Equals(new Syllables("complex", "event" ))));
+            Assert.IsTrue(result.Any(p => p is IEventHandler && p.Capabilities == BindingOperations.HandleBroadcast && p.NameSyllables.Equals(new Syllables("on", "simple", "event" ))));
+            Assert.IsTrue(result.Any(p => p is IEventHandler && p.Capabilities == BindingOperations.HandleBroadcast && p.NameSyllables.Equals(new Syllables("on", "complex", "event" ))));
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace Toubab.Beinder.Scanners
             var scanner = new ReflectionScanner();
             object newValue = null;
             var property = (IProperty)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, new Path("property")));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("property")));
             var ob = new ClassWithPropertyAndEvents();
             ob.Property = "banaan";
             property.SetObject(ob);
@@ -60,7 +60,7 @@ namespace Toubab.Beinder.Scanners
             object[] eventArgs = null;
             int eventHappened = 0;
             var evt = (IEvent)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, new Path("simple", "event")));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("simple", "event")));
             var ob = new ClassWithPropertyAndEvents();
             evt.SetObject(ob);
             evt.SetBroadcastListener(payload => 
@@ -87,7 +87,7 @@ namespace Toubab.Beinder.Scanners
             object[] eventArgs = null;
             int eventHappened = 0;
             var evt = (IEvent)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, new Path("simple", "event" )));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("simple", "event" )));
             var ob = new ClassWithPropertyAndEvents();
             evt.SetObject(ob);
             evt.SetBroadcastListener(payload => 
@@ -117,7 +117,7 @@ namespace Toubab.Beinder.Scanners
             object[] eventArgs = null;
             int eventHappened = 0;
             var evt = (IEvent)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, new Path("complex", "event" )));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("complex", "event" )));
             var ob = new ClassWithPropertyAndEvents();
 
             var cwpae = new ClassWithPropertyAndEvents();
@@ -157,7 +157,7 @@ namespace Toubab.Beinder.Scanners
             object[] eventArgs = null;
             int eventHappened = 0;
             var evt = (IEvent)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, new Path("complex", "event" )));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("complex", "event" )));
             var ob = new ClassWithPropertyAndEvents();
 
             var cwpae = new ClassWithPropertyAndEvents();
@@ -200,7 +200,7 @@ namespace Toubab.Beinder.Scanners
             var scanner = new ReflectionScanner();
             int eventHappened = 0;
             var method = (IEventHandler)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, new Path("on", "simple", "event" )));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("on", "simple", "event" )));
             var ob = new ClassWithPropertyAndEvents();
             ob.SimpleEvent += (sender, e) => eventHappened++;
             method.SetObject(ob);
@@ -219,7 +219,7 @@ namespace Toubab.Beinder.Scanners
             var scanner = new ReflectionScanner();
             int eventHappened = 0;
             var method = (IEventHandler)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, new Path("on", "simple", "event" )));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("on", "simple", "event" )));
             var ob = new ClassWithPropertyAndEvents();
             ob.SimpleEvent += (sender, e) => eventHappened++;
             method.SetObject(ob);
@@ -242,7 +242,7 @@ namespace Toubab.Beinder.Scanners
             int eventHappened = 0;
             object[] eventArgs = null;
             var method = (IEventHandler)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, new Path("on", "complex", "event")));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("on", "complex", "event")));
             var ob = new ClassWithPropertyAndEvents();
 
             var cwpae = new ClassWithPropertyAndEvents();
@@ -278,7 +278,7 @@ namespace Toubab.Beinder.Scanners
             int eventHappened = 0;
             object[] eventArgs = null;
             var method = (IEventHandler)scanner.Scan(typeof(ClassWithPropertyAndEvents))
-                .FirstOrDefault(p => Equals(p.Path, new Path("on", "complex", "event")));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("on", "complex", "event")));
             var ob = new ClassWithPropertyAndEvents();
 
             var cwpae = new ClassWithPropertyAndEvents();

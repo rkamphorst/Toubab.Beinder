@@ -30,7 +30,7 @@
                 (from prop in _scanners.SelectMany(s => s.Scan(obj))
                              group prop by new 
                             { 
-                                Path = prop.Path, 
+                                Path = prop.NameSyllables, 
                                 IsProperty = (prop is IProperty),
                                 IsEvent = (prop is IEvent),
                                 IsEventHandler = (prop is IEventHandler)

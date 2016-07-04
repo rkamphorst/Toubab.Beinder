@@ -35,7 +35,6 @@
     <Compile Include="Bindables\BindableUtilities.cs" />
     <Compile Include="Bindables\BindingOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Binder.cs" />
     <Compile Include="IBindings.cs" />
     <Compile Include="Extend\CustomEvent.cs" />
     <Compile Include="Extend\CustomEventHandler.cs" />
@@ -78,9 +77,6 @@
     <Compile Include="Bindables\CombinedEventHandler.cs" />
     <Compile Include="Bindables\CombinedBindable.cs" />
     <Compile Include="Bindables\CombinedEvent.cs" />
-    <Compile Include="Paths\CamelCasePathParser.cs" />
-    <Compile Include="Paths\UnderscorePathParser.cs" />
-    <Compile Include="Paths\IPathParser.cs" />
     <Compile Include="Paths\Path.cs" />
     <Compile Include="Scanners\CustomBindableScanner.cs" />
     <Compile Include="Scanners\NotifyPropertyChangedScanner.cs" />
@@ -103,6 +99,10 @@
     <Compile Include="Valves\ScannerUtilities.cs" />
     <Compile Include="Binder2.cs" />
     <Compile Include="Tools\LinkedListUtilities.cs" />
+    <Compile Include="Paths\ISyllableParser.cs" />
+    <Compile Include="Paths\CamelCaseSyllableParser.cs" />
+    <Compile Include="Paths\UnderscoreSyllableParser.cs" />
+    <Compile Include="Paths\Syllables.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

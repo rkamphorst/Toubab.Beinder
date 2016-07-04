@@ -16,9 +16,9 @@ namespace Toubab.Beinder.Scanners
     /// </remarks>
     public class DictionaryScanner : IScanner
     {
-        IPathParser _pathParser = new CamelCasePathParser();
+        ISyllableParser _pathParser = new CamelCaseSyllableParser();
 
-        public IPathParser PathParser
+        public ISyllableParser PathParser
         { 
             get { return _pathParser; }
             set { _pathParser = value; }
@@ -40,7 +40,7 @@ namespace Toubab.Beinder.Scanners
         {
             readonly string _key;
 
-            public DictionaryEntryProperty(string key, IPathParser pathParser)
+            public DictionaryEntryProperty(string key, ISyllableParser pathParser)
                 : base(pathParser.Parse(key))
             {
                 _key = key;
