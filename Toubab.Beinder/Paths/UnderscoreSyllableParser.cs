@@ -7,14 +7,14 @@ namespace Toubab.Beinder.Paths
     /// <summary>
     /// Path parser for paths with underscore ("_") as a word separator.
     /// </summary>
-    public class UnderscoreSyllableParser : ISyllableParser
+    public class UnderscoreSyllableParser : IFragmentParser
     {
         readonly Regex _re = new Regex(@"\G_*([^_]+)", RegexOptions.CultureInvariant);
 
         /// <inheritdoc />
-        public Syllables Parse(string name)
+        public Fragment Parse(string name)
         {
-            return new Syllables(string.IsNullOrWhiteSpace(name) ? null : _re.Matches(name).Cast<Match>().Select(m => m.Groups[1].Value));
+            return new Fragment(string.IsNullOrWhiteSpace(name) ? null : _re.Matches(name).Cast<Match>().Select(m => m.Groups[1].Value));
         }
     }
 }

@@ -13,13 +13,13 @@ namespace Toubab.Beinder.Bindables
     /// <seealso cref="ReflectedBindable{T}"/>
     public abstract class Bindable : Mixin, IBindable
     {
-        readonly Syllables _nameSyllables;
+        readonly Fragment _nameSyllables;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
-        protected Bindable(Syllables nameSyllables)
+        protected Bindable(Fragment nameSyllables)
         {
             _nameSyllables = nameSyllables;
         }
@@ -46,7 +46,7 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public Syllables NameSyllables
+        public Fragment NameSyllables
         {
             get
             { 

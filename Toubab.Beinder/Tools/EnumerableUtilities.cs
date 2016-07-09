@@ -82,9 +82,33 @@
             }
         }
 
-        public static LinkedList<T> MergeIntoSortedLinkedList<T, U>(this IEnumerable<T> enumerableToMerge, LinkedList<T> sortedListToMergeInto, Func<T, U> keySelector)
+
+        public static LinkedList<T> MergeIntoSortedLinkedList<T, U>(
+            this IEnumerable<T> enumerableToMerge, 
+            LinkedList<T> sortedListToMergeInto, 
+            Func<T, U> keySelector
+        )
         {
-            var comparer = Comparer<U>.Default;
+            return MergeIntoSortedLinkedList(enumerableToMerge, sortedListToMergeInto, keySelector, Comparer<U>.Default);
+        }
+
+        public static LinkedList<T> MergeIntoSortedLinkedList<T, U>(
+            this IEnumerable<T> enumerableToMerge, 
+            LinkedList<T> sortedListToMergeInto, 
+            Func<T, U> keySelector, 
+            Func<U, U, int> comparer
+        ) 
+        {
+            return MergeIntoSortedLinkedList(enumerableToMerge, sortedListToMergeInto, keySelector, new LambdaComparer<U>(comparer));
+        }
+
+        public static LinkedList<T> MergeIntoSortedLinkedList<T, U>(
+            this IEnumerable<T> enumerableToMerge, 
+            LinkedList<T> sortedListToMergeInto, 
+            Func<T, U> keySelector, 
+            IComparer<U> comparer
+        )
+        {
             var sortedEnumerableToMerge = enumerableToMerge.OrderBy(keySelector, comparer);
 
             if (sortedListToMergeInto.Count == 0)

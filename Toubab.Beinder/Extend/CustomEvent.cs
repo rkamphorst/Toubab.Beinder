@@ -6,7 +6,7 @@
 
     public abstract class CustomEvent<T> : Bindable, ICustomEvent<T>
     {
-        protected CustomEvent(Syllables nameSyllables)
+        protected CustomEvent(Fragment nameSyllables)
             : base(nameSyllables)
         {
         }

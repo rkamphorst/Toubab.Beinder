@@ -56,9 +56,9 @@
             Object = value;
         }
 
-        public Syllables NameSyllables
+        public Fragment NameSyllables
         {
-            get { return new Syllables("abc"); }
+            get { return new Fragment("abc"); }
         }
 
         public IMixin CloneWithoutObject()

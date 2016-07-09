@@ -19,8 +19,8 @@
 
             // Assert
             Assert.AreEqual(2, result.Length);
-            Assert.IsTrue(result.Any(p => p.NameSyllables.Equals(new Syllables("property"))));
-            Assert.IsTrue(result.Any(p => p.NameSyllables.Equals(new Syllables("second", "property"))));
+            Assert.IsTrue(result.Any(p => p.NameSyllables.Equals(new Fragment("property"))));
+            Assert.IsTrue(result.Any(p => p.NameSyllables.Equals(new Fragment("second", "property"))));
         }
 
         [Test]
@@ -30,7 +30,7 @@
             var scanner = new NotifyPropertyChangedScanner();
             object newValue = null;
             var property = (IProperty) scanner.Scan(typeof(NotifyPropertyChangedClass))
-                .FirstOrDefault(p => Equals(p.NameSyllables, new Syllables("property")));
+                .FirstOrDefault(p => Equals(p.NameSyllables, new Fragment("property")));
             var ob = new NotifyPropertyChangedClass();
             ob.Property = "banaan";
             property.SetObject(ob);

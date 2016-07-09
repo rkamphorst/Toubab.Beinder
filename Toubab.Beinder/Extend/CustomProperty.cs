@@ -7,7 +7,7 @@ namespace Toubab.Beinder.Extend
 
     public abstract class CustomProperty<T> : Bindable, ICustomProperty<T>
     {
-        protected CustomProperty(Syllables nameSyllables) 
+        protected CustomProperty(Fragment nameSyllables) 
             : base(nameSyllables)
         {
         }

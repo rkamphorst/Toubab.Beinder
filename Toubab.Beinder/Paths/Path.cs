@@ -6,18 +6,16 @@ namespace Toubab.Beinder.Paths
     using System.Collections;
     using Tools;
 
-    public class Path : IComparable<Path>, IFormattable
+    public class Path : IFormattable
     {
-        const string FORMAT_CAMELCASE = "C";
-        const string FORMAT_PASCALCASE = "P";
-        const string FORMAT_UNDERSCORE = "_";
-        const string FORMAT_SLASH = "/";
+        public static readonly IComparer<Path> FragmentComparer = new PathFragmentComparer();
+        public static readonly IComparer<Path> SyllableComparer = new PathSyllableComparer();
 
-        readonly Syllables _syllables;
+        readonly Fragment _fragment;
         readonly Path _basePath;
         readonly bool _isEmpty;
 
-        static readonly Path _emptyPath = new Path();
+        static readonly Path _emptyPath = new Path(null, null);
 
         public static Path Empty
         {
@@ -27,21 +25,24 @@ namespace Toubab.Beinder.Paths
             }
         }
 
-        Path()
+        public Path(Path basePath, Fragment fragment)
         {
-            _basePath = null;
-            _syllables = null;
-            _isEmpty = true;
+            if (basePath != null && fragment == null)
+            {
+                _basePath = basePath._basePath;
+                _fragment = basePath._fragment;
+                _isEmpty = basePath._isEmpty;
+            }
+            else
+            {
+                _basePath = basePath == null || basePath._isEmpty ? null : basePath;
+                _fragment = fragment;
+                _isEmpty = _basePath == null && _fragment == null;
+            }
         }
 
-        public Path(Path basePath, Syllables syllables)
-        {
-            _basePath = basePath;
-            _syllables = syllables;
-        }
-
-        public Path(Syllables syllables)
-            : this(null, syllables)
+        public Path(Fragment fragment)
+            : this(null, fragment)
         {
         }
 
@@ -53,27 +54,11 @@ namespace Toubab.Beinder.Paths
             }
         }
 
-        public bool StartsWith(Path other)
+        public bool StartsWith(IEnumerable<string> syllables)
         {
             if (_isEmpty)
-                return other._isEmpty;
-            return Syllables.StartsWith(other.Syllables);
-        }
-
-        public int CompareTo(Path other)
-        {
-            return Compare(this, other);
-        }
-
-        public static int Compare(Path path1, Path path2)
-        {
-            if (ReferenceEquals(path1, path2))
-                return 0;
-            if (path1._isEmpty && !path2._isEmpty)
-                return -1;
-            if (!path1.IsEmpty && path2.IsEmpty)
-                return 1;
-            return path1.Syllables.SequenceCompareTo(path2.Syllables);
+                return !syllables.Any();
+            return Syllables.StartsWith(syllables);
         }
 
         public override bool Equals(object obj)
@@ -81,7 +66,7 @@ namespace Toubab.Beinder.Paths
             var other = obj as Path;
             if (other != null)
             {
-                return CompareTo(other) == 0;
+                return FragmentComparer.Compare(this, other) == 0;
             }
             return false;
         }
@@ -99,114 +84,73 @@ namespace Toubab.Beinder.Paths
 
         public override string ToString()
         {
-            return ToString(FORMAT_SLASH, null);
+            return ToString(Fragment.FormatSlash, null);
         }
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            switch (format)
-            {
-                case FORMAT_CAMELCASE:
-                    return string.Join(".",
-                        Paths.Select(
-                            p => string.Join(string.Empty,
-                                p.Syllables.Select((f, i) => i == 0 ? f.ToLowerInvariant() : f.Substring(0, 1).ToUpperInvariant() + f.Substring(1).ToLowerInvariant())
-                            )
-                        )
-                    );
-                case FORMAT_UNDERSCORE:
-                    return string.Join(".", Paths.Select(p => string.Join("_", p.Syllables.Select(f => f.ToLowerInvariant()))));
-                case FORMAT_SLASH:
-                    return string.Join(".", Paths.Select(p => string.Join("/", p.Syllables.Select(f => f.ToLowerInvariant()))));
-                default:
-                    return string.Join(".",
-                        Paths.Select(
-                            p => string.Join(string.Empty,
-                                p.Syllables.Select(f => f.Substring(0, 1).ToUpperInvariant() + f.Substring(1).ToLowerInvariant())
-                            )
-                        )
-                    );
-            }
+            return string.Join(".", Fragments.Select(f => f.ToString(format, formatProvider)));
         }
 
-        public int FragmentCount
-        {
-            get
-            {
-                return Paths.Sum(p => p._syllables.Count);
-            }
-        }
-
-        public int PathCount
-        {
-            get
-            {
-                return Paths.Count();
-            }
-        }
 
         public IEnumerable<string> Syllables
         {
-            get { return new EnumerableSyllables(this); }
+            get
+            {
+                foreach (var frag in Fragments)
+                    foreach (var syl in frag.Syllables)
+                        yield return syl;
+            }
         }
 
-        public IEnumerable<Path> Paths
+        public IEnumerable<Fragment> Fragments
         {
-            get { return new EnumerablePaths(this); }
+            get
+            {
+                if (_basePath != null)
+                    foreach (var frag in _basePath.Fragments)
+                        yield return frag;
+                if (_fragment != null)
+                    yield return _fragment;
+            }
         }
 
-        class EnumerableSyllables : IEnumerable<string>
+
+        class PathFragmentComparer : IComparer<Path>
         {
-            readonly Path _path;
+            #region IComparer implementation
 
-            public EnumerableSyllables(Path path)
+            public int Compare(Path x, Path y)
             {
-                _path = path;
+                if (ReferenceEquals(x, y))
+                    return 0;
+                if (x._isEmpty && !y._isEmpty)
+                    return -1;
+                if (!x.IsEmpty && y.IsEmpty)
+                    return 1;
+                return x.Fragments.SequenceCompareTo(y.Fragments);
             }
 
-            public IEnumerator<string> GetEnumerator()
-            {
-                var syllables = _path._syllables;
-                var basePath = _path._basePath;
-                if (basePath != null)
-                    foreach (var syllable in new EnumerableSyllables(basePath))
-                        yield return syllable;
-                foreach (var syllable in syllables)
-                    yield return syllable;
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            #endregion
         }
 
-        class EnumerablePaths : IEnumerable<Path>
+        class PathSyllableComparer : IComparer<Path>
         {
-            readonly Path _path;
+            #region IComparer implementation
 
-            public EnumerablePaths(Path path)
+            public int Compare(Path x, Path y)
             {
-                _path = path;
+                if (ReferenceEquals(x, y))
+                    return 0;
+                if (x._isEmpty && !y._isEmpty)
+                    return -1;
+                if (!x.IsEmpty && y.IsEmpty)
+                    return 1;
+                return x.Syllables.SequenceCompareTo(y.Syllables);
             }
 
-            public IEnumerator<Path> GetEnumerator()
-            {
-                var basePath = _path._basePath;
-
-                if (basePath != null)
-                    foreach (var partpath in new EnumerablePaths(basePath))
-                        yield return partpath;
-                
-                yield return _path;
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            #endregion
         }
-
 
     }
 

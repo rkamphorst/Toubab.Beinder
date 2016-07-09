@@ -55,7 +55,7 @@ namespace Toubab.Beinder.Bindables
         /// The broadcastFilter is a callback that takes the broadcast payload and returns true
         /// if this is an event that should be broadcast. If not supplied, default is to let all
         /// events through.</param>
-        public ReflectedEvent(Syllables nameSyllables, EventInfo eventInfo, Func<object[], bool> broadcastFilter)
+        public ReflectedEvent(Fragment nameSyllables, EventInfo eventInfo, Func<object[], bool> broadcastFilter)
             : base(nameSyllables, eventInfo)
         {
             var invokeMethod = Member.EventHandlerType

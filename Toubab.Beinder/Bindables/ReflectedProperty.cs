@@ -47,7 +47,7 @@ namespace Toubab.Beinder.Bindables
         /// Given a <see cref="BroadcastEventArgs"/> parameter, it should return <c>true</c>
         /// if this is an event that should result in setting the property, <c>false</c> otherwise.</param>
         public ReflectedProperty(
-            Syllables nameSyllables, 
+            Fragment nameSyllables, 
             PropertyInfo propertyInfo, 
             EventInfo eventInfo = null,
             Func<object[], bool> broadcastFilter = null

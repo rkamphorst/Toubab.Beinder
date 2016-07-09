@@ -12,7 +12,7 @@
     public class ConduitTest
     {
         [Test, TestCaseSource("CreateWithParametersTestCase")]
-        public void CreateWithParameters(Path basePath, Syllables mockSyllables, Path expectAbsolutePath, int family, int expectFamily, int generation, int expectGeneration)
+        public void CreateWithParameters(Path basePath, Fragment mockSyllables, Path expectAbsolutePath, int family, int expectFamily, int generation, int expectGeneration)
         {
             var mockBindable = new MockBindable(mockSyllables);
             var obj = new object();
@@ -29,9 +29,9 @@
 
         public IEnumerable<TestCaseData> CreateWithParametersTestCase()
         {
-            yield return new TestCaseData(null, new Syllables("a"), new Path(new Syllables("a")), 1, 1, 1, 1);
-            yield return new TestCaseData(new Path(new Syllables("a")), new Syllables("b"), new Path(new Path(new Syllables("a")), new Syllables("b")), 2, 2, 3, 3);
-            yield return new TestCaseData(new Path(new Syllables("a", "b")), new Syllables("c"), new Path(new Path(new Syllables("a", "b")), new Syllables("c")), -1, -1, -1, -1);
+            yield return new TestCaseData(null, new Fragment("a"), new Path(new Fragment("a")), 1, 1, 1, 1);
+            yield return new TestCaseData(new Path(new Fragment("a")), new Fragment("b"), new Path(new Path(new Fragment("a")), new Fragment("b")), 2, 2, 3, 3);
+            yield return new TestCaseData(new Path(new Fragment("a", "b")), new Fragment("c"), new Path(new Path(new Fragment("a", "b")), new Fragment("c")), -1, -1, -1, -1);
         }
 
 
@@ -40,7 +40,7 @@
         [Test]
         public void AttachAndDisposeAttachment()
         {
-            var mockBindable = new MockBindable(new Syllables("a"));
+            var mockBindable = new MockBindable(new Fragment("a"));
             var container = new ObjectContainer();
             container.SetObject();
             var conduit = container.CreateConduitWithObject(mockBindable);
@@ -66,7 +66,7 @@
         [Test]
         public void ObjectIsCollectedIfConduitIsDetached()
         {
-            var mockBindable = new MockBindable(new Syllables("a"));
+            var mockBindable = new MockBindable(new Fragment("a"));
             var container = new ObjectContainer();
             container.SetObject();
             var conduit = container.CreateConduitWithObject(mockBindable);
@@ -94,7 +94,7 @@
         [Test]
         public void ObjectIsNotCollectedIfConduitIsAttached()
         {
-            var mockBindable = new MockBindable(new Syllables("a"));
+            var mockBindable = new MockBindable(new Fragment("a"));
             var container = new ObjectContainer();
             container.SetObject();
             var conduit = container.CreateConduitWithObject(mockBindable);

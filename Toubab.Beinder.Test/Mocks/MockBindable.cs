@@ -7,7 +7,7 @@
     public class MockBindable : IBindable
     {
 
-        public MockBindable(Syllables nameSyllables)
+        public MockBindable(Fragment nameSyllables)
         {
             NameSyllables = nameSyllables;
         }
@@ -41,7 +41,7 @@
             }
         }
 
-        public Syllables NameSyllables
+        public Fragment NameSyllables
         {
             get;
             private set;

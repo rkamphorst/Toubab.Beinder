@@ -39,7 +39,7 @@
             var childConduits = 
                 Conduits
                     .SelectMany(c => childScanner.ScanForChildrenOnConduit(c))
-                    .MergeIntoSortedLinkedList(new LinkedList<Conduit>(_descendantConduits), c => c.AbsolutePath);
+                    .MergeIntoSortedLinkedList(new LinkedList<Conduit>(_descendantConduits), c => c.AbsolutePath, Path.SyllableComparer);
 
             _childFixtures = CreateFixtures(childScanner, childConduits);
         }
@@ -50,7 +50,7 @@
             var scannedConduits = 
                 objects
                     .SelectMany((ancestor, family) => scanner.ScanObjectAndCreateConduits(ancestor, path, family, 0))
-                    .MergeIntoSortedLinkedList(new LinkedList<Conduit>(), c => c.AbsolutePath);
+                    .MergeIntoSortedLinkedList(new LinkedList<Conduit>(), c => c.AbsolutePath, Path.SyllableComparer);
             return CreateFixtures(scanner, scannedConduits);
         }
 
@@ -65,12 +65,12 @@
 
                 bool hasDescendants =
                     conduits.First != null &&
-                    conduits.First.Value.AbsolutePath.StartsWith(first.Value.AbsolutePath);
+                    conduits.First.Value.AbsolutePath.StartsWith(first.Value.AbsolutePath.Syllables);
 
                 if (ConduitsQualifyForFixture(members))
                 {
                     LinkedList<Conduit> descendants = 
-                        conduits.Shift(c => c.AbsolutePath.StartsWith(first.Value.AbsolutePath));
+                        conduits.Shift(c => c.AbsolutePath.StartsWith(first.Value.AbsolutePath.Syllables));
 
                     var fixture = new Fixture(scopedScanner, members, descendants);
                     fixture.UpdateChildFixtures();

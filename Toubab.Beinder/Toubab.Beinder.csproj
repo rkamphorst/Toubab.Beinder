@@ -99,10 +99,11 @@
     <Compile Include="Valves\ScannerUtilities.cs" />
     <Compile Include="Binder2.cs" />
     <Compile Include="Tools\LinkedListUtilities.cs" />
-    <Compile Include="Paths\ISyllableParser.cs" />
     <Compile Include="Paths\CamelCaseSyllableParser.cs" />
     <Compile Include="Paths\UnderscoreSyllableParser.cs" />
-    <Compile Include="Paths\Syllables.cs" />
+    <Compile Include="Paths\IFragmentParser.cs" />
+    <Compile Include="Paths\Fragment.cs" />
+    <Compile Include="Tools\LambdaComparer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

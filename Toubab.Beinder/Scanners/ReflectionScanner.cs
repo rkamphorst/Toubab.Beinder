@@ -9,9 +9,9 @@ namespace Toubab.Beinder.Scanners
 
     public class ReflectionScanner : TypeScanner
     {
-        ISyllableParser _pathParser = new CamelCaseSyllableParser();
+        IFragmentParser _pathParser = new CamelCaseSyllableParser();
 
-        public ISyllableParser PathParser
+        public IFragmentParser PathParser
         { 
             get { return _pathParser; }
             set { _pathParser = value; }

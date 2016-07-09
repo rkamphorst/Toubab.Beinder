@@ -30,7 +30,7 @@ namespace Toubab.Beinder.Bindables
         /// </summary>
         /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
         /// <param name="methodInfo">The reflected event handler (method).</param>
-        public ReflectedEventHandler(Syllables nameSyllables, MethodInfo methodInfo)
+        public ReflectedEventHandler(Fragment nameSyllables, MethodInfo methodInfo)
             : base(nameSyllables, methodInfo)
         {
             _parameterTypes = Member.GetParameters().Select(p => p.ParameterType).ToArray();

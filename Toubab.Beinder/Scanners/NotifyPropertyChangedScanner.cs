@@ -11,9 +11,9 @@ namespace Toubab.Beinder.Scanners
     public class NotifyPropertyChangedScanner : TypeScanner
     {
      
-        ISyllableParser _syllableParser = new CamelCaseSyllableParser();
+        IFragmentParser _syllableParser = new CamelCaseSyllableParser();
 
-        public ISyllableParser PathParser
+        public IFragmentParser PathParser
         { 
             get { return _syllableParser; }
             set { _syllableParser = value; }

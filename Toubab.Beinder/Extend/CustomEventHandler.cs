@@ -6,7 +6,7 @@ namespace Toubab.Beinder.Extend
 
     public abstract class CustomEventHandler<T> : Bindable, ICustomEventHandler<T>
     {
-        protected CustomEventHandler(Syllables nameSyllables)
+        protected CustomEventHandler(Fragment nameSyllables)
             : base(nameSyllables)
         {
         }

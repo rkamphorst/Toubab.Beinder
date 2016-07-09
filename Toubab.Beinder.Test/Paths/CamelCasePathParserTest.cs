@@ -19,18 +19,18 @@
         {
             {
                 // Act
-                Syllables result = _parser.Parse("Property");
+                Fragment result = _parser.Parse("Property");
 
                 // Assert
-                Assert.IsTrue(result.Equals(new Syllables( "property" )));
+                Assert.IsTrue(result.Equals(new Fragment( "property" )));
             }
 
             {
                 // Act
-                Syllables result = _parser.Parse("property");
+                Fragment result = _parser.Parse("property");
 
                 // Assert
-                Assert.IsTrue(result.Equals(new Syllables( "property" )));
+                Assert.IsTrue(result.Equals(new Fragment( "property" )));
             }
         }
 
@@ -38,20 +38,20 @@
         public void ParsePropertyCamelCased()
         {
             // Act
-            Syllables result = _parser.Parse("PropertyPropertyProperty");
+            Fragment result = _parser.Parse("PropertyPropertyProperty");
 
             // Assert
-            Assert.IsTrue(result.Equals(new Syllables( "property", "property", "property"  )));
+            Assert.IsTrue(result.Equals(new Fragment( "property", "property", "property"  )));
         }
 
         [Test]
         public void ParsePropertyUpperAndCamelCased()
         {
             // Act
-            Syllables result = _parser.Parse("XYZPropertyPropertyProperty");
+            Fragment result = _parser.Parse("XYZPropertyPropertyProperty");
 
             // Assert
-            Assert.IsTrue(result.Equals(new Syllables( "xyzproperty", "property", "property"  )));
+            Assert.IsTrue(result.Equals(new Fragment( "xyzproperty", "property", "property"  )));
         }
     }
 }
