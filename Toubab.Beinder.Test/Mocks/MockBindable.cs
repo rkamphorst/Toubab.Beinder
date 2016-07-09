@@ -9,7 +9,7 @@
 
         public MockBindable(Fragment nameSyllables)
         {
-            NameSyllables = nameSyllables;
+            Name = nameSyllables;
         }
 
         public BindingOperations Capabilities
@@ -26,7 +26,7 @@
 
         public IMixin CloneWithoutObject()
         {
-            return new MockBindable(NameSyllables);
+            return new MockBindable(Name);
         }
 
         #endregion
@@ -41,7 +41,7 @@
             }
         }
 
-        public Fragment NameSyllables
+        public Fragment Name
         {
             get;
             private set;

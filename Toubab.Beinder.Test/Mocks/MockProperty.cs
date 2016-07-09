@@ -15,8 +15,6 @@
 
         public int Changed { get; set; }
 
-        public string Name { get; set; }
-
         Action<object[]> _broadcastListener;
 
         public void SetBroadcastListener(Action<object[]> listener)
@@ -56,7 +54,7 @@
             Object = value;
         }
 
-        public Fragment NameSyllables
+        public Fragment Name
         {
             get { return new Fragment("abc"); }
         }
@@ -65,7 +63,6 @@
         {
             return new MockProperty
             {
-                Name = Name,
                 _value = _value
             };
         }

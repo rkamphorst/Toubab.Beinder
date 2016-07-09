@@ -18,7 +18,7 @@ namespace Toubab.Beinder.Bindables
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
+        /// <param name="nameSyllables">Set the <see cref="Name"/> of the bindable to this value</param>
         protected Bindable(Fragment nameSyllables)
         {
             _nameSyllables = nameSyllables;
@@ -46,7 +46,7 @@ namespace Toubab.Beinder.Bindables
         }
 
         /// <inheritdoc/>
-        public Fragment NameSyllables
+        public Fragment Name
         {
             get
             { 
@@ -63,7 +63,7 @@ namespace Toubab.Beinder.Bindables
             return string.Format("{0}: {1}->{2} ({3})", 
                 GetType().Name,
                 Object == null ? "[?]" : Object.GetType().Name, 
-                NameSyllables, 
+                Name, 
                 string.Join(",", ValueTypes.Select(vt => vt.Name))
             );
         }

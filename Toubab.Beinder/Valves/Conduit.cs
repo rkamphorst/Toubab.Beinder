@@ -21,7 +21,7 @@
                 (IBindable)bindable.CloneWithoutObject(),
                 new WeakReference<object>(obj),
                 basePath,
-                new Path(basePath, bindable.NameSyllables),
+                new Path(basePath, bindable.Name),
                 family, generation
             );
         }

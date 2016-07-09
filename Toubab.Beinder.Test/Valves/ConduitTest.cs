@@ -21,7 +21,7 @@
 
             Assert.IsFalse(ReferenceEquals(mockBindable, conduit.Bindable));
             Assert.IsTrue(conduit.Bindable is MockBindable);
-            Assert.AreEqual(mockSyllables, conduit.Bindable.NameSyllables);
+            Assert.AreEqual(mockSyllables, conduit.Bindable.Name);
             Assert.AreEqual(expectFamily, conduit.Family);
             Assert.AreEqual(expectGeneration, conduit.Generation);
             Assert.AreEqual(expectAbsolutePath, conduit.AbsolutePath);

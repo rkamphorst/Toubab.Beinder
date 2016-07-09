@@ -39,7 +39,7 @@ namespace Toubab.Beinder.Bindables
         /// also raised when other things happen, specify <paramref name="broadcastFilter"/>
         /// to filter out the events that don't signal a change in this property.
         /// </remarks>
-        /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
+        /// <param name="nameSyllables">Set the <see cref="Name"/> of the bindable to this value</param>
         /// <param name="propertyInfo">Property to bind to</param>
         /// <param name="eventInfo">Event that indicates a property change</param>
         /// <param name="broadcastFilter">Filter applied on an event by <paramref name="eventInfo"/>,

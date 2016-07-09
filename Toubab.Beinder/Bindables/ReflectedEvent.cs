@@ -47,7 +47,7 @@ namespace Toubab.Beinder.Bindables
         ///     Thrown if <paramref name="eventInfo"/> has more than 32 parameters or a 
         ///     non-void return type.
         /// </exception>
-        /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
+        /// <param name="nameSyllables">Set the <see cref="Name"/> of the bindable to this value</param>
         /// <param name="eventInfo">The reflected event.</param>
         /// <param name="broadcastFilter">If <paramref name="eventInfo"/> refers to an event that is
         /// overloaded (e.g. this is the case with <see cref="System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/>),

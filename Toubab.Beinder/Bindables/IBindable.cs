@@ -55,7 +55,7 @@
         /// (or syllable).
         /// </remarks>
         /// <seealso cref="Path"/>
-        Fragment NameSyllables { get; }
+        Fragment Name { get; }
 
         /// <summary>
         /// Object this bindable is associated with.

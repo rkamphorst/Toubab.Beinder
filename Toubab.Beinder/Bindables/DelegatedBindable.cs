@@ -27,7 +27,7 @@
         /// </summary>
         /// <param name="delegateBindable">Bindable to delegate to</param>
         protected DelegatedBindable(TBindable delegateBindable)
-            : base(delegateBindable.NameSyllables)
+            : base(delegateBindable.Name)
         {
             if (!(delegateBindable.Object is IMixin))
                 throw new ArgumentException(

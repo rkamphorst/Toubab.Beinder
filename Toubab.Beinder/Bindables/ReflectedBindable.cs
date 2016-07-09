@@ -19,7 +19,7 @@ namespace Toubab.Beinder.Bindables
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="nameSyllables">Set the <see cref="NameSyllables"/> of the bindable to this value</param>
+        /// <param name="nameSyllables">Set the <see cref="Name"/> of the bindable to this value</param>
         /// <param name="memberInfo">The reflected member.</param>
         protected ReflectedBindable(Fragment nameSyllables, T memberInfo)
             : base(nameSyllables)

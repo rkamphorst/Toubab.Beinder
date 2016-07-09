@@ -84,7 +84,7 @@
 
         static Conduit CreateConduit(string name)
         {
-            return Conduit.Create(new MockProperty { Changed = 0, Name = name }, new object(), null, 0, 0);
+            return Conduit.Create(new MockProperty { Changed = 0 }, new object(), null, 0, 0);
         }
 
 

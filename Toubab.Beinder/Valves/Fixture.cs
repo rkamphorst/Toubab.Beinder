@@ -136,7 +136,7 @@
             var line = new LinkedList<Conduit>(Conduits
                 .OrderBy(c => c.Family)
                 .ThenBy(c => c.Generation)
-                .ThenBy(c => c.Bindable.NameSyllables)
+                .ThenBy(c => c.Bindable.Name)
             );
             throw new NotImplementedException();       
         }
